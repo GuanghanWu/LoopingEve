@@ -2,100 +2,93 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LoopingEve - 循环冒险</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
         <header class="game-header">
-            <h1>LoopingEve - 循环冒险</h1>
-            <div class="floor-info">当前层数: <span id="currentFloor">1</span></div>
+            <div class="header-main">
+                <h1>LoopingEve</h1>
+                <div class="floor-info">第 <span id="currentFloor">1</span> 层</div>
+            </div>
+            <div class="mobile-status">
+                <div class="status-row">
+                    <div class="status-item hp"><span>❤️</span><span id="mHP">100</span>/<span id="mMaxHP">100</span></div>
+                    <div class="status-item gold"><span>💰</span><span id="mGold">0</span></div>
+                </div>
+                <div class="status-row">
+                    <div class="status-item atk"><span>⚔️</span><span id="mATK">10</span></div>
+                    <div class="status-item def"><span>🛡️</span><span id="mDEF">5</span></div>
+                    <div class="status-item lv"><span>⭐</span>Lv.<span id="mLevel">1</span></div>
+                </div>
+                <div class="exp-row">
+                    <span class="exp-label">EXP <span id="mEXP">0</span>/<span id="mMaxEXP">100</span></span>
+                    <div class="exp-bar-mobile"><div class="exp-fill" id="mExpFill"></div></div>
+                </div>
+            </div>
         </header>
         
         <main class="game-main">
-            <section class="player-panel">
-                <h2>英雄</h2>
+            <section class="panel player-panel">
+                <h2>英雄 <span class="lv">Lv.<span id="playerLevel">1</span></span></h2>
                 <div class="player-avatar">🧙</div>
-                <div class="player-name" id="playerName">勇者</div>
                 <div class="player-stats">
-                    <div class="stat">
-                        <span class="stat-label">等级</span>
-                        <span class="stat-value" id="playerLevel">1</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label">生命值</span>
-                        <span class="stat-value"><span id="playerHP">100</span>/<span id="playerMaxHP">100</span></span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label">攻击力</span>
-                        <span class="stat-value" id="playerATK">10</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label">防御力</span>
-                        <span class="stat-value" id="playerDEF">5</span>
-                    </div>
+                    <div class="stat"><span class="stat-label">生命</span><span class="stat-value"><span id="playerHP">100</span>/<span id="playerMaxHP">100</span></span></div>
+                    <div class="stat"><span class="stat-label">攻击</span><span class="stat-value" id="playerATK">10</span></div>
+                    <div class="stat"><span class="stat-label">防御</span><span class="stat-value" id="playerDEF">5</span></div>
                     <div class="stat exp-stat">
-                        <span class="stat-label">经验值</span>
-                        <div class="exp-bar">
-                            <div class="exp-fill" id="expFill"></div>
-                        </div>
+                        <span class="stat-label">经验</span>
+                        <div class="exp-bar"><div class="exp-fill" id="expFill"></div></div>
                         <span class="stat-value"><span id="playerEXP">0</span>/<span id="playerMaxEXP">100</span></span>
                     </div>
-                    <div class="stat">
-                        <span class="stat-label">金币</span>
-                        <span class="stat-value" id="playerGold">0</span>
-                    </div>
+                    <div class="stat"><span class="stat-label">金币</span><span class="stat-value" id="playerGold">0</span></div>
                 </div>
             </section>
             
-            <section class="battle-panel">
+            <section class="panel battle-panel">
                 <div class="battle-area">
-                    <div class="monster-container" id="monsterContainer">
+                    <div class="monster-container">
                         <div class="monster-card">
                             <div class="monster-avatar" id="monsterAvatar">👹</div>
                             <div class="monster-name" id="monsterName">史莱姆</div>
-                            <div class="monster-hp-bar">
-                                <div class="monster-hp-fill" id="monsterHPFill"></div>
-                            </div>
-                            <div class="monster-hp-text">
-                                <span id="monsterHP">50</span>/<span id="monsterMaxHP">50</span>
-                            </div>
+                            <div class="monster-hp-bar"><div class="monster-hp-fill" id="monsterHPFill"></div></div>
+                            <div class="monster-hp-text"><span id="monsterHP">50</span>/<span id="monsterMaxHP">50</span></div>
                         </div>
                     </div>
-                    
-                    <div class="battle-log" id="battleLog">
-                        <p>欢迎来到循环冒险！点击"探索"开始你的冒险之旅！</p>
-                    </div>
+                    <div class="battle-log" id="battleLog"><p>点击"探索"开始！</p></div>
                 </div>
-                
                 <div class="action-buttons">
                     <button class="btn btn-primary" id="btnExplore">探索</button>
                     <button class="btn btn-attack" id="btnAttack" disabled>攻击</button>
                     <button class="btn btn-skill" id="btnSkill" disabled>技能</button>
-                    <button class="btn btn-heal" id="btnHeal" disabled>治疗 (10金币)</button>
+                    <button class="btn btn-heal" id="btnHeal" disabled>治疗</button>
                     <button class="btn btn-next" id="btnNextFloor" disabled>下一层</button>
+                    <label class="auto-next"><input type="checkbox" id="autoNext"> 自动下一层</label>
+                    <button class="btn btn-clear" id="btnClear" onclick="game.clearSave()">清除存档</button>
+                    <button class="btn btn-shop" id="btnShop">商店</button>
                 </div>
             </section>
             
-            <section class="shop-panel">
+            <section class="panel shop-panel">
                 <h2>商店</h2>
                 <div class="shop-items">
-                    <div class="shop-item" id="itemWeapon">
+                    <div class="shop-item">
                         <span class="item-icon">⚔️</span>
                         <span class="item-name">强化武器</span>
-                        <span class="item-desc">攻击力+5</span>
+                        <span class="item-desc">攻击+5</span>
                         <span class="item-price">50金币</span>
                         <button class="btn btn-buy" onclick="game.buyItem('weapon')">购买</button>
                     </div>
-                    <div class="shop-item" id="itemArmor">
+                    <div class="shop-item">
                         <span class="item-icon">🛡️</span>
                         <span class="item-name">强化护甲</span>
-                        <span class="item-desc">防御力+3</span>
+                        <span class="item-desc">防御+3</span>
                         <span class="item-price">40金币</span>
                         <button class="btn btn-buy" onclick="game.buyItem('armor')">购买</button>
                     </div>
-                    <div class="shop-item" id="itemPotion">
+                    <div class="shop-item">
                         <span class="item-icon">🧪</span>
                         <span class="item-name">生命药水</span>
                         <span class="item-desc">恢复50HP</span>
@@ -105,31 +98,55 @@
                 </div>
             </section>
         </main>
-        
-        <footer class="game-footer">
-            <p>击败怪物获得经验值和金币，升级变强，挑战更高层数！</p>
-        </footer>
+    </div>
+    
+    <div class="modal" id="shopModal">
+        <div class="modal-content shop-modal">
+            <h2>商店</h2>
+            <div class="shop-items">
+                <div class="shop-item">
+                    <span class="item-icon">⚔️</span>
+                    <span class="item-name">强化武器</span>
+                    <span class="item-desc">攻击+5</span>
+                    <span class="item-price">50金币</span>
+                    <button class="btn btn-buy" onclick="game.buyItem('weapon')">购买</button>
+                </div>
+                <div class="shop-item">
+                    <span class="item-icon">🛡️</span>
+                    <span class="item-name">强化护甲</span>
+                    <span class="item-desc">防御+3</span>
+                    <span class="item-price">40金币</span>
+                    <button class="btn btn-buy" onclick="game.buyItem('armor')">购买</button>
+                </div>
+                <div class="shop-item">
+                    <span class="item-icon">🧪</span>
+                    <span class="item-name">生命药水</span>
+                    <span class="item-desc">恢复50HP</span>
+                    <span class="item-price">20金币</span>
+                    <button class="btn btn-buy" onclick="game.buyItem('potion')">购买</button>
+                </div>
+            </div>
+            <button class="btn btn-primary close-shop" onclick="game.closeShop()">关闭</button>
+        </div>
     </div>
     
     <div class="modal" id="levelUpModal">
         <div class="modal-content">
-            <h2>🎉 升级了！</h2>
-            <p>你升到了 <span id="newLevel">2</span> 级！</p>
+            <h2>升级！</h2>
+            <p>升到 <span id="newLevel">2</span> 级</p>
             <div class="level-up-stats">
-                <p>生命值 +10</p>
-                <p>攻击力 +2</p>
-                <p>防御力 +1</p>
+                <p>生命+10 攻击+2 防御+1</p>
             </div>
-            <button class="btn btn-primary" onclick="game.closeLevelUpModal()">继续冒险</button>
+            <button class="btn btn-primary" onclick="game.closeLevelUpModal()">继续</button>
         </div>
     </div>
     
     <div class="modal" id="gameOverModal">
         <div class="modal-content">
-            <h2>💀 游戏结束</h2>
-            <p>你在第 <span id="finalFloor">1</span> 层倒下了...</p>
-            <p>最终等级: <span id="finalLevel">1</span></p>
-            <p>获得金币: <span id="finalGold">0</span></p>
+            <h2>游戏结束</h2>
+            <p>第 <span id="finalFloor">1</span> 层</p>
+            <p>等级: <span id="finalLevel">1</span></p>
+            <p>金币: <span id="finalGold">0</span></p>
             <button class="btn btn-primary" onclick="game.restart()">重新开始</button>
         </div>
     </div>
