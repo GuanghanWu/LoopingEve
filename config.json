@@ -1,36 +1,151 @@
 {
     "player": {
-        "initial": { "level": 1, "hp": 120, "maxHP": 120, "atk": 12, "def": 6, "exp": 0, "maxEXP": 50, "gold": 0, "cd": 0 },
-        "levelUp": { "hp": 15, "atk": 3, "def": 2, "expMultiplier": 1.4 }
+        "initial": { "level": 1, "hp": 120, "maxHP": 120, "atk": 12, "def": 6, "exp": 0, "maxEXP": 50, "gold": 0 },
+        "levelUp": { "hp": 15, "atk": 3, "def": 2, "expMultiplier": 1.4 },
+        "skillSlots": [1, 3, 5, 8]
     },
     "battle": {
         "normalAttackRand": 4,
-        "skillAttackMultiplier": 2.2,
-        "skillAttackRand": 6,
         "enemyAttackRand": 3
     },
-    "heal": { "cost": 8, "percent": 0.35 },
     "floor": {
         "monstersToAdvance": 3,
-        "difficultyMultiplier": 0.15,
-        "monsterPoolOffset": 1
+        "maxMonsters": 10,
+        "difficultyMultiplier": 0.15
+    },
+    "inventory": {
+        "initialSlots": 10,
+        "maxSlots": 25,
+        "unlockCostBase": 50,
+        "unlockCostMultiplier": 1.5
+    },
+    "items": {
+        "consumables": [
+            { "id": "smallPotion", "name": "小血瓶", "icon": "🧪", "heal": 30, "stackMax": 99 },
+            { "id": "mediumPotion", "name": "中血瓶", "icon": "🧴", "heal": 70, "stackMax": 99 },
+            { "id": "largePotion", "name": "大血瓶", "icon": "🍶", "heal": 150, "stackMax": 99 }
+        ],
+        "materials": [
+            { "id": "slimeGel", "name": "史莱姆凝胶", "icon": "💧", "stackMax": 99 },
+            { "id": "batWing", "name": "蝙蝠翅膀", "icon": "🦇", "stackMax": 99 },
+            { "id": "ironOre", "name": "铁矿石", "icon": "🪨", "stackMax": 99 },
+            { "id": "goblinTooth", "name": "哥布林獠牙", "icon": "🦷", "stackMax": 99 },
+            { "id": "wolfPelt", "name": "狼皮", "icon": "🐺", "stackMax": 99 },
+            { "id": "boneFragment", "name": "骨头碎片", "icon": "🦴", "stackMax": 99 },
+            { "id": "gargoyleStone", "name": "雕像碎片", "icon": "🗿", "stackMax": 99 },
+            { "id": "shadowEssence", "name": "暗影精华", "icon": "👁️", "stackMax": 99 },
+            { "id": "fireCrystal", "name": "火焰结晶", "icon": "🔥", "stackMax": 99 },
+            { "id": "iceCrystal", "name": "冰霜结晶", "icon": "❄️", "stackMax": 99 },
+            { "id": "dragonScale", "name": "龙鳞", "icon": "🐉", "stackMax": 99 },
+            { "id": "demonHorn", "name": "恶魔之角", "icon": "👿", "stackMax": 99 }
+        ],
+        "scrolls": [
+            { "id": "fireballScroll", "name": "火球术卷轴", "icon": "📜", "skill": "fireball", "stackMax": 1 },
+            { "id": "frostArrowScroll", "name": "冰霜箭卷轴", "icon": "📜", "skill": "frostArrow", "stackMax": 1 },
+            { "id": "lifeStealScroll", "name": "吸血斩卷轴", "icon": "📜", "skill": "lifeSteal", "stackMax": 1 },
+            { "id": "thunderStrikeScroll", "name": "雷击卷轴", "icon": "📜", "skill": "thunderStrike", "stackMax": 1 }
+        ]
+    },
+    "skills": [
+        { "id": "powerStrike", "name": "强力打击", "icon": "💥", "type": "attack", "damageMultiplier": 2.2, "damageRand": 6, "cd": 3, "unlock": "default" },
+        { "id": "heal", "name": "治疗术", "icon": "💚", "type": "heal", "healPercent": 0.35, "cd": 4, "unlock": "level3" },
+        { "id": "fireball", "name": "火球术", "icon": "🔥", "type": "attack", "damageMultiplier": 3.0, "damageRand": 10, "cd": 5, "unlock": "scroll" },
+        { "id": "frostArrow", "name": "冰霜箭", "icon": "❄️", "type": "attack", "damageMultiplier": 2.5, "damageRand": 8, "slow": 0.3, "cd": 4, "unlock": "scroll" },
+        { "id": "lifeSteal", "name": "吸血斩", "icon": "🩸", "type": "attack", "damageMultiplier": 1.8, "damageRand": 5, "lifesteal": 0.3, "cd": 5, "unlock": "scroll" },
+        { "id": "thunderStrike", "name": "雷击", "icon": "⚡", "type": "attack", "damageMultiplier": 2.8, "damageRand": 12, "cd": 4, "unlock": "scroll" }
+    ],
+    "equipment": {
+        "weapons": [
+            { "id": "ironSword", "name": "铁剑", "icon": "⚔️", "atk": 5, "materials": { "ironOre": 5 } },
+            { "id": "steelSword", "name": "钢剑", "icon": "🗡️", "atk": 10, "materials": { "ironOre": 10, "goblinTooth": 3 } },
+            { "id": "wolfFangSword", "name": "狼牙剑", "icon": "🐺", "atk": 15, "materials": { "wolfPelt": 5, "boneFragment": 8 } },
+            { "id": "shadowBlade", "name": "暗影之刃", "icon": "👁️", "atk": 22, "materials": { "shadowEssence": 5, "ironOre": 15 } },
+            { "id": "flameBlade", "name": "炎之刃", "icon": "🔥", "atk": 30, "materials": { "fireCrystal": 5, "demonHorn": 2 } },
+            { "id": "frostBlade", "name": "霜之哀伤", "icon": "❄️", "atk": 38, "materials": { "iceCrystal": 8, "dragonScale": 3 } },
+            { "id": "dragonSlayer", "name": "屠龙剑", "icon": "🐉", "atk": 50, "materials": { "dragonScale": 10, "demonHorn": 5, "fireCrystal": 10 } }
+        ],
+        "armors": [
+            { "id": "leatherArmor", "name": "皮甲", "icon": "🥋", "def": 3, "materials": { "wolfPelt": 3 } },
+            { "id": "ironArmor", "name": "铁甲", "icon": "🛡️", "def": 6, "materials": { "ironOre": 8 } },
+            { "id": "boneArmor", "name": "骨甲", "icon": "🦴", "def": 10, "materials": { "boneFragment": 10, "slimeGel": 5 } },
+            { "id": "stoneArmor", "name": "石像甲", "icon": "🗿", "def": 15, "materials": { "gargoyleStone": 8, "ironOre": 10 } },
+            { "id": "shadowArmor", "name": "暗影甲", "icon": "👁️", "def": 20, "materials": { "shadowEssence": 8, "boneFragment": 15 } },
+            { "id": "flameArmor", "name": "炎魔甲", "icon": "🔥", "def": 28, "materials": { "fireCrystal": 8, "demonHorn": 3 } },
+            { "id": "frostArmor", "name": "冰霜甲", "icon": "❄️", "def": 35, "materials": { "iceCrystal": 10, "dragonScale": 5 } },
+            { "id": "dragonArmor", "name": "龙鳞甲", "icon": "🐉", "def": 45, "materials": { "dragonScale": 15, "demonHorn": 8 } }
+        ]
+    },
+    "lootTable": {
+        "slime": [
+            { "itemId": "slimeGel", "rate": 0.6, "minCount": 1, "maxCount": 2 },
+            { "itemId": "smallPotion", "rate": 0.2, "minCount": 1, "maxCount": 1 }
+        ],
+        "bat": [
+            { "itemId": "batWing", "rate": 0.5, "minCount": 1, "maxCount": 2 },
+            { "itemId": "smallPotion", "rate": 0.15, "minCount": 1, "maxCount": 1 }
+        ],
+        "goblin": [
+            { "itemId": "goblinTooth", "rate": 0.5, "minCount": 1, "maxCount": 2 },
+            { "itemId": "ironOre", "rate": 0.3, "minCount": 1, "maxCount": 2 },
+            { "itemId": "smallPotion", "rate": 0.15, "minCount": 1, "maxCount": 1 }
+        ],
+        "skeleton": [
+            { "itemId": "boneFragment", "rate": 0.6, "minCount": 1, "maxCount": 3 },
+            { "itemId": "ironOre", "rate": 0.3, "minCount": 1, "maxCount": 2 },
+            { "itemId": "mediumPotion", "rate": 0.15, "minCount": 1, "maxCount": 1 }
+        ],
+        "werewolf": [
+            { "itemId": "wolfPelt", "rate": 0.5, "minCount": 1, "maxCount": 2 },
+            { "itemId": "boneFragment", "rate": 0.3, "minCount": 2, "maxCount": 3 },
+            { "itemId": "mediumPotion", "rate": 0.2, "minCount": 1, "maxCount": 1 }
+        ],
+        "gargoyle": [
+            { "itemId": "gargoyleStone", "rate": 0.5, "minCount": 1, "maxCount": 2 },
+            { "itemId": "ironOre", "rate": 0.3, "minCount": 2, "maxCount": 4 },
+            { "itemId": "mediumPotion", "rate": 0.15, "minCount": 1, "maxCount": 1 }
+        ],
+        "shadow": [
+            { "itemId": "shadowEssence", "rate": 0.4, "minCount": 1, "maxCount": 2 },
+            { "itemId": "boneFragment", "rate": 0.3, "minCount": 2, "maxCount": 4 },
+            { "itemId": "largePotion", "rate": 0.1, "minCount": 1, "maxCount": 1 },
+            { "itemId": "fireballScroll", "rate": 0.05, "minCount": 1, "maxCount": 1 }
+        ],
+        "demon": [
+            { "itemId": "fireCrystal", "rate": 0.4, "minCount": 1, "maxCount": 2 },
+            { "itemId": "demonHorn", "rate": 0.2, "minCount": 1, "maxCount": 1 },
+            { "itemId": "largePotion", "rate": 0.15, "minCount": 1, "maxCount": 1 },
+            { "itemId": "lifeStealScroll", "rate": 0.05, "minCount": 1, "maxCount": 1 }
+        ],
+        "frostGiant": [
+            { "itemId": "iceCrystal", "rate": 0.4, "minCount": 1, "maxCount": 2 },
+            { "itemId": "dragonScale", "rate": 0.1, "minCount": 1, "maxCount": 1 },
+            { "itemId": "largePotion", "rate": 0.2, "minCount": 1, "maxCount": 1 },
+            { "itemId": "frostArrowScroll", "rate": 0.05, "minCount": 1, "maxCount": 1 }
+        ],
+        "dragonkin": [
+            { "itemId": "dragonScale", "rate": 0.4, "minCount": 1, "maxCount": 2 },
+            { "itemId": "fireCrystal", "rate": 0.3, "minCount": 1, "maxCount": 2 },
+            { "itemId": "largePotion", "rate": 0.2, "minCount": 1, "maxCount": 1 },
+            { "itemId": "thunderStrikeScroll", "rate": 0.05, "minCount": 1, "maxCount": 1 }
+        ],
+        "demonLord": [
+            { "itemId": "demonHorn", "rate": 0.5, "minCount": 1, "maxCount": 3 },
+            { "itemId": "dragonScale", "rate": 0.3, "minCount": 1, "maxCount": 2 },
+            { "itemId": "fireCrystal", "rate": 0.3, "minCount": 2, "maxCount": 3 },
+            { "itemId": "largePotion", "rate": 0.3, "minCount": 1, "maxCount": 2 }
+        ]
     },
     "monsters": [
-        { "name": "史莱姆", "avatar": "💧", "hp": 40, "atk": 4, "def": 2, "exp": 15, "gold": 8, "minFloor": 1 },
-        { "name": "小蝙蝠", "avatar": "🦇", "hp": 35, "atk": 5, "def": 1, "exp": 12, "gold": 6, "minFloor": 1 },
-        { "name": "哥布林", "avatar": "😈", "hp": 65, "atk": 8, "def": 4, "exp": 25, "gold": 15, "minFloor": 1 },
-        { "name": "骷髅兵", "avatar": "☠️", "hp": 95, "atk": 12, "def": 6, "exp": 40, "gold": 25, "minFloor": 2 },
-        { "name": "狼人", "avatar": "🐺", "hp": 140, "atk": 16, "def": 9, "exp": 60, "gold": 40, "minFloor": 3 },
-        { "name": "石像鬼", "avatar": "🗿", "hp": 190, "atk": 20, "def": 14, "exp": 85, "gold": 55, "minFloor": 4 },
-        { "name": "暗影魔", "avatar": "👁️", "hp": 240, "atk": 26, "def": 12, "exp": 110, "gold": 75, "minFloor": 5 },
-        { "name": "炎魔", "avatar": "🔥", "hp": 320, "atk": 32, "def": 18, "exp": 150, "gold": 100, "minFloor": 6 },
-        { "name": "冰霜巨人", "avatar": "❄️", "hp": 420, "atk": 40, "def": 25, "exp": 200, "gold": 140, "minFloor": 7 },
-        { "name": "龙人", "avatar": "🐉", "hp": 550, "atk": 50, "def": 32, "exp": 280, "gold": 200, "minFloor": 8 },
-        { "name": "恶魔领主", "avatar": "👿", "hp": 700, "atk": 62, "def": 40, "exp": 400, "gold": 300, "minFloor": 10 }
-    ],
-    "shop": {
-        "weapon": { "price": 40, "atk": 4, "label": "⚔️ 武器强化" },
-        "armor": { "price": 35, "def": 3, "label": "🛡️ 护甲强化" },
-        "potion": { "price": 15, "heal": 50, "label": "🧪 生命药水" }
-    }
+        { "id": "slime", "name": "史莱姆", "avatar": "💧", "hp": 40, "atk": 4, "def": 2, "exp": 15, "gold": 8, "minFloor": 1 },
+        { "id": "bat", "name": "小蝙蝠", "avatar": "🦇", "hp": 35, "atk": 5, "def": 1, "exp": 12, "gold": 6, "minFloor": 1 },
+        { "id": "goblin", "name": "哥布林", "avatar": "😈", "hp": 65, "atk": 8, "def": 4, "exp": 25, "gold": 15, "minFloor": 1 },
+        { "id": "skeleton", "name": "骷髅兵", "avatar": "☠️", "hp": 95, "atk": 12, "def": 6, "exp": 40, "gold": 25, "minFloor": 2 },
+        { "id": "werewolf", "name": "狼人", "avatar": "🐺", "hp": 140, "atk": 16, "def": 9, "exp": 60, "gold": 40, "minFloor": 3 },
+        { "id": "gargoyle", "name": "石像鬼", "avatar": "🗿", "hp": 190, "atk": 20, "def": 14, "exp": 85, "gold": 55, "minFloor": 4 },
+        { "id": "shadow", "name": "暗影魔", "avatar": "👁️", "hp": 240, "atk": 26, "def": 12, "exp": 110, "gold": 75, "minFloor": 5 },
+        { "id": "demon", "name": "炎魔", "avatar": "🔥", "hp": 320, "atk": 32, "def": 18, "exp": 150, "gold": 100, "minFloor": 6 },
+        { "id": "frostGiant", "name": "冰霜巨人", "avatar": "❄️", "hp": 420, "atk": 40, "def": 25, "exp": 200, "gold": 140, "minFloor": 7 },
+        { "id": "dragonkin", "name": "龙人", "avatar": "🐉", "hp": 550, "atk": 50, "def": 32, "exp": 280, "gold": 200, "minFloor": 8 },
+        { "id": "demonLord", "name": "恶魔领主", "avatar": "👿", "hp": 700, "atk": 62, "def": 40, "exp": 400, "gold": 300, "minFloor": 10 }
+    ]
 }

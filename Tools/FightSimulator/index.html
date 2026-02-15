@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>战斗模拟器 - LoopingEve</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #ecf0f1; padding: 20px; }
+        h1 { text-align: center; margin-bottom: 20px; color: #f39c12; }
+        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
+        .panel { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; }
+        .panel h2 { margin-bottom: 15px; color: #3498db; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; margin-bottom: 5px; color: #95a5a6; font-size: 0.85rem; }
+        .form-group input, .form-group select { width: 100%; padding: 8px 12px; border: none; border-radius: 8px; background: rgba(0,0,0,0.3); color: #ecf0f1; font-size: 0.95rem; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-bottom: 10px; }
+        .btn-run { background: linear-gradient(45deg, #2ecc71, #27ae60); color: white; }
+        .btn-run:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); }
+        .btn-reset { background: linear-gradient(45deg, #e74c3c, #c0392b); color: white; }
+        .results { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 12px; text-align: center; }
+        .stat-card .value { font-size: 1.8rem; font-weight: bold; color: #f39c12; }
+        .stat-card .label { font-size: 0.75rem; color: #95a5a6; margin-top: 5px; }
+        .stat-card.good .value { color: #2ecc71; }
+        .stat-card.bad .value { color: #e74c3c; }
+        .stat-card.funscore { grid-column: span 2; background: linear-gradient(135deg, rgba(243,156,18,0.2), rgba(231,76,60,0.2)); }
+        .stat-card.funscore .value { font-size: 2.5rem; }
+        .fun-section { margin-bottom: 20px; }
+        .fun-section h3 { color: #f39c12; margin-bottom: 15px; font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .fun-section h3 span { font-size: 0.8rem; color: #95a5a6; font-weight: normal; }
+        .radar-container { display: flex; justify-content: center; margin-bottom: 20px; }
+        .radar-chart { position: relative; width: 280px; height: 280px; }
+        .radar-bg { position: absolute; width: 100%; height: 100%; }
+        .radar-bg polygon { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 1; }
+        .radar-bg polygon:nth-child(5) { fill: rgba(255,255,255,0.05); }
+        .radar-data { position: absolute; width: 100%; height: 100%; }
+        .radar-data polygon { fill: rgba(243, 156, 18, 0.3); stroke: #f39c12; stroke-width: 2; }
+        .radar-labels { position: absolute; width: 100%; height: 100%; }
+        .radar-label { position: absolute; font-size: 0.8rem; color: #ecf0f1; text-align: center; width: 80px; }
+        .radar-label .score { font-weight: bold; color: #f39c12; }
+        .metric-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; }
+        .metric-icon { font-size: 1.2rem; width: 30px; text-align: center; }
+        .metric-info { flex: 1; }
+        .metric-name { font-size: 0.9rem; margin-bottom: 3px; }
+        .metric-bar { height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; }
+        .metric-bar-fill { height: 100%; transition: width 0.5s; }
+        .metric-value { width: 60px; text-align: right; font-weight: bold; font-size: 0.9rem; }
+        .metric-value.good { color: #2ecc71; }
+        .metric-value.bad { color: #e74c3c; }
+        .chart-container { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; margin-bottom: 20px; }
+        .chart-container h3 { margin-bottom: 10px; color: #3498db; font-size: 1rem; }
+        .bar-chart { display: flex; flex-direction: column; gap: 8px; }
+        .bar-row { display: flex; align-items: center; gap: 10px; }
+        .bar-label { width: 80px; font-size: 0.85rem; color: #95a5a6; }
+        .bar-track { flex: 1; height: 20px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; transition: width 0.5s; }
+        .bar-value { width: 50px; text-align: right; font-size: 0.85rem; }
+        .log { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.75rem; }
+        .log p { margin-bottom: 3px; }
+        .log .win { color: #2ecc71; }
+        .log .lose { color: #e74c3c; }
+        .progress { margin-top: 10px; }
+        .progress-bar { height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #3498db, #2ecc71); transition: width 0.3s; }
+        .progress-text { text-align: center; font-size: 0.85rem; color: #95a5a6; margin-top: 5px; }
+        .analysis { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 15px; margin-top: 20px; }
+        .analysis h3 { color: #f39c12; margin-bottom: 10px; }
+        .analysis p { margin-bottom: 8px; font-size: 0.85rem; line-height: 1.5; }
+        .analysis .warning { color: #e74c3c; }
+        .analysis .success { color: #2ecc71; }
+        .analysis .info { color: #3498db; }
+        .formula-box { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px; margin-bottom: 15px; font-size: 0.8rem; }
+        .formula-box code { color: #f39c12; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 LoopingEve 战斗模拟器 v3.0</h1>
+    <div class="container">
+        <div class="panel config-panel">
+            <h2>⚙️ 模拟配置</h2>
+            <div class="form-group">
+                <label>模拟次数</label>
+                <input type="number" id="simCount" value="1000" min="100" max="10000">
+            </div>
+            <div class="form-group">
+                <label>策略：血瓶使用</label>
+                <select id="potionStrategy">
+                    <option value="never">从不使用</option>
+                    <option value="lowHp">HP&lt;30%时使用</option>
+                    <option value="always">HP不满就用</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>策略：技能使用</label>
+                <select id="skillStrategy">
+                    <option value="always">冷却结束就用</option>
+                    <option value="boss">只对高HP怪物用</option>
+                    <option value="never">从不使用</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>策略：锻造装备</label>
+                <select id="forgeStrategy">
+                    <option value="always">材料够就锻造</option>
+                    <option value="weapon">只锻造武器</option>
+                    <option value="armor">只锻造甲胄</option>
+                    <option value="never">从不锻造</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>目标层数</label>
+                <input type="number" id="targetFloor" value="10" min="1" max="100">
+            </div>
+            <button class="btn btn-run" onclick="runSimulation()">🚀 开始模拟</button>
+            <button class="btn btn-reset" onclick="resetResults()">🔄 重置</button>
+            <div class="progress" id="progress" style="display:none;">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+            <div class="formula-box">
+                <strong>爽感公式：</strong><br>
+                <code>爽感 = 0.25×成长 + 0.20×掌控 + 0.20×刺激 + 0.20×奖励 + 0.15×节奏</code>
+            </div>
+        </div>
+        <div class="panel results-panel">
+            <h2>📊 模拟结果</h2>
+            <div class="results">
+                <div class="stat-card funscore">
+                    <div class="value" id="funScore">-</div>
+                    <div class="label">🎮 综合爽感指数</div>
+                </div>
+                <div class="stat-card" id="winRateCard">
+                    <div class="value" id="winRate">-</div>
+                    <div class="label">通关率</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="avgFloor">-</div>
+                    <div class="label">平均层数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="avgLevel">-</div>
+                    <div class="label">平均等级</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="avgKills">-</div>
+                    <div class="label">平均击杀</div>
+                </div>
+            </div>
+            <div class="two-col">
+                <div class="fun-section">
+                    <h3>🎯 爽感雷达图 <span>(理想值: 60-80)</span></h3>
+                    <div class="radar-container">
+                        <svg class="radar-chart" viewBox="0 0 300 300" id="radarChart">
+                            <g class="radar-bg">
+                                <polygon points="150,30 270,110 230,250 70,250 30,110"/>
+                                <polygon points="150,54 246,118 214,238 86,238 54,118"/>
+                                <polygon points="150,78 222,126 198,226 102,226 78,126"/>
+                                <polygon points="150,102 198,134 182,214 118,214 102,134"/>
+                                <polygon points="150,126 174,142 166,202 134,202 126,142"/>
+                            </g>
+                            <polygon class="radar-data" id="radarData" points="150,150 150,150 150,150 150,150 150,150"/>
+                            <g class="radar-labels" id="radarLabels"></g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="fun-section">
+                    <h3>📈 爽感明细</h3>
+                    <div id="funMetrics"></div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3>各层死亡分布</h3>
+                <div class="bar-chart" id="floorDeathChart"></div>
+            </div>
+            <div class="chart-container">
+                <h3>装备锻造统计</h3>
+                <div class="bar-chart" id="forgeChart"></div>
+            </div>
+            <div class="analysis" id="analysis">
+                <h3>💡 数值分析建议</h3>
+                <p>点击"开始模拟"获取分析结果...</p>
+            </div>
+        </div>
+    </div>
+    <div class="panel" style="max-width: 1400px; margin: 20px auto;">
+        <h2>📝 详细日志（最近50场）</h2>
+        <div class="log" id="log"></div>
+    </div>
+    <script>
+        let CONFIG = null;
+        async function loadConfig() {
+            const res = await fetch('../../config.json');
+            CONFIG = await res.json();
+        }
+        loadConfig();
+
+        const FUN_WEIGHTS = { growth: 0.25, control: 0.20, thrill: 0.20, reward: 0.20, pace: 0.15 };
+
+        class SimPlayer {
+            constructor() {
+                Object.assign(this, { ...CONFIG.player.initial });
+                this.weaponAtk = 0;
+                this.armorDef = 0;
+                this.potions = { smallPotion: 3, mediumPotion: 0, largePotion: 0 };
+                this.materials = {};
+                this.learnedSkills = ['powerStrike'];
+                this.skillCooldowns = {};
+                this.totalDamageDealt = 0;
+                this.totalDamageTaken = 0;
+                this.totalHealed = 0;
+                this.goldSpent = 0;
+                this.potionsUsed = 0;
+                this.skillsUsed = 0;
+                this.levelUps = 0;
+                this.battleCount = 0;
+                this.thrillBattles = 0;
+                this.comebackWins = 0;
+                this.goodLengthBattles = 0;
+                this.totalTurns = 0;
+                this.itemsForged = 0;
+            }
+            
+            getTotalAtk() { return this.atk + this.weaponAtk; }
+            getTotalDef() { return this.def + this.armorDef; }
+            
+            levelUp() {
+                const cfg = CONFIG.player.levelUp;
+                this.level++;
+                this.maxHP += cfg.hp;
+                this.hp = Math.min(this.hp + cfg.hp, this.maxHP);
+                this.atk += cfg.atk;
+                this.def += cfg.def;
+                this.maxEXP = Math.floor(this.maxEXP * cfg.expMultiplier);
+                this.levelUps++;
+                if (this.level >= 3 && !this.learnedSkills.includes('heal')) {
+                    this.learnedSkills.push('heal');
+                }
+            }
+            
+            usePotion() {
+                if (this.potions.largePotion > 0) {
+                    this.potions.largePotion--;
+                    const heal = CONFIG.items.consumables.find(i => i.id === 'largePotion').heal;
+                    this.hp = Math.min(this.hp + heal, this.maxHP);
+                    this.totalHealed += heal;
+                    this.potionsUsed++;
+                    return true;
+                }
+                if (this.potions.mediumPotion > 0) {
+                    this.potions.mediumPotion--;
+                    const heal = CONFIG.items.consumables.find(i => i.id === 'mediumPotion').heal;
+                    this.hp = Math.min(this.hp + heal, this.maxHP);
+                    this.totalHealed += heal;
+                    this.potionsUsed++;
+                    return true;
+                }
+                if (this.potions.smallPotion > 0) {
+                    this.potions.smallPotion--;
+                    const heal = CONFIG.items.consumables.find(i => i.id === 'smallPotion').heal;
+                    this.hp = Math.min(this.hp + heal, this.maxHP);
+                    this.totalHealed += heal;
+                    this.potionsUsed++;
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        class Simulator {
+            constructor(strategy) {
+                this.strategy = strategy;
+                this.results = [];
+                this.floorDeaths = {};
+                this.totalStats = { 
+                    wins: 0, floors: 0, levels: 0, gold: 0, kills: 0, levelUps: 0, battles: 0, 
+                    thrillBattles: 0, comebackWins: 0, goodLengthBattles: 0, totalTurns: 0, 
+                    totalHealed: 0, goldSpent: 0, itemsForged: 0 
+                };
+            }
+
+            createMonster(floor) {
+                const monsters = CONFIG.monsters.filter(m => m.minFloor <= floor);
+                const m = monsters[Math.floor(Math.random() * monsters.length)];
+                const mult = 1 + (floor - 1) * CONFIG.floor.difficultyMultiplier;
+                return {
+                    name: m.name, avatar: m.avatar,
+                    hp: Math.floor(m.hp * mult), maxHP: Math.floor(m.hp * mult),
+                    atk: Math.floor(m.atk * mult), def: Math.floor(m.def * mult),
+                    exp: Math.floor(m.exp * mult), gold: Math.floor(m.gold * mult)
+                };
+            }
+
+            calcDamage(atk, def, rand) {
+                return Math.max(1, Math.floor(atk - def + Math.random() * rand));
+            }
+
+            getSkill(skillId) {
+                return CONFIG.skills.find(s => s.id === skillId);
+            }
+
+            simulateBattle(player, monster) {
+                const battle = { player, monster, turns: 0, playerDmg: 0, monsterDmg: 0, wasLowHp: false };
+                player.battleCount++;
+                
+                while (player.hp > 0 && monster.hp > 0 && battle.turns < 100) {
+                    battle.turns++;
+                    const useSkill = this.strategy.skill === 'always' && 
+                        player.learnedSkills.includes('powerStrike') && 
+                        (player.skillCooldowns['powerStrike'] || 0) === 0;
+                    
+                    if (useSkill) {
+                        const skill = this.getSkill('powerStrike');
+                        const dmg = this.calcDamage(player.getTotalAtk() * skill.damageMultiplier, monster.def, skill.damageRand);
+                        monster.hp -= dmg;
+                        player.totalDamageDealt += dmg;
+                        battle.playerDmg += dmg;
+                        player.skillsUsed++;
+                        player.skillCooldowns['powerStrike'] = skill.cd;
+                    } else {
+                        const dmg = this.calcDamage(player.getTotalAtk(), monster.def, CONFIG.battle.normalAttackRand);
+                        monster.hp -= dmg;
+                        player.totalDamageDealt += dmg;
+                        battle.playerDmg += dmg;
+                    }
+                    
+                    Object.keys(player.skillCooldowns).forEach(k => {
+                        if (player.skillCooldowns[k] > 0) player.skillCooldowns[k]--;
+                    });
+                    
+                    if (monster.hp <= 0) break;
+                    
+                    const enemyDmg = this.calcDamage(monster.atk, player.getTotalDef(), CONFIG.battle.enemyAttackRand);
+                    player.hp -= enemyDmg;
+                    player.totalDamageTaken += enemyDmg;
+                    battle.monsterDmg += enemyDmg;
+                    
+                    if (player.hp < player.maxHP * 0.3) battle.wasLowHp = true;
+                    
+                    const healThreshold = player.maxHP * 0.3;
+                    if (this.strategy.potion === 'lowHp' && player.hp < healThreshold) {
+                        player.usePotion();
+                    } else if (this.strategy.potion === 'always' && player.hp < player.maxHP) {
+                        player.usePotion();
+                    }
+                }
+                
+                player.totalTurns += battle.turns;
+                if (battle.wasLowHp) player.thrillBattles++;
+                if (battle.wasLowHp && player.hp > 0) player.comebackWins++;
+                if (battle.turns >= 3 && battle.turns <= 8) player.goodLengthBattles++;
+                return battle;
+            }
+
+            grantLoot(player, monster) {
+                const lootTable = CONFIG.lootTable[monster.name];
+                if (!lootTable) return;
+                lootTable.forEach(loot => {
+                    if (Math.random() < loot.rate) {
+                        const count = Math.floor(Math.random() * (loot.maxCount - loot.minCount + 1)) + loot.minCount;
+                        const consumable = CONFIG.items.consumables.find(i => i.id === loot.itemId);
+                        if (consumable) {
+                            if (player.potions[loot.itemId] !== undefined) {
+                                player.potions[loot.itemId] += count;
+                            }
+                        } else {
+                            if (!player.materials[loot.itemId]) player.materials[loot.itemId] = 0;
+                            player.materials[loot.itemId] += count;
+                        }
+                    }
+                });
+            }
+
+            tryForge(player) {
+                if (this.strategy.forge === 'never') return;
+                
+                const checkCategory = (category, type) => {
+                    const items = CONFIG.equipment[category];
+                    for (const item of items) {
+                        const currentVal = type === 'atk' ? player.weaponAtk : player.armorDef;
+                        const itemVal = type === 'atk' ? item.atk : item.def;
+                        if (itemVal <= currentVal) continue;
+                        
+                        let canForge = true;
+                        for (const [matId, count] of Object.entries(item.materials)) {
+                            if ((player.materials[matId] || 0) < count) {
+                                canForge = false;
+                                break;
+                            }
+                        }
+                        
+                        if (canForge) {
+                            for (const [matId, count] of Object.entries(item.materials)) {
+                                player.materials[matId] -= count;
+                            }
+                            if (type === 'atk') player.weaponAtk = itemVal;
+                            else player.armorDef = itemVal;
+                            player.itemsForged++;
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                
+                if (this.strategy.forge === 'always' || this.strategy.forge === 'weapon') {
+                    checkCategory('weapons', 'atk');
+                }
+                if (this.strategy.forge === 'always' || this.strategy.forge === 'armor') {
+                    checkCategory('armors', 'def');
+                }
+            }
+
+            runOne(targetFloor) {
+                const player = new SimPlayer();
+                let floor = 1;
+                let kills = 0;
+                let killedOnFloor = 0;
+                
+                while (player.hp > 0 && floor <= targetFloor) {
+                    const monster = this.createMonster(floor);
+                    const battle = this.simulateBattle(player, monster);
+                    
+                    if (player.hp <= 0) {
+                        this.floorDeaths[floor] = (this.floorDeaths[floor] || 0) + 1;
+                        return {
+                            win: false, floor, level: player.level, gold: player.gold,
+                            kills, player, deathMonster: monster.name
+                        };
+                    }
+                    
+                    kills++;
+                    killedOnFloor++;
+                    player.exp += monster.exp;
+                    player.gold += monster.gold;
+                    
+                    while (player.exp >= player.maxEXP) player.levelUp();
+                    
+                    this.grantLoot(player, monster);
+                    this.tryForge(player);
+                    
+                    if (killedOnFloor >= CONFIG.floor.monstersToAdvance) {
+                        floor++;
+                        killedOnFloor = 0;
+                    }
+                }
+                
+                return {
+                    win: floor > targetFloor, floor: floor - 1, level: player.level,
+                    gold: player.gold, kills, player
+                };
+            }
+
+            run(count, targetFloor, onProgress) {
+                for (let i = 0; i < count; i++) {
+                    const result = this.runOne(targetFloor);
+                    this.results.push(result);
+                    const p = result.player;
+                    if (result.win) this.totalStats.wins++;
+                    this.totalStats.floors += result.floor;
+                    this.totalStats.levels += result.level;
+                    this.totalStats.gold += result.gold;
+                    this.totalStats.kills += result.kills;
+                    this.totalStats.levelUps += p.levelUps;
+                    this.totalStats.battles += p.battleCount;
+                    this.totalStats.thrillBattles += p.thrillBattles;
+                    this.totalStats.comebackWins += p.comebackWins;
+                    this.totalStats.goodLengthBattles += p.goodLengthBattles;
+                    this.totalStats.totalTurns += p.totalTurns;
+                    this.totalStats.totalHealed += p.totalHealed;
+                    this.totalStats.goldSpent += p.goldSpent;
+                    this.totalStats.itemsForged += p.itemsForged;
+                    if (onProgress && i % 100 === 0) onProgress(i / count);
+                }
+                if (onProgress) onProgress(1);
+                return this.getStats(count);
+            }
+
+            getStats(count) {
+                const ts = this.totalStats;
+                const avgBattles = ts.battles / count;
+                const avgLevelUps = ts.levelUps / count;
+                
+                const growthScore = this.calcGrowthScore(avgBattles, avgLevelUps, ts.levels / count);
+                const controlScore = this.calcControlScore(ts.goodLengthBattles / ts.battles, ts.itemsForged / count);
+                const thrillScore = this.calcThrillScore(ts.thrillBattles / ts.battles, ts.comebackWins / Math.max(ts.thrillBattles, 1));
+                const rewardScore = this.calcRewardScore(ts.gold / count, ts.itemsForged / count);
+                const paceScore = this.calcPaceScore(ts.totalTurns / ts.battles);
+                
+                const funScore = growthScore * FUN_WEIGHTS.growth + 
+                    controlScore * FUN_WEIGHTS.control + 
+                    thrillScore * FUN_WEIGHTS.thrill + 
+                    rewardScore * FUN_WEIGHTS.reward + 
+                    paceScore * FUN_WEIGHTS.pace;
+                
+                return {
+                    winRate: (ts.wins / count * 100).toFixed(1),
+                    avgFloor: (ts.floors / count).toFixed(1),
+                    avgLevel: (ts.levels / count).toFixed(1),
+                    avgGold: Math.floor(ts.gold / count),
+                    avgKills: Math.floor(ts.kills / count),
+                    funScore: funScore.toFixed(1),
+                    funMetrics: { growth: growthScore, control: controlScore, thrill: thrillScore, reward: rewardScore, pace: paceScore },
+                    floorDeaths: this.floorDeaths,
+                    avgForged: (ts.itemsForged / count).toFixed(1),
+                    results: this.results
+                };
+            }
+
+            calcGrowthScore(avgBattles, avgLevelUps, avgLevel) {
+                const levelUpInterval = avgBattles / Math.max(avgLevelUps, 0.1);
+                const intervalScore = Math.max(0, 100 - Math.abs(levelUpInterval - 3) * 20);
+                const levelScore = Math.min(100, avgLevel * 8);
+                return (intervalScore * 0.6 + levelScore * 0.4);
+            }
+
+            calcControlScore(goodLengthRate, avgForged) {
+                const battleScore = goodLengthRate * 100 * 0.6;
+                const forgeScore = Math.min(100, avgForged * 20) * 0.4;
+                return (battleScore + forgeScore);
+            }
+
+            calcThrillScore(thrillRate, comebackRate) {
+                const thrillScore = Math.min(100, thrillRate * 300);
+                const comebackScore = comebackRate * 100;
+                return (thrillScore * 0.6 + comebackScore * 0.4);
+            }
+
+            calcRewardScore(avgGold, avgForged) {
+                const goldScore = Math.min(100, avgGold / 5);
+                const forgeScore = Math.min(100, avgForged * 25);
+                return (goldScore * 0.4 + forgeScore * 0.6);
+            }
+
+            calcPaceScore(avgTurns) {
+                const ideal = 5;
+                return Math.max(0, 100 - Math.abs(avgTurns - ideal) * 15);
+            }
+        }
+
+        async function runSimulation() {
+            if (!CONFIG) { alert('配置未加载'); return; }
+            const count = parseInt(document.getElementById('simCount').value);
+            const targetFloor = parseInt(document.getElementById('targetFloor').value);
+            const strategy = {
+                potion: document.getElementById('potionStrategy').value,
+                skill: document.getElementById('skillStrategy').value,
+                forge: document.getElementById('forgeStrategy').value
+            };
+            document.getElementById('progress').style.display = 'block';
+            const sim = new Simulator(strategy);
+            const stats = sim.run(count, targetFloor, (p) => {
+                document.getElementById('progressFill').style.width = (p * 100) + '%';
+                document.getElementById('progressText').textContent = Math.floor(p * 100) + '%';
+            });
+            updateUI(stats, sim.results.slice(-50), sim.totalStats);
+            analyzeResults(stats, sim.totalStats);
+        }
+
+        function updateUI(stats, recentResults, totalStats) {
+            const funScore = parseFloat(stats.funScore);
+            document.getElementById('funScore').textContent = stats.funScore;
+            document.getElementById('funScore').parentElement.className = 'stat-card funscore ' + (funScore >= 60 ? 'good' : funScore < 40 ? 'bad' : '');
+            
+            const winRate = parseFloat(stats.winRate);
+            document.getElementById('winRate').textContent = stats.winRate + '%';
+            document.getElementById('winRateCard').className = 'stat-card ' + (winRate > 50 ? 'good' : winRate > 20 ? '' : 'bad');
+            
+            document.getElementById('avgFloor').textContent = stats.avgFloor;
+            document.getElementById('avgLevel').textContent = stats.avgLevel;
+            document.getElementById('avgKills').textContent = stats.avgKills;
+            
+            updateRadar(stats.funMetrics);
+            updateFunMetrics(stats.funMetrics);
+            
+            const floorChart = document.getElementById('floorDeathChart');
+            const maxDeath = Math.max(...Object.values(stats.floorDeaths), 1);
+            floorChart.innerHTML = Object.entries(stats.floorDeaths)
+                .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+                .slice(0, 10)
+                .map(([floor, deaths]) => `
+                    <div class="bar-row">
+                        <span class="bar-label">第${floor}层</span>
+                        <div class="bar-track"><div class="bar-fill" style="width:${(deaths/maxDeath*100)}%;background:#e74c3c"></div></div>
+                        <span class="bar-value">${deaths}</span>
+                    </div>
+                `).join('') || '<p style="color:#95a5a6">无死亡数据</p>';
+            
+            const forgeChart = document.getElementById('forgeChart');
+            forgeChart.innerHTML = `
+                <div class="bar-row">
+                    <span class="bar-label">平均锻造</span>
+                    <div class="bar-track"><div class="bar-fill" style="width:${Math.min(stats.avgForged * 20, 100)}%;background:#e67e22"></div></div>
+                    <span class="bar-value">${stats.avgForged}</span>
+                </div>
+            `;
+            
+            const log = document.getElementById('log');
+            log.innerHTML = recentResults.map(r => 
+                `<p class="${r.win ? 'win' : 'lose'}">${r.win ? '✓' : '✗'} F${r.floor} Lv${r.level} 💰${r.gold} ⚔${r.kills}${r.deathMonster ? ' 💀'+r.deathMonster : ''}</p>`
+            ).join('');
+        }
+
+        function updateRadar(metrics) {
+            const labels = [
+                { name: '成长感', score: metrics.growth, angle: -90 },
+                { name: '掌控感', score: metrics.control, angle: -18 },
+                { name: '刺激感', score: metrics.thrill, angle: 54 },
+                { name: '奖励感', score: metrics.reward, angle: 126 },
+                { name: '节奏感', score: metrics.pace, angle: 198 }
+            ];
+            const centerX = 150, centerY = 150, maxR = 120;
+            
+            const points = labels.map(l => {
+                const rad = l.angle * Math.PI / 180;
+                const r = (l.score / 100) * maxR;
+                return `${centerX + r * Math.cos(rad)},${centerY + r * Math.sin(rad)}`;
+            }).join(' ');
+            
+            document.getElementById('radarData').setAttribute('points', points);
+            
+            const labelsHtml = labels.map(l => {
+                const rad = l.angle * Math.PI / 180;
+                const labelR = maxR + 30;
+                const x = centerX + labelR * Math.cos(rad);
+                const y = centerY + labelR * Math.sin(rad);
+                const color = l.score >= 60 ? '#2ecc71' : l.score < 40 ? '#e74c3c' : '#f39c12';
+                return `<div class="radar-label" style="left:${x-40}px;top:${y-12}px"><span class="score" style="color:${color}">${l.score.toFixed(0)}</span><br>${l.name}</div>`;
+            }).join('');
+            document.getElementById('radarLabels').innerHTML = labelsHtml;
+        }
+
+        function updateFunMetrics(metrics) {
+            const items = [
+                { icon: '📈', name: '成长感', desc: '升级频率与属性提升', score: metrics.growth, color: '#f39c12' },
+                { icon: '🎮', name: '掌控感', desc: '战斗长度、锻造进度', score: metrics.control, color: '#3498db' },
+                { icon: '💥', name: '刺激感', desc: '激战比例与翻盘率', score: metrics.thrill, color: '#e74c3c' },
+                { icon: '💰', name: '奖励感', desc: '金币获取与锻造满足', score: metrics.reward, color: '#2ecc71' },
+                { icon: '⚡', name: '节奏感', desc: '战斗节奏紧凑度', score: metrics.pace, color: '#9b59b6' }
+            ];
+            document.getElementById('funMetrics').innerHTML = items.map(m => `
+                <div class="metric-row">
+                    <div class="metric-icon">${m.icon}</div>
+                    <div class="metric-info">
+                        <div class="metric-name">${m.name} <span style="color:#95a5a6;font-size:0.75rem">${m.desc}</span></div>
+                        <div class="metric-bar"><div class="metric-bar-fill" style="width:${m.score}%;background:${m.color}"></div></div>
+                    </div>
+                    <div class="metric-value ${m.score >= 60 ? 'good' : m.score < 40 ? 'bad' : ''}">${m.score.toFixed(0)}</div>
+                </div>
+            `).join('');
+        }
+
+        function analyzeResults(stats, totalStats) {
+            const analysis = document.getElementById('analysis');
+            const issues = [];
+            const suggestions = [];
+            const fun = stats.funMetrics;
+            const funScore = parseFloat(stats.funScore);
+            
+            if (funScore >= 70) {
+                issues.push(`<p class="success">🎉 综合爽感指数 ${stats.funScore}，游戏体验良好！</p>`);
+            } else if (funScore >= 50) {
+                issues.push(`<p class="info">📊 综合爽感指数 ${stats.funScore}，有提升空间</p>`);
+            } else {
+                issues.push(`<p class="warning">⚠️ 综合爽感指数 ${stats.funScore}，需要调整数值</p>`);
+            }
+            
+            if (fun.growth < 40) {
+                issues.push(`<p class="warning">📈 成长感不足(${fun.growth.toFixed(0)})，升级太慢</p>`);
+                suggestions.push('<p class="info">建议：降低升级经验需求或增加怪物经验</p>');
+            }
+            
+            if (fun.control < 40) {
+                issues.push(`<p class="warning">🎮 掌控感不足(${fun.control.toFixed(0)})，战斗太长或锻造太少</p>`);
+                suggestions.push('<p class="info">建议：调整怪物HP/玩家攻击，或降低锻造材料需求</p>');
+            }
+            
+            if (fun.thrill < 30) {
+                issues.push(`<p class="info">💥 刺激感不足(${fun.thrill.toFixed(0)})，游戏太简单</p>`);
+            } else if (fun.thrill > 80) {
+                issues.push(`<p class="warning">💥 刺激感过高(${fun.thrill.toFixed(0)})，可能太难</p>`);
+            }
+            
+            if (fun.reward < 40) {
+                issues.push(`<p class="warning">💰 奖励感不足(${fun.reward.toFixed(0)})，锻造进度太慢</p>`);
+                suggestions.push('<p class="info">建议：增加材料掉落率或减少锻造需求</p>');
+            }
+            
+            if (fun.pace < 40) {
+                issues.push(`<p class="warning">⚡ 节奏感不足(${fun.pace.toFixed(0)})，战斗拖沓</p>`);
+            }
+            
+            analysis.innerHTML = '<h3>💡 数值分析建议</h3>' + issues.join('') + suggestions.join('');
+        }
+
+        function resetResults() {
+            document.getElementById('funScore').textContent = '-';
+            document.getElementById('winRate').textContent = '-';
+            document.getElementById('avgFloor').textContent = '-';
+            document.getElementById('avgLevel').textContent = '-';
+            document.getElementById('avgKills').textContent = '-';
+            document.getElementById('floorDeathChart').innerHTML = '';
+            document.getElementById('forgeChart').innerHTML = '';
+            document.getElementById('funMetrics').innerHTML = '';
+            document.getElementById('log').innerHTML = '';
+            document.getElementById('analysis').innerHTML = '<h3>💡 数值分析建议</h3><p>点击"开始模拟"获取分析结果...</p>';
+            document.getElementById('progress').style.display = 'none';
+            document.getElementById('radarData').setAttribute('points', '150,150 150,150 150,150 150,150 150,150');
+            document.getElementById('radarLabels').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
