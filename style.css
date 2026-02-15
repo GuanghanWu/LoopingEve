@@ -334,15 +334,15 @@ body {
         background: var(--panel-bg);
         border-radius: var(--radius);
         padding: 15px;
-        min-height: calc(100vh - 160px);
+        min-height: auto;
     }
     
-    .monster-container { min-height: 150px; }
-    .monster-avatar { font-size: 4rem; }
-    .monster-name { font-size: 1.1rem; }
-    .monster-card { padding: 15px; min-width: 160px; }
+    .monster-container { min-height: 100px; }
+    .monster-avatar { font-size: 3rem; }
+    .monster-name { font-size: 1rem; }
+    .monster-card { padding: 12px; min-width: 140px; }
     
-    .battle-log { max-height: 100px; padding: 10px; font-size: 0.9rem; }
+    .battle-log { max-height: 80px; padding: 8px; font-size: 0.85rem; }
     
     .btn-shop { display: block; background: linear-gradient(45deg, var(--purple), #8e44ad); color: white; }
     
