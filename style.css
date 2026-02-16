@@ -267,18 +267,18 @@ body {
 }
 
 .monster-card {
-    background: linear-gradient(135deg, rgba(255, 71, 87, 0.2) 0%, rgba(192, 57, 43, 0.3) 100%);
-    border: 2px solid rgba(255, 71, 87, 0.4);
-    border-radius: var(--radius-lg);
-    padding: 20px 30px;
+    background: transparent;
+    border: none;
+    padding: 10px;
     text-align: center;
-    min-width: 160px;
+    min-width: 120px;
 }
 
 .monster-avatar {
     font-size: 4rem;
     animation: float 2s ease-in-out infinite;
     margin-bottom: 8px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
 @keyframes float {
@@ -353,6 +353,26 @@ body {
 .heal-popup {
     color: var(--success);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(46, 213, 115, 0.5);
+}
+
+.dodge-popup {
+    color: #87ceeb;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(135, 206, 235, 0.5);
+    font-size: 1.2rem;
+}
+
+.critical-popup {
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 100, 0, 0.5);
+    font-size: 1.8rem;
+    animation: criticalHit 0.8s ease-out forwards;
+}
+
+@keyframes criticalHit {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    20% { transform: translateY(-10px) scale(1.5); }
+    50% { transform: translateY(-35px) scale(1.3); }
+    100% { opacity: 0; transform: translateY(-55px) scale(0.9); }
 }
 
 @keyframes damageFloat {
@@ -1096,4 +1116,223 @@ body {
     .confirm-buttons {
         flex-direction: column;
     }
+}
+
+.battle-area {
+    transition: all 0.8s ease;
+    position: relative;
+}
+
+.battle-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.15;
+    pointer-events: none;
+    transition: all 0.8s ease;
+}
+
+.area-mist {
+    background: linear-gradient(180deg, #2a3a4a 0%, #1a2a3a 50%, #0f1a2a 100%);
+}
+
+.area-ruins {
+    background: linear-gradient(180deg, #3a2a1a 0%, #2a1a0a 50%, #1a0f05 100%);
+}
+
+.area-shadow {
+    background: linear-gradient(180deg, #1a0a2a 0%, #0f0520 50%, #050010 100%);
+}
+
+.area-fire {
+    background: linear-gradient(180deg, #3a1008 0%, #280a04 50%, #1a0502 100%);
+}
+
+.area-dragon {
+    background: linear-gradient(180deg, #2a1a3a 0%, #1a0f2a 50%, #0f0520 100%);
+}
+
+.area-abyss {
+    background: linear-gradient(180deg, #0a0a15 0%, #05050a 50%, #000005 100%);
+}
+
+.monster-card {
+    position: relative;
+    z-index: 1;
+}
+
+.story-modal {
+    max-width: 450px;
+}
+
+.story-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.story-icon {
+    font-size: 2.5rem;
+}
+
+.story-header h2 {
+    flex: 1;
+    text-align: left;
+    margin: 0;
+}
+
+.story-description {
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
+.story-content {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.npc-modal {
+    max-width: 420px;
+}
+
+.npc-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.npc-avatar {
+    font-size: 2.5rem;
+}
+
+.npc-header h2 {
+    flex: 1;
+    text-align: left;
+    margin: 0;
+}
+
+.npc-greeting {
+    font-size: 1rem;
+    color: var(--accent);
+    font-style: italic;
+    margin-bottom: 8px;
+}
+
+.npc-dialogue {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.npc-shop {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.npc-shop .shop-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.npc-shop .shop-item:hover:not(.disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent);
+}
+
+.npc-shop .shop-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: linear-gradient(180deg, #636e72 0%, #4a5568 100%);
+    border: 2px solid #8395a7;
+    color: white;
+    margin-top: 8px;
+}
+
+.event-modal {
+    max-width: 400px;
+}
+
+.event-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.event-icon {
+    font-size: 2rem;
+}
+
+.event-header h2 {
+    flex: 1;
+    text-align: left;
+    margin: 0;
+}
+
+.event-description {
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.event-result {
+    padding: 12px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 16px;
+}
+
+.event-result p {
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+.event-result p:last-child {
+    margin-bottom: 0;
+}
+
+.event-lore {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+    margin-bottom: 12px;
 }

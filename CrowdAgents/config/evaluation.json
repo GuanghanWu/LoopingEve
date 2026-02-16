@@ -1,0 +1,229 @@
+{
+    "regularization": {
+        "enabled": true,
+        "baseScore": 0,
+        "maxPositivePerDimension": 10,
+        "maxNegativePerDimension": 10,
+        "description": "基准分0，正面最多+10分，负面最多-10分，最终0~10分"
+    },
+    "frequencyMultipliers": {
+        "high": { "baseMultiplier": 0.3, "description": "高频触发(每场战斗): 基础分×0.3" },
+        "medium": { "baseMultiplier": 0.6, "description": "中频触发(每几分钟): 基础分×0.6" },
+        "low": { "baseMultiplier": 1.0, "description": "低频触发(稀有事件): 基础分×1.0" }
+    },
+    "factorRules": {
+        "description": "基础分与累积上限必须是整数倍数关系: maxAccumulated = baseScore × multiplier",
+        "baseScoreTiers": { "S": 0.5, "A": 0.4, "B": 0.3, "C": 0.2, "D": 0.1 },
+        "multiplierByFrequency": { "low": [2, 3, 4], "medium": [3, 4, 5], "high": [4, 5, 6] }
+    },
+    "factors": {
+        "excitement": {
+            "positive": {
+                "closeVictory": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "hpRatio < 0.2 && victory" },
+                "comeback": { "baseScore": 0.5, "frequency": "low", "maxAccumulated": 1.5, "multiplier": 3, "trigger": "wasLowHP && victory" },
+                "criticalHit": { "baseScore": 0.1, "frequency": "high", "maxAccumulated": 0.6, "multiplier": 6, "trigger": "playerCrit" },
+                "lowHPBattle": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "hpRatio < 0.3" },
+                "highDamage": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "damage > 0.3*maxHP" },
+                "combo": { "baseScore": 0.1, "frequency": "high", "maxAccumulated": 0.5, "multiplier": 5, "trigger": "hitCombo > 3" },
+                "skillCombo": { "baseScore": 0.3, "frequency": "low", "maxAccumulated": 0.9, "multiplier": 3, "trigger": "3+ skills in battle" },
+                "oneHitKill": { "baseScore": 0.3, "frequency": "low", "maxAccumulated": 0.9, "multiplier": 3, "trigger": "turns === 1" },
+                "bossFight": { "baseScore": 0.3, "frequency": "low", "maxAccumulated": 0.9, "multiplier": 3, "trigger": "isBoss" },
+                "highFloor": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "floor >= 8" },
+                "perfectDodge": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "dodge 3+ times in battle" },
+                "firstBlood": { "baseScore": 0.1, "frequency": "low", "maxAccumulated": 0.3, "multiplier": 3, "trigger": "first monster kill" }
+            },
+            "negative": {
+                "battleTooEasy": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "5+ easy wins" },
+                "noThrill": { "baseScore": 0.3, "frequency": "medium", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "10+ no lowHP battles" },
+                "repetitiveSkill": { "baseScore": 0.1, "frequency": "high", "maxAccumulated": 0.6, "multiplier": 6, "trigger": "same skill 5+ times" },
+                "criticalFrustration": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "2+ consecutive crits received" },
+                "battleDrag": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "battle > 30s" },
+                "unmetExpectation": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "expectation > 0.8, score < 5" },
+                "noChallenge": { "baseScore": 0.3, "frequency": "medium", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "all battles too easy" },
+                "boringPattern": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "same pattern 5+ times" },
+                "overwhelmingEnemy": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "enemy too strong, no chance" },
+                "anticlimax": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.6, "multiplier": 4, "trigger": "boss too easy" }
+            }
+        },
+        "growth": {
+            "positive": {
+                "levelUp": { "baseScore": 0.5, "frequency": "low", "maxAccumulated": 2.0, "multiplier": 4, "trigger": "levelUp" },
+                "legendaryItem": { "baseScore": 0.5, "frequency": "low", "maxAccumulated": 1.5, "multiplier": 3, "trigger": "legendary item" },
+                "rareItem": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "rare item" },
+                "battleVictory": { "baseScore": 0.1, "frequency": "high", "maxAccumulated": 0.5, "multiplier": 5, "trigger": "victory" },
+                "commonItem": { "baseScore": 0.1, "frequency": "high", "maxAccumulated": 0.4, "multiplier": 4, "trigger": "common item" },
+                "forgeSuccess": { "baseScore": 0.3, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "forge" },
+                "quickLevelUp": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "2+ levelUps in 5min" },
+                "statGain": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "levelUp stats" },
+                "powerSpike": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "significant power increase" },
+                "unlockFeature": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "new feature unlocked" },
+                "achievementUnlocked": { "baseScore": 0.1, "frequency": "low", "maxAccumulated": 0.4, "multiplier": 4, "trigger": "achievement" },
+                "equipmentUpgrade": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.4, "multiplier": 2, "trigger": "better equipment" }
+            },
+            "negative": {
+                "noUpgrade": { "baseScore": 0.3, "frequency": "medium", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "5min no upgrade" },
+                "lowDropRate": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "2min no item" },
+                "levelStagnation": { "baseScore": 0.3, "frequency": "medium", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "10+ battles same level" },
+                "uselessLoot": { "baseScore": 0.1, "frequency": "medium", "maxAccumulated": 0.4, "multiplier": 4, "trigger": "duplicate item" },
+                "progressLoss": { "baseScore": 0.5, "frequency": "low", "maxAccumulated": 1.5, "multiplier": 3, "trigger": "death progress loss" },
+                "battleFail": { "baseScore": 0.1, "frequency": "medium", "maxAccumulated": 0.5, "multiplier": 5, "trigger": "battle fail" },
+                "expPenalty": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "exp reduced" },
+                "goldWasted": { "baseScore": 0.1, "frequency": "medium", "maxAccumulated": 0.4, "multiplier": 4, "trigger": "gold spent with no benefit" },
+                "downgrade": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "equipment downgrade" },
+                "noProgressionPath": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "unclear how to progress" },
+                "weakReward": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "reward much lower than effort" }
+            }
+        },
+        "pacing": {
+            "positive": {
+                "quickBattle": { "baseScore": 0.1, "frequency": "high", "maxAccumulated": 0.6, "multiplier": 6, "trigger": "battle < 10s" },
+                "fastFloorProgress": { "baseScore": 0.5, "frequency": "low", "maxAccumulated": 2.0, "multiplier": 4, "trigger": "floor < 3min" },
+                "idealBattleTime": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "5-15s battle" },
+                "winStreak": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "3+ win streak" },
+                "progressVisible": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "floor progress" },
+                "smoothTransition": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "seamless area change" },
+                "balancedDifficulty": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "difficulty curve good" },
+                "rewardingSession": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "felt productive" },
+                "goodRestPoint": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "natural break point" },
+                "engagingLoop": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "want to continue" }
+            },
+            "negative": {
+                "battleTooLong": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "battle > 30s" },
+                "floorTooSlow": { "baseScore": 0.3, "frequency": "medium", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "floor > 5min" },
+                "failStreak": { "baseScore": 0.3, "frequency": "medium", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "2+ fail streak" },
+                "deathInterrupt": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "death" },
+                "progressStall": { "baseScore": 0.3, "frequency": "medium", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "3min no progress" },
+                "waitingTime": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "unnecessary waiting" },
+                "repetitiveGrind": { "baseScore": 0.3, "frequency": "medium", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "same action 10+ times" },
+                "pacingInconsistency": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "jarring pace change" },
+                "forcedBreak": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "unwanted interruption" },
+                "emptyTravel": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "walking with no event" }
+            }
+        },
+        "playability": {
+            "positive": {
+                "newMonster": { "baseScore": 0.5, "frequency": "low", "maxAccumulated": 1.5, "multiplier": 3, "trigger": "first encounter" },
+                "newSkill": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "first skill use" },
+                "newItem": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "first item obtain" },
+                "skillUse": { "baseScore": 0.1, "frequency": "high", "maxAccumulated": 0.5, "multiplier": 5, "trigger": "skill used" },
+                "forgeSuccess": { "baseScore": 0.3, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "forge" },
+                "diversePlaystyle": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "3+ skills used" },
+                "richContent": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "10+ monster types" },
+                "strategicChoice": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "meaningful choice" },
+                "skillSynergy": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "skills work together" },
+                "discoveryMoment": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "found something new" },
+                "mechanicMastery": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "understood mechanic" },
+                "buildVariety": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "different build viable" }
+            },
+            "negative": {
+                "repetitiveMonster": { "baseScore": 0.3, "frequency": "medium", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "10+ same monster" },
+                "noDiscovery": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "20s no discovery" },
+                "monsterVarietyLow": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "15+ kills, <5 types" },
+                "skillMonotony": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "5+ same skill" },
+                "contentDepleted": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "explorer, low variety" },
+                "uselessMechanic": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "mechanic feels pointless" },
+                "forcedPlaystyle": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "only one way to play" },
+                "unclearObjective": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "don't know what to do" },
+                "frustratingControl": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "control issue" },
+                "shallowDepth": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.6, "multiplier": 4, "trigger": "no depth to mechanics" }
+            }
+        },
+        "retention": {
+            "positive": {
+                "newFloor": { "baseScore": 0.5, "frequency": "low", "maxAccumulated": 2.0, "multiplier": 4, "trigger": "floor advance" },
+                "milestone": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "milestone" },
+                "winStreak": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "3+ wins" },
+                "surpriseReward": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "unexpected reward" },
+                "challengeMatched": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "difficulty matches" },
+                "dailyGoal": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "completed goal" },
+                "socialHook": { "baseScore": 0.1, "frequency": "low", "maxAccumulated": 0.4, "multiplier": 4, "trigger": "want to share" },
+                "anticipation": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "looking forward to something" },
+                "personalBest": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "new record" },
+                "comebackSuccess": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "recovered from setback" },
+                "nearMiss": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "almost succeeded, want to retry" }
+            },
+            "negative": {
+                "death": { "baseScore": 0.5, "frequency": "low", "maxAccumulated": 2.0, "multiplier": 4, "trigger": "death" },
+                "floorStuck": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "kills on floor > 10x required" },
+                "noLootStreak": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "5+ battles no loot" },
+                "criticalHitReceived": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "crit damage >= 15%HP or HP < 30%" },
+                "battleFail": { "baseScore": 0.1, "frequency": "medium", "maxAccumulated": 0.4, "multiplier": 4, "trigger": "fail, low tolerance" },
+                "lowReward": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "effort > reward" },
+                "negativeFeedback": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "negative streak" },
+                "progressLoss": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "death progress loss" },
+                "quitUrge": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "want to quit" },
+                "unfairLoss": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "felt cheated" },
+                "hopeless": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "no hope to progress" }
+            }
+        },
+        "immersion": {
+            "positive": {
+                "newArea": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "new floor, hasLore" },
+                "storyEvent": { "baseScore": 0.5, "frequency": "low", "maxAccumulated": 2.0, "multiplier": 4, "trigger": "hasStory" },
+                "loreDiscovery": { "baseScore": 0.5, "frequency": "low", "maxAccumulated": 1.5, "multiplier": 3, "trigger": "hasLore" },
+                "characterGrowth": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "levelUp, hasStory" },
+                "immersivePlay": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "5min+ play, hasStory" },
+                "npcInteraction": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "hasNPC" },
+                "atmosphereMoment": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "immersive moment" },
+                "emotionalBeat": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "emotional response" },
+                "worldConsistency": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "world makes sense" },
+                "soundDesign": { "baseScore": 0.1, "frequency": "medium", "maxAccumulated": 0.5, "multiplier": 5, "trigger": "good audio" },
+                "visualReward": { "baseScore": 0.2, "frequency": "low", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "beautiful moment" }
+            },
+            "negative": {
+                "noStoryContent": { "baseScore": 0.3, "frequency": "medium", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "!hasStory" },
+                "noWorldLore": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "!hasLore" },
+                "noNPCInteraction": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "!hasNPC" },
+                "noShareFeature": { "baseScore": 0.3, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 4, "trigger": "social, no share" },
+                "immersionBreak": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 1.0, "multiplier": 5, "trigger": "frequent interrupts" },
+                "emptyContent": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "lacks detail" },
+                "plotHole": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.2, "multiplier": 3, "trigger": "story inconsistency" },
+                "badDialogue": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.8, "multiplier": 4, "trigger": "poor writing" },
+                "toneInconsistency": { "baseScore": 0.2, "frequency": "medium", "maxAccumulated": 0.6, "multiplier": 3, "trigger": "jarring tone shift" },
+                "forgettableWorld": { "baseScore": 0.4, "frequency": "low", "maxAccumulated": 1.6, "multiplier": 4, "trigger": "nothing memorable" }
+            }
+        }
+    },
+    "agentWeights": {
+        "casual": { "excitement": 0.6, "growth": 1.2, "pacing": 1.5, "playability": 0.8, "retention": 1.0, "immersion": 0.7 },
+        "hardcore": { "excitement": 1.5, "growth": 0.8, "pacing": 0.6, "playability": 1.5, "retention": 0.8, "immersion": 0.5 },
+        "explorer": { "excitement": 0.7, "growth": 1.0, "pacing": 0.8, "playability": 1.2, "retention": 1.3, "immersion": 1.5 },
+        "social": { "excitement": 0.8, "growth": 0.9, "pacing": 1.0, "playability": 0.7, "retention": 0.6, "immersion": 1.0 },
+        "paying": { "excitement": 1.0, "growth": 1.5, "pacing": 1.2, "playability": 0.8, "retention": 1.0, "immersion": 0.6 }
+    },
+    "rarityCoefficients": {
+        "common": 1.0,
+        "rare": 2.0,
+        "legendary": 5.0
+    },
+    "skillCoefficients": {
+        "firstUse": 1.5,
+        "repeatUse": 0.1
+    },
+    "battleCoefficients": {
+        "lowHPVictory": 2.0,
+        "perfectVictory": 1.0,
+        "quickBattle": 1.2
+    },
+    "thresholds": {
+        "critical": 3.0,
+        "warning": 4.5,
+        "good": 6.0,
+        "excellent": 8.0
+    },
+    "dimensionNames": {
+        "excitement": "刺激度",
+        "growth": "成长感",
+        "pacing": "节奏感",
+        "playability": "可玩性",
+        "retention": "留存预估",
+        "immersion": "代入感"
+    },
+    "agentTypeNames": {
+        "casual": "轻度休闲",
+        "hardcore": "硬核竞技",
+        "explorer": "剧情探索",
+        "social": "社交互动",
+        "paying": "付费习惯"
+    }
+}

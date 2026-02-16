@@ -41,6 +41,7 @@ class PlayerManager {
     levelUp() {
         const cfg = CONFIG.player.levelUp;
         while (this.game.player.exp >= this.game.player.maxEXP) {
+            const oldLevel = this.game.player.level;
             this.game.player.exp -= this.game.player.maxEXP;
             this.game.player.level++;
             this.game.player.maxHP += cfg.hp;
@@ -49,6 +50,15 @@ class PlayerManager {
             this.game.player.def += cfg.def;
             this.game.player.maxEXP = Math.floor(this.game.player.maxEXP * cfg.expMultiplier);
             this.game.ui.showLevelUp(this.game.player.level, cfg);
+            this.game.emit?.('levelUp', {
+                newLevel: this.game.player.level,
+                oldLevel: oldLevel,
+                statsGained: {
+                    attack: cfg.atk,
+                    defense: cfg.def,
+                    hp: cfg.hp
+                }
+            });
         }
     }
 

@@ -20,10 +20,20 @@ class UIManager {
         setTimeout(() => el.classList.remove('shake'), 300);
     }
 
-    showDamagePopup(value, isHeal) {
+    showDamagePopup(value, isHeal, isDodge = false, isCritical = false) {
         const popup = document.createElement('div');
-        popup.className = `damage-popup ${isHeal ? 'heal-popup' : ''}`;
-        popup.textContent = (isHeal ? '+' : '-') + value;
+        let className = 'damage-popup';
+        if (isHeal) className += ' heal-popup';
+        if (isDodge) className += ' dodge-popup';
+        if (isCritical) className += ' critical-popup';
+        popup.className = className;
+        
+        if (isDodge) {
+            popup.textContent = 'MISS';
+        } else {
+            popup.textContent = (isHeal ? '+' : '-') + value + (isCritical ? '!' : '');
+        }
+        
         const monsterCard = document.querySelector('.monster-card');
         if (monsterCard) {
             const rect = monsterCard.getBoundingClientRect();
@@ -375,5 +385,100 @@ class UIManager {
 
     closeAllModals() {
         document.querySelectorAll('.modal').forEach(m => m.classList.remove('show'));
+    }
+
+    updateBattleBackground(floor) {
+        const lore = this.game.storyManager.getWorldLore(floor);
+        const battleArea = document.querySelector('.battle-area');
+        if (battleArea && lore) {
+            battleArea.className = `battle-area ${lore.bgClass}`;
+        }
+    }
+
+    showLoreModal(lore, floor) {
+        $('loreIcon').textContent = lore.icon;
+        $('loreTitle').textContent = `${lore.name} - 第${floor}层`;
+        $('loreDescription').textContent = lore.description;
+        $('loreContent').textContent = lore.lore;
+        $('storyModal').classList.add('show');
+    }
+
+    closeStoryModal() {
+        $('storyModal').classList.remove('show');
+    }
+
+    showNPCModal(npc) {
+        $('npcAvatar').textContent = npc.avatar;
+        $('npcName').textContent = npc.name;
+        $('npcGreeting').textContent = npc.greeting;
+        
+        const dialogue = this.game.storyManager.getNPCDialogue(npc);
+        $('npcDialogue').textContent = dialogue;
+        
+        let actionsHtml = '';
+        if (npc.shop && npc.shop.length > 0) {
+            actionsHtml = '<div class="npc-shop">';
+            npc.shop.forEach(item => {
+                const itemDef = CONFIG.items.consumables.find(i => i.id === item.itemId) || 
+                               CONFIG.items.scrolls.find(i => i.id === item.itemId);
+                if (itemDef) {
+                    const canBuy = this.game.player.gold >= item.price;
+                    actionsHtml += `<div class="shop-item ${canBuy ? '' : 'disabled'}" onclick="${canBuy ? `game.buyNPCItem('${npc.id}', '${item.itemId}')` : ''}">
+                        <span>${itemDef.icon} ${itemDef.name}</span>
+                        <span>${item.price}💰</span>
+                    </div>`;
+                }
+            });
+            actionsHtml += '</div>';
+        }
+        
+        if (npc.reward) {
+            actionsHtml += `<button class="btn btn-primary" onclick="game.acceptNPCReward('${npc.id}')">接受帮助</button>`;
+        }
+        
+        actionsHtml += `<button class="btn btn-secondary" onclick="game.closeNPCModal()">离开</button>`;
+        $('npcActions').innerHTML = actionsHtml;
+        
+        $('npcModal').classList.add('show');
+    }
+
+    closeNPCModal() {
+        $('npcModal').classList.remove('show');
+    }
+
+    showEventModal(event, result) {
+        $('eventIcon').textContent = event.icon;
+        $('eventName').textContent = event.name;
+        $('eventDescription').textContent = event.description;
+        
+        let resultHtml = '';
+        if (result.lore) {
+            resultHtml += `<p class="event-lore">${result.lore}</p>`;
+        }
+        if (result.gold > 0) {
+            resultHtml += `<p>💰 获得 ${result.gold} 金币</p>`;
+        }
+        if (result.exp > 0) {
+            resultHtml += `<p>⭐ 获得 ${result.exp} 经验</p>`;
+        }
+        if (result.heal > 0) {
+            resultHtml += `<p>💚 恢复 ${result.heal} 生命</p>`;
+        }
+        if (result.items && result.items.length > 0) {
+            result.items.forEach(item => {
+                const itemDef = CONFIG.items.consumables.find(i => i.id === item.itemId) ||
+                               CONFIG.items.scrolls.find(i => i.id === item.itemId);
+                if (itemDef) {
+                    resultHtml += `<p>🎁 获得 ${itemDef.icon} ${itemDef.name}</p>`;
+                }
+            });
+        }
+        $('eventResult').innerHTML = resultHtml;
+        
+        $('eventModal').classList.add('show');
+    }
+
+    closeEventModal() {
+        $('eventModal').classList.remove('show');
     }
 }

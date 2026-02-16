@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LoopingEve - 循环冒险</title>
-<<<<<<< HEAD
-    <link rel="stylesheet" href="style.css?v=8">
-=======
-    <link rel="stylesheet" href="style.css?v=3">
->>>>>>> e35efbef8ba54d18e471eacd54b0611e70bbe5e1
+    <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
     <div class="game-container">
@@ -48,7 +44,7 @@
             </div>
         </div>
         
-        <main class="battle-area">
+        <main class="battle-area area-mist">
             <div class="equipment-row">
                 <div class="equip-slot">
                     <span class="icon">🗡️</span>
@@ -185,11 +181,48 @@
         </div>
     </div>
     
-    <script src="js/UIManager.js?v=3"></script>
+    <div class="modal" id="storyModal">
+        <div class="modal-content story-modal">
+            <div class="story-header">
+                <span class="story-icon" id="loreIcon">🌫️</span>
+                <h2 id="loreTitle">迷雾入口 - 第1层</h2>
+            </div>
+            <p class="story-description" id="loreDescription">古老地牢的入口...</p>
+            <p class="story-content" id="loreContent">传说这里曾是...</p>
+            <button class="btn btn-primary" onclick="game.closeStoryModal()">继续探索</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="npcModal">
+        <div class="modal-content npc-modal">
+            <div class="npc-header">
+                <span class="npc-avatar" id="npcAvatar">🧙</span>
+                <h2 id="npcName">神秘商人</h2>
+            </div>
+            <p class="npc-greeting" id="npcGreeting">哼哼...</p>
+            <p class="npc-dialogue" id="npcDialogue">这些物品都是...</p>
+            <div id="npcActions"></div>
+        </div>
+    </div>
+    
+    <div class="modal" id="eventModal">
+        <div class="modal-content event-modal">
+            <div class="event-header">
+                <span class="event-icon" id="eventIcon">📜</span>
+                <h2 id="eventName">古老碑文</h2>
+            </div>
+            <p class="event-description" id="eventDescription">你发现了...</p>
+            <div class="event-result" id="eventResult"></div>
+            <button class="btn btn-primary" onclick="game.closeEventModal()">继续</button>
+        </div>
+    </div>
+    
+    <script src="js/UIManager.js?v=4"></script>
     <script src="js/PlayerManager.js?v=1"></script>
     <script src="js/InventoryManager.js?v=1"></script>
-    <script src="js/BattleManager.js?v=3"></script>
-    <script src="js/Game.js?v=10"></script>
+    <script src="js/StoryManager.js?v=1"></script>
+    <script src="js/BattleManager.js?v=4"></script>
+    <script src="js/Game.js?v=11"></script>
     
     <script>
     setupModals();

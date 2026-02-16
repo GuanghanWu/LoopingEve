@@ -1,0 +1,2985 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generatedAt": "2026-02-16T15:38:04.272Z",
+    "totalDuration": 120000,
+    "agentCount": 5
+  },
+  "agents": [
+    {
+      "id": "casual_01",
+      "name": "休闲小明",
+      "type": "casual",
+      "avatar": "🎮",
+      "playTime": 119942,
+      "stats": {
+        "battles": 260,
+        "wins": 224,
+        "deaths": 35,
+        "maxFloor": 5,
+        "level": 2,
+        "kills": 224,
+        "totalDamageDealt": 16105,
+        "totalDamageTaken": 6890,
+        "skillsUsed": 0,
+        "itemsUsed": 48,
+        "forgeCount": 0
+      },
+      "dimensionScores": {
+        "excitement": 1.47,
+        "growth": 0.72,
+        "pacing": 0.95,
+        "playability": 0.2,
+        "retention": 1.42,
+        "immersion": 1.96
+      },
+      "overallScore": 1.06,
+      "breakdown": [
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 小蝙蝠",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 史莱姆",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 哥布林",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "连续升级",
+          "severity": "medium",
+          "count": 58
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 2 级",
+          "severity": "medium",
+          "count": 32
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 2 层",
+          "severity": "medium",
+          "count": 36
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 迷雾入口",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 骷髅兵",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 3 级",
+          "severity": "medium",
+          "count": 21
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 3 层",
+          "severity": "medium",
+          "count": 22
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 遗忘回廊",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 古老碑文",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 4 层",
+          "severity": "medium",
+          "count": 7
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 神秘商人",
+          "severity": "low",
+          "count": 3
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 4 级",
+          "severity": "medium",
+          "count": 5
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 石像鬼",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "retention",
+          "issue": "被暴击导致挫败",
+          "severity": "medium",
+          "count": 39
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 闪光宝箱",
+          "severity": "low",
+          "count": 20
+        },
+        {
+          "dimension": "retention",
+          "issue": "连续多场战斗无掉落",
+          "severity": "medium",
+          "count": 8
+        },
+        {
+          "dimension": "playability",
+          "issue": "重复刷同一怪物",
+          "severity": "medium",
+          "count": 184
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 流浪者",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 狼人",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "excitement",
+          "issue": "逆转局势",
+          "severity": "medium",
+          "count": 4
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 5 层",
+          "severity": "medium",
+          "count": 1
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 暗影深渊",
+          "severity": "low",
+          "count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "storyEvent",
+          "data": {
+            "eventId": "shiningChest",
+            "eventName": "闪光宝箱",
+            "floor": 1
+          },
+          "time": 119263,
+          "timestamp": 1771256283527
+        },
+        {
+          "type": "battleStart",
+          "data": {
+            "monsterId": "goblin",
+            "monsterName": "哥布林",
+            "monsterHP": 65,
+            "monsterLevel": 1,
+            "floor": 1
+          },
+          "time": 119326,
+          "timestamp": 1771256283589
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 14,
+            "monsterCurrentHP": 51,
+            "monsterMaxHP": 65,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119387,
+          "timestamp": 1771256283650
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 94,
+            "maxHP": 135,
+            "source": "goblin",
+            "isCritical": false
+          },
+          "time": 119387,
+          "timestamp": 1771256283650
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 14,
+            "monsterCurrentHP": 37,
+            "monsterMaxHP": 65,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119449,
+          "timestamp": 1771256283712
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 93,
+            "maxHP": 135,
+            "source": "goblin",
+            "isCritical": false
+          },
+          "time": 119449,
+          "timestamp": 1771256283712
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 11,
+            "monsterCurrentHP": 26,
+            "monsterMaxHP": 65,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119511,
+          "timestamp": 1771256283774
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 92,
+            "maxHP": 135,
+            "source": "goblin",
+            "isCritical": false
+          },
+          "time": 119511,
+          "timestamp": 1771256283774
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 11,
+            "monsterCurrentHP": 15,
+            "monsterMaxHP": 65,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119574,
+          "timestamp": 1771256283837
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 2,
+            "currentHP": 90,
+            "maxHP": 135,
+            "source": "goblin",
+            "isCritical": false
+          },
+          "time": 119574,
+          "timestamp": 1771256283837
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 11,
+            "monsterCurrentHP": 4,
+            "monsterMaxHP": 65,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119635,
+          "timestamp": 1771256283898
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 3,
+            "currentHP": 87,
+            "maxHP": 135,
+            "source": "goblin",
+            "isCritical": true
+          },
+          "time": 119635,
+          "timestamp": 1771256283898
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 11,
+            "monsterCurrentHP": 0,
+            "monsterMaxHP": 65,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119696,
+          "timestamp": 1771256283959
+        },
+        {
+          "type": "battleEnd",
+          "data": {
+            "victory": true,
+            "duration": 3000,
+            "turns": 6,
+            "rewards": {
+              "exp": 25,
+              "gold": 15,
+              "items": []
+            },
+            "playerHPLeft": 87,
+            "monsterId": "goblin",
+            "battleTime": 370
+          },
+          "time": 119696,
+          "timestamp": 1771256283959
+        },
+        {
+          "type": "floorAdvance",
+          "data": {
+            "newFloor": 2,
+            "oldFloor": 1,
+            "timeSpent": 3279
+          },
+          "time": 119758,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "battleStart",
+          "data": {
+            "monsterId": "slime",
+            "monsterName": "史莱姆",
+            "monsterHP": 46,
+            "monsterLevel": 2,
+            "floor": 2
+          },
+          "time": 119819,
+          "timestamp": 1771256284082
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 13,
+            "monsterCurrentHP": 33,
+            "monsterMaxHP": 46,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119881,
+          "timestamp": 1771256284144
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 86,
+            "maxHP": 135,
+            "source": "slime",
+            "isCritical": false
+          },
+          "time": 119881,
+          "timestamp": 1771256284144
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 14,
+            "monsterCurrentHP": 19,
+            "monsterMaxHP": 46,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119942,
+          "timestamp": 1771256284205
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 85,
+            "maxHP": 135,
+            "source": "slime",
+            "isCritical": false
+          },
+          "time": 119942,
+          "timestamp": 1771256284205
+        }
+      ]
+    },
+    {
+      "id": "hardcore_01",
+      "name": "竞技达人",
+      "type": "hardcore",
+      "avatar": "⚔️",
+      "playTime": 119940,
+      "stats": {
+        "battles": 300,
+        "wins": 269,
+        "deaths": 30,
+        "maxFloor": 5,
+        "level": 3,
+        "kills": 269,
+        "totalDamageDealt": 20615,
+        "totalDamageTaken": 6309,
+        "skillsUsed": 138,
+        "itemsUsed": 0,
+        "forgeCount": 0
+      },
+      "dimensionScores": {
+        "excitement": 1.29,
+        "growth": 0.46,
+        "pacing": 0.87,
+        "playability": 0,
+        "retention": 0.01,
+        "immersion": 1.98
+      },
+      "overallScore": 0.67,
+      "breakdown": [
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 史莱姆",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 小蝙蝠",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 2 层",
+          "severity": "medium",
+          "count": 31
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 迷雾入口",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "连续升级",
+          "severity": "medium",
+          "count": 74
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 2 级",
+          "severity": "medium",
+          "count": 30
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 骷髅兵",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 哥布林",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 3 级",
+          "severity": "medium",
+          "count": 26
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 3 层",
+          "severity": "medium",
+          "count": 28
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 遗忘回廊",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 4 层",
+          "severity": "medium",
+          "count": 17
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 古老碑文",
+          "severity": "low",
+          "count": 3
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 石像鬼",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 闪光宝箱",
+          "severity": "low",
+          "count": 23
+        },
+        {
+          "dimension": "excitement",
+          "issue": "逆转局势",
+          "severity": "medium",
+          "count": 26
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 流浪者",
+          "severity": "low",
+          "count": 3
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 4 级",
+          "severity": "medium",
+          "count": 14
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 狼人",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "重复刷同一怪物",
+          "severity": "medium",
+          "count": 229
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 神秘商人",
+          "severity": "low",
+          "count": 4
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 5 层",
+          "severity": "medium",
+          "count": 6
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 暗影深渊",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 暗影魔",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "excitement",
+          "issue": "连续被暴击",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "retention",
+          "issue": "连续多场战斗无掉落",
+          "severity": "medium",
+          "count": 6
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 5 级",
+          "severity": "medium",
+          "count": 4
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 落魄冒险者",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "excitement",
+          "issue": "残血胜利的刺激感",
+          "severity": "medium",
+          "count": 2
+        }
+      ],
+      "events": [
+        {
+          "type": "skillUse",
+          "data": {
+            "skillId": "heal",
+            "skillName": "治疗术",
+            "targetType": "self",
+            "mpCost": 0
+          },
+          "time": 119447,
+          "timestamp": 1771256283713
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 6,
+            "currentHP": 101,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119447,
+          "timestamp": 1771256283713
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 11,
+            "monsterCurrentHP": 54,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119509,
+          "timestamp": 1771256283774
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 7,
+            "currentHP": 94,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119509,
+          "timestamp": 1771256283774
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 14,
+            "monsterCurrentHP": 40,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119572,
+          "timestamp": 1771256283837
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 5,
+            "currentHP": 89,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119572,
+          "timestamp": 1771256283837
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 13,
+            "monsterCurrentHP": 27,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119633,
+          "timestamp": 1771256283898
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 6,
+            "currentHP": 83,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119633,
+          "timestamp": 1771256283898
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 14,
+            "monsterCurrentHP": 13,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119694,
+          "timestamp": 1771256283959
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 6,
+            "currentHP": 77,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119694,
+          "timestamp": 1771256283959
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 14,
+            "monsterCurrentHP": 0,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "itemObtain",
+          "data": {
+            "itemId": "boneFragment",
+            "itemName": "骨头碎片",
+            "rarity": "common",
+            "source": "battle"
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "itemObtain",
+          "data": {
+            "itemId": "ironOre",
+            "itemName": "铁矿石",
+            "rarity": "common",
+            "source": "battle"
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "itemObtain",
+          "data": {
+            "itemId": "mediumPotion",
+            "itemName": "中血瓶",
+            "rarity": "rare",
+            "source": "battle"
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "battleEnd",
+          "data": {
+            "victory": true,
+            "duration": 4500,
+            "turns": 9,
+            "rewards": {
+              "exp": 52,
+              "gold": 32,
+              "items": [
+                {
+                  "id": "boneFragment",
+                  "name": "骨头碎片",
+                  "rarity": "common"
+                },
+                {
+                  "id": "ironOre",
+                  "name": "铁矿石",
+                  "rarity": "common"
+                },
+                {
+                  "id": "mediumPotion",
+                  "name": "中血瓶",
+                  "rarity": "rare"
+                }
+              ]
+            },
+            "playerHPLeft": 77,
+            "monsterId": "skeleton",
+            "battleTime": 557
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "battleStart",
+          "data": {
+            "monsterId": "slime",
+            "monsterName": "史莱姆",
+            "monsterHP": 52,
+            "monsterLevel": 3,
+            "floor": 3
+          },
+          "time": 119817,
+          "timestamp": 1771256284082
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 27,
+            "monsterCurrentHP": 25,
+            "monsterMaxHP": 52,
+            "skillUsed": "attack",
+            "isCritical": true
+          },
+          "time": 119879,
+          "timestamp": 1771256284144
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 76,
+            "maxHP": 150,
+            "source": "slime",
+            "isCritical": true
+          },
+          "time": 119879,
+          "timestamp": 1771256284144
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 19,
+            "monsterCurrentHP": 6,
+            "monsterMaxHP": 52,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119940,
+          "timestamp": 1771256284205
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 75,
+            "maxHP": 150,
+            "source": "slime",
+            "isCritical": false
+          },
+          "time": 119940,
+          "timestamp": 1771256284205
+        }
+      ]
+    },
+    {
+      "id": "explorer_01",
+      "name": "探索者小雪",
+      "type": "explorer",
+      "avatar": "🗺️",
+      "playTime": 119940,
+      "stats": {
+        "battles": 282,
+        "wins": 251,
+        "deaths": 30,
+        "maxFloor": 5,
+        "level": 3,
+        "kills": 251,
+        "totalDamageDealt": 18768,
+        "totalDamageTaken": 5935,
+        "skillsUsed": 25,
+        "itemsUsed": 0,
+        "forgeCount": 0
+      },
+      "dimensionScores": {
+        "excitement": 1.3,
+        "growth": 0.5,
+        "pacing": 0.84,
+        "playability": 0.33,
+        "retention": 0.78,
+        "immersion": 1.96
+      },
+      "overallScore": 0.99,
+      "breakdown": [
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 哥布林",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 小蝙蝠",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 闪光宝箱",
+          "severity": "low",
+          "count": 20
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 史莱姆",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "连续升级",
+          "severity": "medium",
+          "count": 60
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 2 级",
+          "severity": "medium",
+          "count": 29
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 3 级",
+          "severity": "medium",
+          "count": 21
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 2 层",
+          "severity": "medium",
+          "count": 31
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 迷雾入口",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 4 级",
+          "severity": "medium",
+          "count": 8
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 骷髅兵",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 3 层",
+          "severity": "medium",
+          "count": 25
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 遗忘回廊",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 狼人",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 5 级",
+          "severity": "medium",
+          "count": 2
+        },
+        {
+          "dimension": "excitement",
+          "issue": "残血胜利的刺激感",
+          "severity": "medium",
+          "count": 5
+        },
+        {
+          "dimension": "excitement",
+          "issue": "逆转局势",
+          "severity": "medium",
+          "count": 46
+        },
+        {
+          "dimension": "retention",
+          "issue": "被暴击导致挫败",
+          "severity": "medium",
+          "count": 33
+        },
+        {
+          "dimension": "retention",
+          "issue": "连续多场战斗无掉落",
+          "severity": "medium",
+          "count": 10
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 神秘商人",
+          "severity": "low",
+          "count": 3
+        },
+        {
+          "dimension": "playability",
+          "issue": "重复刷同一怪物",
+          "severity": "medium",
+          "count": 210
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 流浪者",
+          "severity": "low",
+          "count": 3
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 4 层",
+          "severity": "medium",
+          "count": 10
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 石像鬼",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 5 层",
+          "severity": "medium",
+          "count": 3
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 暗影深渊",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 冒险者遗物",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 古老碑文",
+          "severity": "low",
+          "count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 92,
+            "maxHP": 150,
+            "source": "bat",
+            "isCritical": false
+          },
+          "time": 119324,
+          "timestamp": 1771256283589
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 18,
+            "monsterCurrentHP": 0,
+            "monsterMaxHP": 45,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119385,
+          "timestamp": 1771256283650
+        },
+        {
+          "type": "battleEnd",
+          "data": {
+            "victory": true,
+            "duration": 2500,
+            "turns": 5,
+            "rewards": {
+              "exp": 15,
+              "gold": 7,
+              "items": []
+            },
+            "playerHPLeft": 92,
+            "monsterId": "bat",
+            "battleTime": 311
+          },
+          "time": 119385,
+          "timestamp": 1771256283650
+        },
+        {
+          "type": "battleStart",
+          "data": {
+            "monsterId": "skeleton",
+            "monsterName": "骷髅兵",
+            "monsterHP": 123,
+            "monsterLevel": 3,
+            "floor": 3
+          },
+          "time": 119448,
+          "timestamp": 1771256283713
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 19,
+            "monsterCurrentHP": 104,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": true
+          },
+          "time": 119509,
+          "timestamp": 1771256283774
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 7,
+            "currentHP": 85,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119509,
+          "timestamp": 1771256283774
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 13,
+            "monsterCurrentHP": 91,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119572,
+          "timestamp": 1771256283837
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 6,
+            "currentHP": 79,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119572,
+          "timestamp": 1771256283837
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 12,
+            "monsterCurrentHP": 79,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119633,
+          "timestamp": 1771256283898
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 5,
+            "currentHP": 74,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119633,
+          "timestamp": 1771256283898
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 13,
+            "monsterCurrentHP": 66,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119694,
+          "timestamp": 1771256283959
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 7,
+            "currentHP": 67,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119694,
+          "timestamp": 1771256283959
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 13,
+            "monsterCurrentHP": 53,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 5,
+            "currentHP": 62,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 18,
+            "monsterCurrentHP": 35,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": true
+          },
+          "time": 119817,
+          "timestamp": 1771256284082
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 5,
+            "currentHP": 57,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119817,
+          "timestamp": 1771256284082
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 14,
+            "monsterCurrentHP": 21,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119879,
+          "timestamp": 1771256284144
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 6,
+            "currentHP": 51,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119879,
+          "timestamp": 1771256284144
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 11,
+            "monsterCurrentHP": 10,
+            "monsterMaxHP": 123,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119940,
+          "timestamp": 1771256284205
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 5,
+            "currentHP": 46,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119940,
+          "timestamp": 1771256284205
+        }
+      ]
+    },
+    {
+      "id": "social_01",
+      "name": "社交达人",
+      "type": "social",
+      "avatar": "👥",
+      "playTime": 119940,
+      "stats": {
+        "battles": 293,
+        "wins": 259,
+        "deaths": 33,
+        "maxFloor": 5,
+        "level": 3,
+        "kills": 259,
+        "totalDamageDealt": 19788,
+        "totalDamageTaken": 6217,
+        "skillsUsed": 123,
+        "itemsUsed": 0,
+        "forgeCount": 0
+      },
+      "dimensionScores": {
+        "excitement": 1.2,
+        "growth": 0.52,
+        "pacing": 0.79,
+        "playability": 0.15,
+        "retention": 1.04,
+        "immersion": 1.35
+      },
+      "overallScore": 0.86,
+      "breakdown": [
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 哥布林",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 史莱姆",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "连续升级",
+          "severity": "medium",
+          "count": 67
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 2 级",
+          "severity": "medium",
+          "count": 32
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 2 层",
+          "severity": "medium",
+          "count": 34
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 迷雾入口",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 骷髅兵",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "immersion",
+          "issue": "缺少社交分享功能",
+          "severity": "medium",
+          "count": 254
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 小蝙蝠",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 3 级",
+          "severity": "medium",
+          "count": 23
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 3 层",
+          "severity": "medium",
+          "count": 30
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 遗忘回廊",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 流浪者",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 4 层",
+          "severity": "medium",
+          "count": 13
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 神秘商人",
+          "severity": "low",
+          "count": 4
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 4 级",
+          "severity": "medium",
+          "count": 12
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 5 层",
+          "severity": "medium",
+          "count": 2
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 暗影深渊",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 石像鬼",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 闪光宝箱",
+          "severity": "low",
+          "count": 31
+        },
+        {
+          "dimension": "playability",
+          "issue": "重复刷同一怪物",
+          "severity": "medium",
+          "count": 219
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 狼人",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 古老碑文",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "excitement",
+          "issue": "逆转局势",
+          "severity": "medium",
+          "count": 31
+        },
+        {
+          "dimension": "retention",
+          "issue": "连续多场战斗无掉落",
+          "severity": "medium",
+          "count": 7
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 冒险者遗物",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "excitement",
+          "issue": "残血胜利的刺激感",
+          "severity": "medium",
+          "count": 3
+        }
+      ],
+      "events": [
+        {
+          "type": "battleStart",
+          "data": {
+            "monsterId": "bat",
+            "monsterName": "小蝙蝠",
+            "monsterHP": 45,
+            "monsterLevel": 3,
+            "floor": 3
+          },
+          "time": 119262,
+          "timestamp": 1771256283527
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 17,
+            "monsterCurrentHP": 28,
+            "monsterMaxHP": 45,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119324,
+          "timestamp": 1771256283589
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 97,
+            "maxHP": 150,
+            "source": "bat",
+            "isCritical": false
+          },
+          "time": 119324,
+          "timestamp": 1771256283589
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 20,
+            "monsterCurrentHP": 8,
+            "monsterMaxHP": 45,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119386,
+          "timestamp": 1771256283651
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 96,
+            "maxHP": 150,
+            "source": "bat",
+            "isCritical": false
+          },
+          "time": 119386,
+          "timestamp": 1771256283651
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 30,
+            "monsterCurrentHP": 0,
+            "monsterMaxHP": 45,
+            "skillUsed": "attack",
+            "isCritical": true
+          },
+          "time": 119448,
+          "timestamp": 1771256283713
+        },
+        {
+          "type": "battleEnd",
+          "data": {
+            "victory": true,
+            "duration": 1500,
+            "turns": 3,
+            "rewards": {
+              "exp": 15,
+              "gold": 7,
+              "items": []
+            },
+            "playerHPLeft": 96,
+            "monsterId": "bat",
+            "battleTime": 186
+          },
+          "time": 119448,
+          "timestamp": 1771256283713
+        },
+        {
+          "type": "floorAdvance",
+          "data": {
+            "newFloor": 4,
+            "oldFloor": 3,
+            "timeSpent": 992
+          },
+          "time": 119509,
+          "timestamp": 1771256283774
+        },
+        {
+          "type": "battleStart",
+          "data": {
+            "monsterId": "skeleton",
+            "monsterName": "骷髅兵",
+            "monsterHP": 137,
+            "monsterLevel": 4,
+            "floor": 4
+          },
+          "time": 119572,
+          "timestamp": 1771256283837
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 10,
+            "monsterCurrentHP": 127,
+            "monsterMaxHP": 137,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119633,
+          "timestamp": 1771256283898
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 13,
+            "currentHP": 83,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": true
+          },
+          "time": 119633,
+          "timestamp": 1771256283898
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 13,
+            "monsterCurrentHP": 114,
+            "monsterMaxHP": 137,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119694,
+          "timestamp": 1771256283959
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 9,
+            "currentHP": 74,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119694,
+          "timestamp": 1771256283959
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 12,
+            "monsterCurrentHP": 102,
+            "monsterMaxHP": 137,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 8,
+            "currentHP": 66,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 13,
+            "monsterCurrentHP": 89,
+            "monsterMaxHP": 137,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119817,
+          "timestamp": 1771256284082
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 7,
+            "currentHP": 59,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119817,
+          "timestamp": 1771256284082
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 12,
+            "monsterCurrentHP": 77,
+            "monsterMaxHP": 137,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119879,
+          "timestamp": 1771256284144
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 7,
+            "currentHP": 52,
+            "maxHP": 150,
+            "source": "skeleton",
+            "isCritical": false
+          },
+          "time": 119879,
+          "timestamp": 1771256284144
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 11,
+            "monsterCurrentHP": 66,
+            "monsterMaxHP": 137,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119940,
+          "timestamp": 1771256284205
+        }
+      ],
+      "socialMetrics": {
+        "shareableMoments": 438,
+        "socialFrustration": "25.40",
+        "topMoments": [
+          {
+            "type": "newFloor",
+            "time": 1771256282782,
+            "floor": 3
+          },
+          {
+            "type": "levelUp",
+            "time": 1771256283214,
+            "level": 3
+          },
+          {
+            "type": "quickVictory",
+            "time": 1771256283464,
+            "turns": 3
+          },
+          {
+            "type": "quickVictory",
+            "time": 1771256283713,
+            "turns": 3
+          },
+          {
+            "type": "newFloor",
+            "time": 1771256283774,
+            "floor": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "paying_01",
+      "name": "氪金大佬",
+      "type": "paying",
+      "avatar": "💎",
+      "playTime": 119940,
+      "stats": {
+        "battles": 278,
+        "wins": 251,
+        "deaths": 26,
+        "maxFloor": 6,
+        "level": 2,
+        "kills": 251,
+        "totalDamageDealt": 20199,
+        "totalDamageTaken": 7286,
+        "skillsUsed": 128,
+        "itemsUsed": 43,
+        "forgeCount": 0
+      },
+      "dimensionScores": {
+        "excitement": 1.32,
+        "growth": 0.52,
+        "pacing": 0.82,
+        "playability": 0.38,
+        "retention": 0.98,
+        "immersion": 1.97
+      },
+      "overallScore": 0.91,
+      "breakdown": [
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 哥布林",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 小蝙蝠",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "连续升级",
+          "severity": "medium",
+          "count": 66
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 2 级",
+          "severity": "medium",
+          "count": 26
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 2 层",
+          "severity": "medium",
+          "count": 27
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 迷雾入口",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 史莱姆",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 3 级",
+          "severity": "medium",
+          "count": 23
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 3 层",
+          "severity": "medium",
+          "count": 26
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 遗忘回廊",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 狼人",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 闪光宝箱",
+          "severity": "low",
+          "count": 15
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 神秘商人",
+          "severity": "low",
+          "count": 4
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 骷髅兵",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 4 层",
+          "severity": "medium",
+          "count": 16
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 4 级",
+          "severity": "medium",
+          "count": 12
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 冒险者遗物",
+          "severity": "low",
+          "count": 3
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 石像鬼",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "playability",
+          "issue": "重复刷同一怪物",
+          "severity": "medium",
+          "count": 211
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 流浪者",
+          "severity": "low",
+          "count": 3
+        },
+        {
+          "dimension": "immersion",
+          "issue": "事件: 古老碑文",
+          "severity": "low",
+          "count": 6
+        },
+        {
+          "dimension": "excitement",
+          "issue": "连续被暴击",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "retention",
+          "issue": "连续多场战斗无掉落",
+          "severity": "medium",
+          "count": 7
+        },
+        {
+          "dimension": "excitement",
+          "issue": "逆转局势",
+          "severity": "medium",
+          "count": 11
+        },
+        {
+          "dimension": "growth",
+          "issue": "升级到 5 级",
+          "severity": "medium",
+          "count": 5
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 5 层",
+          "severity": "medium",
+          "count": 7
+        },
+        {
+          "dimension": "immersion",
+          "issue": "发现 暗影深渊",
+          "severity": "low",
+          "count": 2
+        },
+        {
+          "dimension": "playability",
+          "issue": "首次遭遇 暗影魔",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "excitement",
+          "issue": "残血胜利的刺激感",
+          "severity": "medium",
+          "count": 6
+        },
+        {
+          "dimension": "immersion",
+          "issue": "遇见 落魄冒险者",
+          "severity": "low",
+          "count": 1
+        },
+        {
+          "dimension": "retention",
+          "issue": "推进到第 6 层",
+          "severity": "medium",
+          "count": 2
+        }
+      ],
+      "events": [
+        {
+          "type": "itemObtain",
+          "data": {
+            "itemId": "batWing",
+            "itemName": "蝙蝠翅膀",
+            "rarity": "common",
+            "source": "battle"
+          },
+          "time": 119262,
+          "timestamp": 1771256283527
+        },
+        {
+          "type": "battleEnd",
+          "data": {
+            "victory": true,
+            "duration": 1000,
+            "turns": 2,
+            "rewards": {
+              "exp": 12,
+              "gold": 6,
+              "items": [
+                {
+                  "id": "batWing",
+                  "name": "蝙蝠翅膀",
+                  "rarity": "common"
+                }
+              ]
+            },
+            "playerHPLeft": 119,
+            "monsterId": "bat",
+            "battleTime": 125
+          },
+          "time": 119262,
+          "timestamp": 1771256283527
+        },
+        {
+          "type": "battleStart",
+          "data": {
+            "monsterId": "slime",
+            "monsterName": "史莱姆",
+            "monsterHP": 40,
+            "monsterLevel": 1,
+            "floor": 1
+          },
+          "time": 119324,
+          "timestamp": 1771256283589
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 13,
+            "monsterCurrentHP": 27,
+            "monsterMaxHP": 40,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119386,
+          "timestamp": 1771256283651
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 118,
+            "maxHP": 120,
+            "source": "slime",
+            "isCritical": false
+          },
+          "time": 119386,
+          "timestamp": 1771256283651
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 11,
+            "monsterCurrentHP": 16,
+            "monsterMaxHP": 40,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119448,
+          "timestamp": 1771256283713
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 117,
+            "maxHP": 120,
+            "source": "slime",
+            "isCritical": false
+          },
+          "time": 119448,
+          "timestamp": 1771256283713
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 10,
+            "monsterCurrentHP": 6,
+            "monsterMaxHP": 40,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119509,
+          "timestamp": 1771256283774
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 12,
+            "monsterCurrentHP": 0,
+            "monsterMaxHP": 40,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119572,
+          "timestamp": 1771256283837
+        },
+        {
+          "type": "itemObtain",
+          "data": {
+            "itemId": "slimeGel",
+            "itemName": "史莱姆凝胶",
+            "rarity": "common",
+            "source": "battle"
+          },
+          "time": 119572,
+          "timestamp": 1771256283837
+        },
+        {
+          "type": "battleEnd",
+          "data": {
+            "victory": true,
+            "duration": 2000,
+            "turns": 4,
+            "rewards": {
+              "exp": 15,
+              "gold": 8,
+              "items": [
+                {
+                  "id": "slimeGel",
+                  "name": "史莱姆凝胶",
+                  "rarity": "common"
+                }
+              ]
+            },
+            "playerHPLeft": 117,
+            "monsterId": "slime",
+            "battleTime": 248
+          },
+          "time": 119572,
+          "timestamp": 1771256283837
+        },
+        {
+          "type": "battleStart",
+          "data": {
+            "monsterId": "bat",
+            "monsterName": "小蝙蝠",
+            "monsterHP": 35,
+            "monsterLevel": 1,
+            "floor": 1
+          },
+          "time": 119633,
+          "timestamp": 1771256283898
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 11,
+            "monsterCurrentHP": 24,
+            "monsterMaxHP": 35,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119694,
+          "timestamp": 1771256283959
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 116,
+            "maxHP": 120,
+            "source": "bat",
+            "isCritical": false
+          },
+          "time": 119694,
+          "timestamp": 1771256283959
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 12,
+            "monsterCurrentHP": 12,
+            "monsterMaxHP": 35,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "playerDamage",
+          "data": {
+            "damage": 1,
+            "currentHP": 115,
+            "maxHP": 120,
+            "source": "bat",
+            "isCritical": false
+          },
+          "time": 119756,
+          "timestamp": 1771256284021
+        },
+        {
+          "type": "monsterDamage",
+          "data": {
+            "damage": 13,
+            "monsterCurrentHP": 0,
+            "monsterMaxHP": 35,
+            "skillUsed": "attack",
+            "isCritical": false
+          },
+          "time": 119817,
+          "timestamp": 1771256284082
+        },
+        {
+          "type": "battleEnd",
+          "data": {
+            "victory": true,
+            "duration": 1500,
+            "turns": 3,
+            "rewards": {
+              "exp": 12,
+              "gold": 6,
+              "items": [
+                {
+                  "id": "batWing",
+                  "name": "蝙蝠翅膀",
+                  "rarity": "common"
+                }
+              ]
+            },
+            "playerHPLeft": 115,
+            "monsterId": "bat",
+            "battleTime": 184
+          },
+          "time": 119817,
+          "timestamp": 1771256284082
+        },
+        {
+          "type": "floorAdvance",
+          "data": {
+            "newFloor": 2,
+            "oldFloor": 1,
+            "timeSpent": 1611
+          },
+          "time": 119879,
+          "timestamp": 1771256284144
+        },
+        {
+          "type": "battleStart",
+          "data": {
+            "monsterId": "slime",
+            "monsterName": "史莱姆",
+            "monsterHP": 46,
+            "monsterLevel": 2,
+            "floor": 2
+          },
+          "time": 119940,
+          "timestamp": 1771256284205
+        }
+      ],
+      "payingMetrics": {
+        "valuePerceived": "4.36",
+        "spendWillingness": "0.65",
+        "forgeCount": 0
+      }
+    }
+  ],
+  "matrix": {
+    "byAgent": {
+      "casual": {
+        "excitement": 1.47,
+        "growth": 0.72,
+        "pacing": 0.95,
+        "playability": 0.2,
+        "retention": 1.42,
+        "immersion": 1.96
+      },
+      "hardcore": {
+        "excitement": 1.29,
+        "growth": 0.46,
+        "pacing": 0.87,
+        "playability": 0,
+        "retention": 0.01,
+        "immersion": 1.98
+      },
+      "explorer": {
+        "excitement": 1.3,
+        "growth": 0.5,
+        "pacing": 0.84,
+        "playability": 0.33,
+        "retention": 0.78,
+        "immersion": 1.96
+      },
+      "social": {
+        "excitement": 1.2,
+        "growth": 0.52,
+        "pacing": 0.79,
+        "playability": 0.15,
+        "retention": 1.04,
+        "immersion": 1.35
+      },
+      "paying": {
+        "excitement": 1.32,
+        "growth": 0.52,
+        "pacing": 0.82,
+        "playability": 0.38,
+        "retention": 0.98,
+        "immersion": 1.97
+      }
+    },
+    "byDimension": {
+      "excitement": {
+        "avg": 1.32,
+        "min": 1.2,
+        "max": 1.47,
+        "variance": 0.01
+      },
+      "growth": {
+        "avg": 0.54,
+        "min": 0.46,
+        "max": 0.72,
+        "variance": 0.01
+      },
+      "pacing": {
+        "avg": 0.85,
+        "min": 0.79,
+        "max": 0.95,
+        "variance": 0
+      },
+      "playability": {
+        "avg": 0.21,
+        "min": 0,
+        "max": 0.38,
+        "variance": 0.02
+      },
+      "retention": {
+        "avg": 0.85,
+        "min": 0.01,
+        "max": 1.42,
+        "variance": 0.22
+      },
+      "immersion": {
+        "avg": 1.84,
+        "min": 1.35,
+        "max": 1.98,
+        "variance": 0.06
+      }
+    },
+    "overallAvg": 0.94
+  },
+  "issues": [
+    {
+      "dimension": "excitement",
+      "dimensionName": "刺激度",
+      "issue": "刺激度严重偏低",
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ],
+      "avgScore": 1.32,
+      "severity": "critical"
+    },
+    {
+      "dimension": "growth",
+      "dimensionName": "成长感",
+      "issue": "成长感严重偏低",
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ],
+      "avgScore": 0.54,
+      "severity": "critical"
+    },
+    {
+      "dimension": "pacing",
+      "dimensionName": "节奏感",
+      "issue": "节奏感严重偏低",
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ],
+      "avgScore": 0.85,
+      "severity": "critical"
+    },
+    {
+      "dimension": "playability",
+      "dimensionName": "可玩性",
+      "issue": "可玩性严重偏低",
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ],
+      "avgScore": 0.21,
+      "severity": "critical"
+    },
+    {
+      "dimension": "retention",
+      "dimensionName": "留存预估",
+      "issue": "留存预估严重偏低",
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ],
+      "avgScore": 0.85,
+      "severity": "critical"
+    },
+    {
+      "dimension": "immersion",
+      "dimensionName": "代入感",
+      "issue": "代入感严重偏低",
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ],
+      "avgScore": 1.84,
+      "severity": "critical"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "critical",
+      "priorityLabel": "P0",
+      "action": "紧急：调整战斗系统，增加暴击、闪避等刺激机制",
+      "targetDimensions": [
+        "excitement"
+      ],
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ]
+    },
+    {
+      "priority": "critical",
+      "priorityLabel": "P0",
+      "action": "紧急：优化成长曲线，增加玩家变强的反馈",
+      "targetDimensions": [
+        "growth"
+      ],
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ]
+    },
+    {
+      "priority": "critical",
+      "priorityLabel": "P0",
+      "action": "紧急：调整战斗频率和进度推进速度",
+      "targetDimensions": [
+        "pacing"
+      ],
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ]
+    },
+    {
+      "priority": "critical",
+      "priorityLabel": "P0",
+      "action": "紧急：优化技能平衡，提升可玩性",
+      "targetDimensions": [
+        "playability"
+      ],
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ]
+    },
+    {
+      "priority": "critical",
+      "priorityLabel": "P0",
+      "action": "紧急：增加保护机制，降低连续失败的惩罚",
+      "targetDimensions": [
+        "retention"
+      ],
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ]
+    },
+    {
+      "priority": "critical",
+      "priorityLabel": "P0",
+      "action": "紧急：丰富游戏内容，增加发现乐趣",
+      "targetDimensions": [
+        "immersion"
+      ],
+      "affectedAgents": [
+        "casual",
+        "hardcore",
+        "explorer",
+        "social",
+        "paying"
+      ]
+    },
+    {
+      "priority": "medium",
+      "priorityLabel": "P2",
+      "action": "针对 轻度休闲 类型玩家优化难度",
+      "targetDimensions": [
+        "retention",
+        "pacing"
+      ],
+      "affectedAgents": [
+        "casual"
+      ]
+    },
+    {
+      "priority": "medium",
+      "priorityLabel": "P2",
+      "action": "针对 硬核竞技 类型玩家优化难度",
+      "targetDimensions": [
+        "retention",
+        "pacing"
+      ],
+      "affectedAgents": [
+        "hardcore"
+      ]
+    },
+    {
+      "priority": "medium",
+      "priorityLabel": "P2",
+      "action": "针对 剧情探索 类型玩家优化难度",
+      "targetDimensions": [
+        "retention",
+        "pacing"
+      ],
+      "affectedAgents": [
+        "explorer"
+      ]
+    },
+    {
+      "priority": "medium",
+      "priorityLabel": "P2",
+      "action": "针对 社交互动 类型玩家优化难度",
+      "targetDimensions": [
+        "retention",
+        "pacing"
+      ],
+      "affectedAgents": [
+        "social"
+      ]
+    },
+    {
+      "priority": "medium",
+      "priorityLabel": "P2",
+      "action": "针对 付费习惯 类型玩家优化难度",
+      "targetDimensions": [
+        "retention",
+        "pacing"
+      ],
+      "affectedAgents": [
+        "paying"
+      ]
+    }
+  ],
+  "metrics": {
+    "totalBattles": 1413,
+    "totalWins": 1254,
+    "totalDeaths": 154,
+    "winRate": "88.7%",
+    "eventCounts": {
+      "battleStart": 1413,
+      "battleEnd": 1254,
+      "floorAdvance": 374,
+      "levelUp": 325,
+      "death": 154
+    },
+    "agentSummaries": {
+      "casual_01": {
+        "battles": 260,
+        "wins": 224,
+        "deaths": 35,
+        "levelUps": 58,
+        "floorsAdvanced": 66,
+        "winRate": "86.2%"
+      },
+      "hardcore_01": {
+        "battles": 300,
+        "wins": 269,
+        "deaths": 30,
+        "levelUps": 74,
+        "floorsAdvanced": 82,
+        "winRate": "89.7%"
+      },
+      "explorer_01": {
+        "battles": 282,
+        "wins": 251,
+        "deaths": 30,
+        "levelUps": 60,
+        "floorsAdvanced": 69,
+        "winRate": "89.0%"
+      },
+      "social_01": {
+        "battles": 293,
+        "wins": 259,
+        "deaths": 33,
+        "levelUps": 67,
+        "floorsAdvanced": 79,
+        "winRate": "88.4%"
+      },
+      "paying_01": {
+        "battles": 278,
+        "wins": 251,
+        "deaths": 26,
+        "levelUps": 66,
+        "floorsAdvanced": 78,
+        "winRate": "90.3%"
+      }
+    }
+  },
+  "chartData": {
+    "radarChart": {
+      "labels": [
+        "刺激度",
+        "成长感",
+        "节奏感",
+        "可玩性",
+        "留存预估",
+        "代入感"
+      ],
+      "datasets": [
+        {
+          "label": "休闲小明",
+          "data": [
+            1.47,
+            0.72,
+            0.95,
+            0.2,
+            1.42,
+            1.96
+          ],
+          "agentType": "casual"
+        },
+        {
+          "label": "竞技达人",
+          "data": [
+            1.29,
+            0.46,
+            0.87,
+            0,
+            0.01,
+            1.98
+          ],
+          "agentType": "hardcore"
+        },
+        {
+          "label": "探索者小雪",
+          "data": [
+            1.3,
+            0.5,
+            0.84,
+            0.33,
+            0.78,
+            1.96
+          ],
+          "agentType": "explorer"
+        },
+        {
+          "label": "社交达人",
+          "data": [
+            1.2,
+            0.52,
+            0.79,
+            0.15,
+            1.04,
+            1.35
+          ],
+          "agentType": "social"
+        },
+        {
+          "label": "氪金大佬",
+          "data": [
+            1.32,
+            0.52,
+            0.82,
+            0.38,
+            0.98,
+            1.97
+          ],
+          "agentType": "paying"
+        }
+      ]
+    },
+    "heatmap": {
+      "rows": [
+        {
+          "type": "casual",
+          "typeName": "轻度休闲",
+          "values": [
+            1.47,
+            0.72,
+            0.95,
+            0.2,
+            1.42,
+            1.96
+          ]
+        },
+        {
+          "type": "hardcore",
+          "typeName": "硬核竞技",
+          "values": [
+            1.29,
+            0.46,
+            0.87,
+            0,
+            0.01,
+            1.98
+          ]
+        },
+        {
+          "type": "explorer",
+          "typeName": "剧情探索",
+          "values": [
+            1.3,
+            0.5,
+            0.84,
+            0.33,
+            0.78,
+            1.96
+          ]
+        },
+        {
+          "type": "social",
+          "typeName": "社交互动",
+          "values": [
+            1.2,
+            0.52,
+            0.79,
+            0.15,
+            1.04,
+            1.35
+          ]
+        },
+        {
+          "type": "paying",
+          "typeName": "付费习惯",
+          "values": [
+            1.32,
+            0.52,
+            0.82,
+            0.38,
+            0.98,
+            1.97
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "excitement",
+          "name": "刺激度"
+        },
+        {
+          "id": "growth",
+          "name": "成长感"
+        },
+        {
+          "id": "pacing",
+          "name": "节奏感"
+        },
+        {
+          "id": "playability",
+          "name": "可玩性"
+        },
+        {
+          "id": "retention",
+          "name": "留存预估"
+        },
+        {
+          "id": "immersion",
+          "name": "代入感"
+        }
+      ]
+    },
+    "comparison": [
+      {
+        "id": "casual_01",
+        "name": "休闲小明",
+        "type": "casual",
+        "avatar": "🎮",
+        "overallScore": 1.06,
+        "dimensionScores": {
+          "excitement": 1.47,
+          "growth": 0.72,
+          "pacing": 0.95,
+          "playability": 0.2,
+          "retention": 1.42,
+          "immersion": 1.96
+        },
+        "lowestDimension": {
+          "name": "playability",
+          "score": 0.2
+        },
+        "highestDimension": {
+          "name": "immersion",
+          "score": 1.96
+        }
+      },
+      {
+        "id": "explorer_01",
+        "name": "探索者小雪",
+        "type": "explorer",
+        "avatar": "🗺️",
+        "overallScore": 0.99,
+        "dimensionScores": {
+          "excitement": 1.3,
+          "growth": 0.5,
+          "pacing": 0.84,
+          "playability": 0.33,
+          "retention": 0.78,
+          "immersion": 1.96
+        },
+        "lowestDimension": {
+          "name": "playability",
+          "score": 0.33
+        },
+        "highestDimension": {
+          "name": "immersion",
+          "score": 1.96
+        }
+      },
+      {
+        "id": "paying_01",
+        "name": "氪金大佬",
+        "type": "paying",
+        "avatar": "💎",
+        "overallScore": 0.91,
+        "dimensionScores": {
+          "excitement": 1.32,
+          "growth": 0.52,
+          "pacing": 0.82,
+          "playability": 0.38,
+          "retention": 0.98,
+          "immersion": 1.97
+        },
+        "lowestDimension": {
+          "name": "playability",
+          "score": 0.38
+        },
+        "highestDimension": {
+          "name": "immersion",
+          "score": 1.97
+        }
+      },
+      {
+        "id": "social_01",
+        "name": "社交达人",
+        "type": "social",
+        "avatar": "👥",
+        "overallScore": 0.86,
+        "dimensionScores": {
+          "excitement": 1.2,
+          "growth": 0.52,
+          "pacing": 0.79,
+          "playability": 0.15,
+          "retention": 1.04,
+          "immersion": 1.35
+        },
+        "lowestDimension": {
+          "name": "playability",
+          "score": 0.15
+        },
+        "highestDimension": {
+          "name": "immersion",
+          "score": 1.35
+        }
+      },
+      {
+        "id": "hardcore_01",
+        "name": "竞技达人",
+        "type": "hardcore",
+        "avatar": "⚔️",
+        "overallScore": 0.67,
+        "dimensionScores": {
+          "excitement": 1.29,
+          "growth": 0.46,
+          "pacing": 0.87,
+          "playability": 0,
+          "retention": 0.01,
+          "immersion": 1.98
+        },
+        "lowestDimension": {
+          "name": "playability",
+          "score": 0
+        },
+        "highestDimension": {
+          "name": "immersion",
+          "score": 1.98
+        }
+      }
+    ]
+  },
+  "dimensionNames": {
+    "excitement": "刺激度",
+    "growth": "成长感",
+    "pacing": "节奏感",
+    "playability": "可玩性",
+    "retention": "留存预估",
+    "immersion": "代入感"
+  },
+  "agentTypeNames": {
+    "casual": "轻度休闲",
+    "hardcore": "硬核竞技",
+    "explorer": "剧情探索",
+    "social": "社交互动",
+    "paying": "付费习惯"
+  }
+}

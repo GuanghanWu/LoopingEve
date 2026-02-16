@@ -21,6 +21,12 @@ class InventoryManager {
             existing.count = newCount;
             if (added > 0) {
                 this.game.ui.log(`📦 ${itemDef.icon} ${itemDef.name} +${added}`);
+                this.game.emit?.('itemObtain', {
+                    itemId: itemId,
+                    itemName: itemDef.name,
+                    count: added,
+                    source: 'loot'
+                });
             }
         } else {
             if (this.game.inventory.items.length >= this.game.inventory.slots) {
@@ -29,6 +35,12 @@ class InventoryManager {
             }
             this.game.inventory.items.push({ id: itemId, count: Math.min(count, itemDef.stackMax) });
             this.game.ui.log(`📦 ${itemDef.icon} ${itemDef.name} +${count}`);
+            this.game.emit?.('itemObtain', {
+                itemId: itemId,
+                itemName: itemDef.name,
+                count: count,
+                source: 'loot'
+            });
         }
     }
 
@@ -82,6 +94,11 @@ class InventoryManager {
         this.removeItem(itemId, 1);
         this.game.ui.log(`💚 使用 ${def.name}，恢复 <span class="heal">${healAmt}</span> HP`);
         this.game.ui.showDamagePopup(healAmt, true);
+        this.game.emit?.('itemUse', {
+            itemId: itemId,
+            itemName: def.name,
+            effect: `恢复 ${healAmt} HP`
+        });
         document.getElementById('itemModal').classList.remove('show');
         this.game.save();
         this.game.ui.render();
@@ -186,6 +203,11 @@ class InventoryManager {
             this.game.player.armor = itemId;
         }
         this.game.ui.log(`🔨 锻造成功：${item.icon} ${item.name}！`);
+        this.game.emit?.('forgeSuccess', {
+            itemId: itemId,
+            itemName: item.name,
+            category: category
+        });
         this.game.save();
         this.game.ui.render();
         this.game.ui.showForgeCategory(category);

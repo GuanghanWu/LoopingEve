@@ -1,0 +1,192 @@
+{
+    "simulation": {
+        "duration": 600000,
+        "tickInterval": 100
+    },
+    "agents": [
+        {
+            "id": "casual_01",
+            "name": "休闲小明",
+            "type": "casual",
+            "avatar": "🎮",
+            "personality": {
+                "patience": 0.35,
+                "frustrationTolerance": 0.25,
+                "explorationDesire": 0.4,
+                "competitionDrive": 0.15,
+                "riskAppetite": 0.25,
+                "persistence": 0.3
+            },
+            "preferences": {
+                "sessionLength": "short",
+                "difficultyPreference": "easy",
+                "combatVsExplore": 0.45,
+                "grindTolerance": 0.25,
+                "rewardSensitivity": 0.85,
+                "immersionNeed": 0.4
+            },
+            "behaviorPatterns": {
+                "playFrequency": "偶尔",
+                "avgSessionMinutes": 15,
+                "quitThreshold": { "consecutiveFails": 2 },
+                "decisionSpeed": 0.5,
+                "resourceConservation": 0.75
+            },
+            "skillProfile": {
+                "gameSense": 0.35,
+                "reactionSpeed": 0.4,
+                "strategicThinking": 0.25,
+                "adaptability": 0.35
+            }
+        },
+        {
+            "id": "hardcore_01",
+            "name": "竞技达人",
+            "type": "hardcore",
+            "avatar": "⚔️",
+            "personality": {
+                "patience": 0.85,
+                "frustrationTolerance": 0.9,
+                "explorationDesire": 0.55,
+                "competitionDrive": 0.95,
+                "riskAppetite": 0.85,
+                "persistence": 0.95
+            },
+            "preferences": {
+                "sessionLength": "long",
+                "difficultyPreference": "hard",
+                "combatVsExplore": 0.35,
+                "grindTolerance": 0.9,
+                "rewardSensitivity": 0.4,
+                "immersionNeed": 0.25
+            },
+            "behaviorPatterns": {
+                "playFrequency": "每日",
+                "avgSessionMinutes": 120,
+                "quitThreshold": { "almostNever": true },
+                "decisionSpeed": 0.9,
+                "resourceConservation": 0.2
+            },
+            "skillProfile": {
+                "gameSense": 0.9,
+                "reactionSpeed": 0.85,
+                "strategicThinking": 0.9,
+                "adaptability": 0.9
+            }
+        },
+        {
+            "id": "explorer_01",
+            "name": "探索者小雪",
+            "type": "explorer",
+            "avatar": "🗺️",
+            "personality": {
+                "patience": 0.75,
+                "frustrationTolerance": 0.45,
+                "explorationDesire": 0.9,
+                "competitionDrive": 0.2,
+                "riskAppetite": 0.4,
+                "persistence": 0.65
+            },
+            "preferences": {
+                "sessionLength": "medium",
+                "difficultyPreference": "normal",
+                "combatVsExplore": 0.85,
+                "grindTolerance": 0.35,
+                "rewardSensitivity": 0.55,
+                "immersionNeed": 0.9
+            },
+            "behaviorPatterns": {
+                "playFrequency": "每周数次",
+                "avgSessionMinutes": 45,
+                "quitThreshold": { "contentExhausted": true },
+                "decisionSpeed": 0.55,
+                "resourceConservation": 0.5
+            },
+            "skillProfile": {
+                "gameSense": 0.6,
+                "reactionSpeed": 0.45,
+                "strategicThinking": 0.55,
+                "adaptability": 0.5
+            },
+            "specialTraits": {
+                "perfectionism": 0.8
+            }
+        },
+        {
+            "id": "social_01",
+            "name": "社交达人",
+            "type": "social",
+            "avatar": "👥",
+            "personality": {
+                "patience": 0.5,
+                "frustrationTolerance": 0.55,
+                "explorationDesire": 0.5,
+                "competitionDrive": 0.45,
+                "riskAppetite": 0.45,
+                "persistence": 0.55
+            },
+            "preferences": {
+                "sessionLength": "flexible",
+                "difficultyPreference": "normal",
+                "combatVsExplore": 0.55,
+                "grindTolerance": 0.55,
+                "rewardSensitivity": 0.6,
+                "immersionNeed": 0.55
+            },
+            "behaviorPatterns": {
+                "playFrequency": "与朋友同步",
+                "avgSessionMinutes": 60,
+                "quitThreshold": { "friendsOffline": true },
+                "decisionSpeed": 0.6,
+                "resourceConservation": 0.5
+            },
+            "skillProfile": {
+                "gameSense": 0.55,
+                "reactionSpeed": 0.5,
+                "strategicThinking": 0.5,
+                "adaptability": 0.7
+            },
+            "specialTraits": {
+                "socialNeed": 0.95
+            }
+        },
+        {
+            "id": "paying_01",
+            "name": "氪金大佬",
+            "type": "paying",
+            "avatar": "💎",
+            "personality": {
+                "patience": 0.4,
+                "frustrationTolerance": 0.55,
+                "explorationDesire": 0.5,
+                "competitionDrive": 0.6,
+                "riskAppetite": 0.55,
+                "persistence": 0.5
+            },
+            "preferences": {
+                "sessionLength": "medium",
+                "difficultyPreference": "normal",
+                "combatVsExplore": 0.45,
+                "grindTolerance": 0.35,
+                "rewardSensitivity": 0.75,
+                "immersionNeed": 0.4
+            },
+            "behaviorPatterns": {
+                "playFrequency": "每日",
+                "avgSessionMinutes": 45,
+                "quitThreshold": { "lowValuePerception": true },
+                "decisionSpeed": 0.65,
+                "resourceConservation": 0.15
+            },
+            "skillProfile": {
+                "gameSense": 0.6,
+                "reactionSpeed": 0.55,
+                "strategicThinking": 0.5,
+                "adaptability": 0.55
+            },
+            "specialTraits": {
+                "valueSensitivity": 0.35
+            }
+        }
+    ]
+}
