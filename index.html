@@ -80,19 +80,21 @@
         
         <div class="action-area">
             <div class="battle-actions">
+                <div class="next-floor-wrapper">
+                    <button class="btn btn-next" id="btnNextFloor" disabled>⬆️ 下一层</button>
+                    <label class="auto-next">
+                        <input type="checkbox" id="autoNext">
+                        <span>自动下层</span>
+                    </label>
+                </div>
                 <button class="btn btn-attack" id="btnAttack" disabled>⚔️ 攻击</button>
                 <button class="btn btn-skill" id="btnSkill" disabled>✨ <span id="currentSkillName">强力打击</span></button>
                 <button class="btn btn-item" id="btnItem" disabled>🧪 血瓶</button>
-                <button class="btn btn-next" id="btnNextFloor" disabled>⬆️ 下一层</button>
             </div>
             <div class="info-actions">
                 <button class="btn btn-inventory" id="btnInventory">🎒 背包</button>
                 <button class="btn btn-skill-list" id="btnSkillList">✨ 技能</button>
                 <button class="btn btn-forge" id="btnForge">🔨 锻造</button>
-                <label class="auto-next">
-                    <input type="checkbox" id="autoNext">
-                    <span>自动下层</span>
-                </label>
             </div>
         </div>
     </div>

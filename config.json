@@ -138,12 +138,12 @@
     "monsters": [
         { "id": "slime", "name": "史莱姆", "avatar": "🟢", "hp": 40, "atk": 4, "def": 2, "exp": 15, "gold": 8, "minFloor": 1, "critRate": 0.05, "dodgeRate": 0.02 },
         { "id": "bat", "name": "小蝙蝠", "avatar": "🦇", "hp": 35, "atk": 5, "def": 1, "exp": 12, "gold": 6, "minFloor": 1, "critRate": 0.12, "dodgeRate": 0.08 },
-        { "id": "goblin", "name": "哥布林", "avatar": "👺", "hp": 65, "atk": 8, "def": 4, "exp": 25, "gold": 15, "minFloor": 1, "critRate": 0.08, "dodgeRate": 0.05 },
+        { "id": "goblin", "name": "哥布林", "avatar": "👹", "hp": 65, "atk": 8, "def": 4, "exp": 25, "gold": 15, "minFloor": 1, "critRate": 0.08, "dodgeRate": 0.05 },
         { "id": "skeleton", "name": "骷髅兵", "avatar": "💀", "hp": 95, "atk": 12, "def": 6, "exp": 40, "gold": 25, "minFloor": 2, "critRate": 0.10, "dodgeRate": 0.04 },
         { "id": "werewolf", "name": "狼人", "avatar": "🐺", "hp": 140, "atk": 16, "def": 9, "exp": 60, "gold": 40, "minFloor": 3, "critRate": 0.15, "dodgeRate": 0.10 },
-        { "id": "gargoyle", "name": "石像鬼", "avatar": "🦇", "hp": 190, "atk": 20, "def": 14, "exp": 85, "gold": 55, "minFloor": 4, "critRate": 0.07, "dodgeRate": 0.03 },
+        { "id": "gargoyle", "name": "石像鬼", "avatar": "🗿", "hp": 190, "atk": 20, "def": 14, "exp": 85, "gold": 55, "minFloor": 4, "critRate": 0.07, "dodgeRate": 0.03 },
         { "id": "shadow", "name": "暗影魔", "avatar": "👤", "hp": 240, "atk": 26, "def": 12, "exp": 110, "gold": 75, "minFloor": 5, "critRate": 0.13, "dodgeRate": 0.09 },
-        { "id": "demon", "name": "炎魔", "avatar": "👹", "hp": 320, "atk": 32, "def": 18, "exp": 150, "gold": 100, "minFloor": 6, "critRate": 0.11, "dodgeRate": 0.06 },
+        { "id": "demon", "name": "炎魔", "avatar": "🔥", "hp": 320, "atk": 32, "def": 18, "exp": 150, "gold": 100, "minFloor": 6, "critRate": 0.11, "dodgeRate": 0.06 },
         { "id": "frostGiant", "name": "冰霜巨人", "avatar": "🧊", "hp": 420, "atk": 40, "def": 25, "exp": 200, "gold": 140, "minFloor": 7, "critRate": 0.09, "dodgeRate": 0.04 },
         { "id": "dragonkin", "name": "龙人", "avatar": "🦎", "hp": 550, "atk": 50, "def": 32, "exp": 280, "gold": 200, "minFloor": 8, "critRate": 0.14, "dodgeRate": 0.07 },
         { "id": "demonLord", "name": "恶魔领主", "avatar": "😈", "hp": 700, "atk": 62, "def": 40, "exp": 400, "gold": 300, "minFloor": 10, "critRate": 0.15, "dodgeRate": 0.08 }
