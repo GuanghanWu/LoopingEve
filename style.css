@@ -606,20 +606,120 @@ body {
     100% { opacity: 0; transform: translateY(-50px) scale(0.8); }
 }
 
-.action-area {
-    background: linear-gradient(180deg, rgba(26, 26, 46, 0.95) 0%, rgba(15, 52, 96, 0.98) 100%);
-    border-top: 2px solid rgba(255, 215, 0, 0.3);
+.floating-actions {
+    position: relative;
     padding: 12px 16px;
+    margin-bottom: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.battle-actions {
+.combat-buttons {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 8px;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 100%;
+}
+
+.combat-buttons > .btn-attack,
+.combat-buttons > .btn-skill,
+.combat-buttons > .btn-item {
+    flex: 1;
+    min-width: 0;
+}
+
+.btn-skill {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    overflow: hidden;
+}
+
+.skill-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px 8px;
+    pointer-events: none;
+}
+
+.skill-toggle {
+    width: 44px;
+    height: calc(100% - 8px);
+    margin: 4px 4px 4px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.skill-toggle:hover {
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 100%);
+}
+
+.next-floor-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.bottom-fixed-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, rgba(26, 26, 46, 0.98) 0%, rgba(15, 52, 96, 1) 100%);
+    border-top: 2px solid rgba(255, 215, 0, 0.3);
+    padding: 10px 16px;
+    display: flex;
+    gap: 6px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+}
+
+.nav-btn {
+    flex: 1;
+    padding: 14px 8px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: bold;
+    font-size: 0.9rem;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-btn.active {
+    background: linear-gradient(180deg, var(--accent) 0%, #ff8c00 100%);
+    border-color: #ffe44d;
+    color: #1a1a2e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+}
+
+.nav-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
 }
 
 .info-actions {
@@ -1334,21 +1434,42 @@ body {
         font-size: 1.5rem;
     }
     
-    .action-area {
+    .floating-actions {
         padding: 20px 24px;
-    }
-    
-    .battle-actions {
+        margin-bottom: 80px;
         gap: 16px;
-        margin-bottom: 16px;
-        padding-bottom: 16px;
     }
-    
+
+    .combat-buttons {
+        gap: 16px;
+    }
+
+    .next-floor-wrapper {
+        gap: 16px;
+        flex-wrap: nowrap;
+    }
+
+    .bottom-fixed-nav {
+        max-width: 900px;
+        margin: 0 auto;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        padding: 12px 24px;
+        gap: 8px;
+    }
+
+    .nav-btn {
+        padding: 16px 8px;
+        font-size: 1rem;
+        min-height: 55px;
+    }
+
     .btn {
         padding: 16px 32px;
         font-size: 1.1rem;
     }
-    
+
     .info-actions {
         gap: 12px;
     }
@@ -1483,26 +1604,51 @@ body {
         flex-shrink: 0;
     }
     
-    .action-area {
+    .floating-actions {
         padding: 8px 10px;
-        flex-shrink: 0;
+        margin-bottom: 60px;
+        gap: 6px;
     }
-    
-    .battle-actions {
+
+    .combat-buttons {
         gap: 4px;
-        margin-bottom: 6px;
-        padding-bottom: 6px;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-wrap: nowrap;
     }
-    
+
+    .combat-buttons > .btn-attack,
+    .combat-buttons > .btn-skill,
+    .combat-buttons > .btn-item {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .skill-content {
+        padding: 8px 4px;
+        font-size: 0.75rem;
+    }
+
+    .skill-toggle {
+        width: 36px;
+        height: calc(100% - 6px);
+        margin: 3px 3px 3px 0;
+        font-size: 0.75rem;
+        border-radius: 6px;
+    }
+
     .next-floor-wrapper {
-        display: flex;
-        align-items: center;
+        gap: 6px;
+        flex-wrap: nowrap;
+    }
+
+    .bottom-fixed-nav {
+        padding: 8px 10px;
         gap: 4px;
-        flex: 100%;
-        justify-content: center;
-        order: -1;
+    }
+
+    .nav-btn {
+        padding: 10px 4px;
+        font-size: 0.75rem;
+        min-height: 40px;
     }
     
     .info-actions {

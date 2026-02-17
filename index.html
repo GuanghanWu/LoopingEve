@@ -86,24 +86,29 @@
             </div>
         </main>
         
-        <div class="action-area">
-            <div class="battle-actions">
-                <div class="next-floor-wrapper">
-                    <button class="btn btn-next" id="btnNextFloor" disabled>⬆️ 下一层</button>
-                    <label class="auto-next">
-                        <input type="checkbox" id="autoNext">
-                        <span>自动下层</span>
-                    </label>
-                </div>
+        <div class="floating-actions">
+            <div class="next-floor-wrapper">
+                <button class="btn btn-next" id="btnNextFloor" disabled>⬆️ 下一层</button>
+                <label class="auto-next">
+                    <input type="checkbox" id="autoNext">
+                    <span>自动下层</span>
+                </label>
+            </div>
+            <div class="combat-buttons">
                 <button class="btn btn-attack" id="btnAttack" disabled>⚔️ 攻击</button>
-                <button class="btn btn-skill" id="btnSkill" disabled>✨ <span id="currentSkillName">强力打击</span></button>
+                <button class="btn btn-skill" id="btnSkill" disabled>
+                    <span class="skill-content">✨ <span id="currentSkillName">强力打击</span></span>
+                    <span class="skill-toggle" id="btnSkillToggle" title="切换技能">⇄</span>
+                </button>
                 <button class="btn btn-item" id="btnItem" disabled>🧪 血瓶</button>
             </div>
-            <div class="info-actions">
-                <button class="btn btn-inventory" id="btnInventory">🎒 背包</button>
-                <button class="btn btn-skill-list" id="btnSkillList">✨ 技能</button>
-                <button class="btn btn-forge" id="btnForge">🔨 锻造</button>
-            </div>
+        </div>
+        
+        <div class="bottom-fixed-nav">
+            <button class="nav-btn active" id="navBattle">⚔️ 战斗</button>
+            <button class="nav-btn" id="navInventory">🎒 背包</button>
+            <button class="nav-btn" id="navTalent">✨ 天赋</button>
+            <button class="nav-btn" id="navForge">🔨 锻造</button>
         </div>
     </div>
     
@@ -236,6 +241,56 @@
     
     <script>
     setupModals();
+    
+    // 底部固定导航栏切换功能
+    const floatingActions = document.querySelector('.floating-actions');
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const btnSkillToggle = document.getElementById('btnSkillToggle');
+    const btnSkill = document.getElementById('btnSkill');
+    
+    // 为技能切换按钮添加点击事件
+    if (btnSkillToggle) {
+        btnSkillToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            game.openSkillMenu();
+        });
+    }
+    
+    // 为技能按钮添加点击事件（排除切换按钮区域）
+    if (btnSkill) {
+        btnSkill.addEventListener('click', function(e) {
+            if (e.target !== btnSkillToggle && !btnSkillToggle.contains(e.target)) {
+                game.battle.useSelectedSkill();
+            }
+        });
+    }
+    
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // 移除所有nav-btn的active类
+            navButtons.forEach(b => b.classList.remove('active'));
+            // 添加当前nav-btn的active类
+            this.classList.add('active');
+            
+            // 根据选中的Tab显示/隐藏悬浮按钮
+            const tabId = this.id;
+            if (tabId === 'navBattle') {
+                floatingActions.style.display = 'flex';
+            } else {
+                floatingActions.style.display = 'none';
+            }
+            
+            // 处理其他Tab的功能
+            if (tabId === 'navInventory') {
+                game.openInventory();
+            } else if (tabId === 'navTalent') {
+                // 这里将来会打开天赋页面，现在暂时打开技能页面
+                game.openSkillMenu();
+            } else if (tabId === 'navForge') {
+                game.openForge();
+            }
+        });
+    });
     </script>
 </body>
 </html>

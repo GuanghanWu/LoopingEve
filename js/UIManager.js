@@ -104,17 +104,22 @@ class UIManager {
     }
 
     setButtons({ attack, skill, item, inventory, next }) {
-        $('btnAttack').disabled = attack;
-        $('btnSkill').disabled = skill;
-        $('btnItem').disabled = item;
-        $('btnInventory').disabled = inventory;
-        const nextBtn = $('btnNextFloor');
-        const shouldDisableNext = next && !this.game.canAdvanceFloor;
-        nextBtn.disabled = shouldDisableNext;
-        if (this.game.canAdvanceFloor && !next) {
-            nextBtn.classList.add('can-advance');
-        } else {
-            nextBtn.classList.remove('can-advance');
+        const btnAttack = $('btnAttack');
+        const btnSkill = $('btnSkill');
+        const btnItem = $('btnItem');
+        const btnNextFloor = $('btnNextFloor');
+        
+        if (btnAttack) btnAttack.disabled = attack;
+        if (btnSkill) btnSkill.disabled = skill;
+        if (btnItem) btnItem.disabled = item;
+        if (btnNextFloor) {
+            const shouldDisableNext = next && !this.game.canAdvanceFloor;
+            btnNextFloor.disabled = shouldDisableNext;
+            if (this.game.canAdvanceFloor && !next) {
+                btnNextFloor.classList.add('can-advance');
+            } else {
+                btnNextFloor.classList.remove('can-advance');
+            }
         }
     }
 
@@ -132,22 +137,26 @@ class UIManager {
     updateSkillName() {
         const skillId = this.game.player.selectedSkill || this.game.player.learnedSkills[0];
         const btn = $('btnSkill');
-        if (skillId) {
-            const skill = CONFIG.skills.find(s => s.id === skillId);
-            if (skill) {
-                const cd = this.game.player.skillCooldowns[skillId] || 0;
-                if (cd > 0) {
-                    $('currentSkillName').textContent = `${skill.name} (CD:${cd})`;
-                    btn.classList.add('on-cooldown');
-                } else {
-                    $('currentSkillName').textContent = skill.name;
-                    btn.classList.remove('on-cooldown');
+        const currentSkillName = $('currentSkillName');
+        
+        if (btn && currentSkillName) {
+            if (skillId) {
+                const skill = CONFIG.skills.find(s => s.id === skillId);
+                if (skill) {
+                    const cd = this.game.player.skillCooldowns[skillId] || 0;
+                    if (cd > 0) {
+                        currentSkillName.textContent = `${skill.name} (CD:${cd})`;
+                        btn.classList.add('on-cooldown');
+                    } else {
+                        currentSkillName.textContent = skill.name;
+                        btn.classList.remove('on-cooldown');
+                    }
+                    return;
                 }
-                return;
             }
+            currentSkillName.textContent = '无技能';
+            btn.classList.remove('on-cooldown');
         }
-        $('currentSkillName').textContent = '无技能';
-        btn.classList.remove('on-cooldown');
     }
 
     showLevelUp(level, cfg) {

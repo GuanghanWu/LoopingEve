@@ -85,15 +85,19 @@ class Game {
     }
 
     bindEvents() {
-        $('btnAttack').onclick = () => this.battle.attack();
-        $('btnSkill').onclick = () => this.battle.useSelectedSkill();
-        $('btnItem').onclick = () => this.inventoryManager.smartUseItem();
-        $('btnInventory').onclick = () => this.ui.openInventory();
-        $('btnSkillList').onclick = () => this.ui.openSkillMenu();
-        $('btnNextFloor').onclick = () => this.nextFloor();
-        $('btnForge').onclick = () => this.ui.openForge();
-        $('btnSettings').onclick = () => this.ui.openSettings();
-        $('btnClear2').onclick = () => {
+        const btnAttack = $('btnAttack');
+        const btnSkill = $('btnSkill');
+        const btnItem = $('btnItem');
+        const btnNextFloor = $('btnNextFloor');
+        const btnSettings = $('btnSettings');
+        const btnClear2 = $('btnClear2');
+        
+        if (btnAttack) btnAttack.onclick = () => this.battle.attack();
+        if (btnSkill) btnSkill.onclick = () => this.battle.useSelectedSkill();
+        if (btnItem) btnItem.onclick = () => this.inventoryManager.smartUseItem();
+        if (btnNextFloor) btnNextFloor.onclick = () => this.nextFloor();
+        if (btnSettings) btnSettings.onclick = () => this.ui.openSettings();
+        if (btnClear2) btnClear2.onclick = () => {
             $('settingsModal').classList.remove('show');
             this.ui.showConfirm('确定要重置游戏吗？所有进度将丢失！', () => this.clearSave());
         };
