@@ -367,20 +367,61 @@ body {
 .equip-slot .name { color: var(--accent); }
 
 .monster-area {
-    flex: 1;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    min-height: 220px;
-    gap: 12px;
-    padding: 20px;
+    min-height: 180px;
+    gap: 8px;
+    padding: 12px;
     background: rgba(0, 0, 0, 0.3);
     border: var(--card-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     position: relative;
     overflow: hidden;
+}
+
+.floor-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 10px;
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    background: linear-gradient(90deg, transparent, rgba(123, 104, 238, 0.1), rgba(155, 89, 182, 0.1), rgba(123, 104, 238, 0.1), transparent);
+    width: auto;
+    max-width: 200px;
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.floor-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.05) 50%, transparent);
+    pointer-events: none;
+}
+
+.floor-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.9rem;
+    font-weight: bold;
+    box-shadow: none;
+    position: relative;
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .monster-area::before {
@@ -406,24 +447,28 @@ body {
 }
 
 .kill-progress {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
-    padding: 6px 16px;
-    background: var(--card-bg);
-    border: var(--card-border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
+    padding: 0;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
     font-weight: bold;
     transition: all var(--transition-normal);
+    margin-top: 2px;
+    position: relative;
+    z-index: 1;
 }
 
 .kill-progress.complete {
     color: var(--accent);
-    border-color: var(--accent);
-    background: rgba(255, 215, 0, 0.1);
-    box-shadow: var(--shadow-md), 0 0 15px var(--accent-glow);
+    border-color: transparent;
+    background: transparent !important;
+    box-shadow: 0 0 10px var(--accent-glow);
     animation: glow 1.5s ease-in-out infinite;
     transform: scale(1.05);
+    z-index: 2;
 }
 
 @keyframes glow {
@@ -499,11 +544,11 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius);
     padding: 10px 12px;
-    max-height: 160px;
     overflow-y: auto;
     font-size: 0.8rem;
-    flex: 1;
+    flex: 1 1 auto;
     min-height: 120px;
+    max-height: 200px;
 }
 
 .battle-log p {

@@ -152,7 +152,8 @@ class StoryManager {
             this.game.player.gold += result.gold;
         }
         if (result.exp && result.exp > 0) {
-            this.game.playerManager.addExp(result.exp);
+            this.game.player.exp += result.exp;
+            this.game.playerManager.levelUp();
         }
         if (result.items && result.items.length > 0) {
             result.items.forEach(item => {

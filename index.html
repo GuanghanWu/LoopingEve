@@ -8,6 +8,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <title>LoopingEve - 循环冒险</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⚔️</text></svg>" type="image/svg+xml">
+    <link rel="icon" href="favicon.ico" sizes="32x32" type="image/x-icon">
     <link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
@@ -61,12 +63,14 @@
             </div>
             
             <div class="monster-area">
-                <div class="floor-info">
-                    <span class="floor-label">第</span>
-                    <span id="currentFloor">1</span>
-                    <span class="floor-label">层</span>
+                <div class="floor-section">
+                    <div class="floor-info">
+                        <span class="floor-label">第</span>
+                        <span id="currentFloor">1</span>
+                        <span class="floor-label">层</span>
+                    </div>
+                    <div class="kill-progress" id="killProgress">-/-</div>
                 </div>
-                <div class="kill-progress" id="killProgress">-/-</div>
                 <div class="monster-card">
                     <div class="monster-avatar" id="monsterAvatar">❓</div>
                     <div class="monster-name" id="monsterName">等待探索...</div>
