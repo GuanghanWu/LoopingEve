@@ -7,7 +7,7 @@ class Advisor {
         this.agentTypeNames = evaluationConfig.agentTypeNames;
     }
 
-    generate(analysis) {
+    generate(analysis, agents = []) {
         const recommendations = [];
 
         const criticalIssues = analysis.issues.filter(i => i.severity === 'critical');
@@ -18,7 +18,7 @@ class Advisor {
             recommendations.push({
                 priority: 'critical',
                 priorityLabel: 'P0',
-                action: this.generateAction(issue),
+                action: this.generateAction(issue, agents),
                 targetDimensions: [issue.dimension],
                 affectedAgents: issue.affectedAgents || [],
                 reason: issue.issue,
@@ -30,7 +30,7 @@ class Advisor {
             recommendations.push({
                 priority: 'high',
                 priorityLabel: 'P1',
-                action: this.generateAction(issue),
+                action: this.generateAction(issue, agents),
                 targetDimensions: [issue.dimension],
                 affectedAgents: issue.affectedAgents || [],
                 reason: issue.issue,
@@ -42,7 +42,7 @@ class Advisor {
             recommendations.push({
                 priority: 'medium',
                 priorityLabel: 'P2',
-                action: this.generateAction(issue),
+                action: this.generateAction(issue, agents),
                 targetDimensions: [issue.dimension],
                 affectedAgents: issue.affectedAgents || [],
                 reason: issue.issue,
@@ -55,14 +55,16 @@ class Advisor {
         return this.prioritizeRecommendations(recommendations);
     }
 
-    generateAction(issue) {
+    generateAction(issue, agents = []) {
         const dimension = issue.dimension;
         const dimensionName = issue.dimensionName || this.dimensionNames[dimension] || dimension;
+
+        const triggeredFactors = this.analyzeTriggeredFactors(agents, dimension);
 
         const actions = {
             excitement: {
                 low: `增加战斗中的随机事件和刺激元素`,
-                critical: `紧急：调整战斗系统，增加暴击、闪避等刺激机制`,
+                critical: this.getExcitementAction(triggeredFactors),
                 variance: `平衡不同玩家类型的刺激体验`
             },
             growth: {
@@ -101,6 +103,53 @@ class Advisor {
         }
 
         return actions[dimension]?.low || `优化${dimensionName}`;
+    }
+
+    analyzeTriggeredFactors(agents, dimension) {
+        const factors = {
+            criticalHit: false,
+            dodge: false,
+            combo: false,
+            lowHPBattle: false,
+            closeVictory: false,
+            comeback: false
+        };
+
+        if (!agents || agents.length === 0) return factors;
+
+        agents.forEach(agent => {
+            const report = agent.getReport();
+            if (report.breakdown) {
+                report.breakdown.forEach(b => {
+                    if (b.dimension === dimension) {
+                        if (b.issue.includes('暴击')) factors.criticalHit = true;
+                        if (b.issue.includes('闪避')) factors.dodge = true;
+                        if (b.issue.includes('连击')) factors.combo = true;
+                        if (b.issue.includes('低血量') || b.issue.includes('残血')) factors.lowHPBattle = true;
+                        if (b.issue.includes('险胜') || b.issue.includes('残血胜利')) factors.closeVictory = true;
+                        if (b.issue.includes('逆转') || b.issue.includes('翻盘')) factors.comeback = true;
+                    }
+                });
+            }
+        });
+
+        return factors;
+    }
+
+    getExcitementAction(factors) {
+        const missing = [];
+        if (!factors.criticalHit) missing.push('暴击');
+        if (!factors.dodge) missing.push('闪避');
+        if (!factors.combo) missing.push('连击');
+        if (!factors.lowHPBattle) missing.push('低血量战斗');
+        if (!factors.closeVictory) missing.push('险胜');
+        if (!factors.comeback) missing.push('翻盘');
+
+        if (missing.length === 0) {
+            return `刺激度评分偏低，建议提高刺激事件的触发频率或增加分数奖励`;
+        }
+
+        return `刺激度偏低，缺少以下刺激事件的有效触发：${missing.join('、')}。建议检查这些机制的触发条件或提高触发概率`;
     }
 
     addProactiveRecommendations(analysis, recommendations) {

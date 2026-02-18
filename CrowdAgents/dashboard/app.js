@@ -28,18 +28,27 @@ const agentColors = {
 };
 
 async function loadReport() {
-    try {
-        const response = await fetch('../output/report.json?t=' + Date.now());
-        if (!response.ok) {
-            throw new Error('无法加载报告文件');
+    const paths = [
+        '/output/report.json',
+        '../output/report.json'
+    ];
+    
+    for (const path of paths) {
+        try {
+            const response = await fetch(path + '?t=' + Date.now());
+            if (response.ok) {
+                reportData = await response.json();
+                console.log('成功从路径加载报告:', path);
+                return true;
+            }
+        } catch (error) {
+            console.log('路径失败:', path, error.message);
         }
-        reportData = await response.json();
-        return true;
-    } catch (error) {
-        console.error('加载报告失败:', error);
-        showError('无法加载报告文件，请先运行 node engine/main.js 生成报告');
-        return false;
     }
+    
+    console.error('所有路径都无法加载报告');
+    showError('无法加载报告文件，请先运行 node engine/main.js 生成报告');
+    return false;
 }
 
 function showError(message) {

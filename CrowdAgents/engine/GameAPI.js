@@ -219,6 +219,14 @@ class GameAPI extends EventEmitter {
 
         const playerDodgeRate = this.player.dodgeRate || 0.05;
         if (Math.random() < playerDodgeRate) {
+            this.emit('playerDamage', {
+                damage: 0,
+                currentHP: this.player.hp,
+                maxHP: this.player.maxHP,
+                source: this.monster.id,
+                isCritical: false,
+                dodged: true
+            });
             return;
         }
 
@@ -237,7 +245,8 @@ class GameAPI extends EventEmitter {
             currentHP: Math.max(0, this.player.hp),
             maxHP: this.player.maxHP,
             source: this.monster.id,
-            isCritical: isCritical
+            isCritical: isCritical,
+            dodged: false
         });
 
         if (this.player.hp <= 0) {

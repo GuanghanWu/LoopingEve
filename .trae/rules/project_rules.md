@@ -41,3 +41,20 @@ this.emit?.('eventName', data);
 3. 触发时机是否正确（状态变更后触发）
 
 详细事件数据结构见 `CrowdAgents/DESIGN.md`
+
+## CrowdAgents 模拟规范
+
+### 模拟时长
+- 标准模拟时长：2分钟（120000ms）
+- 命令格式：`node main.js --duration=120000`
+
+### 报告查看
+- 模拟完成后必须自动打开报告网站
+- 报告路径：`CrowdAgents/dashboard/index.html`
+- 使用本地服务器端口：8083
+
+### 模拟流程
+1. 运行模拟（2分钟）
+2. 生成报告到 `CrowdAgents/output/report.json`
+3. 启动 dashboard 服务器
+4. 自动打开浏览器查看可视化报告

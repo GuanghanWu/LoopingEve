@@ -335,7 +335,7 @@ async function main() {
     const analysis = analyzer.analyze(agents, matrix);
 
     const advisor = new Advisor();
-    const recommendations = advisor.generate(analysis);
+    const recommendations = advisor.generate(analysis, agents);
 
     const report = generateReport(
         agents,
