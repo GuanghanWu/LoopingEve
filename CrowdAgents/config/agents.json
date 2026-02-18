@@ -3,6 +3,21 @@
         "duration": 600000,
         "tickInterval": 100
     },
+    "targetAudience": {
+        "description": "目标玩家群体配置：定义游戏的核心目标用户，评估系统将聚焦于这些玩家的体验",
+        "primary": ["casual", "explorer"],
+        "secondary": [],
+        "weights": {
+            "casual": 0.6,
+            "explorer": 0.4
+        },
+        "scoreThresholds": {
+            "excellent": 8.0,
+            "good": 6.0,
+            "acceptable": 4.5,
+            "poor": 3.0
+        }
+    },
     "agents": [
         {
             "id": "casual_01",

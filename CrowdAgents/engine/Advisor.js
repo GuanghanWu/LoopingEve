@@ -1,17 +1,37 @@
 const evaluationConfig = require('../config/evaluation.json');
 
 class Advisor {
-    constructor() {
+    constructor(targetAudience = null) {
         this.thresholds = evaluationConfig.thresholds;
         this.dimensionNames = evaluationConfig.dimensionNames;
         this.agentTypeNames = evaluationConfig.agentTypeNames;
+        this.targetAudience = targetAudience;
+    }
+
+    setTargetAudience(targetAudience) {
+        this.targetAudience = targetAudience;
     }
 
     generate(analysis, agents = []) {
         const recommendations = [];
 
-        const criticalIssues = analysis.issues.filter(i => i.severity === 'critical');
-        const highIssues = analysis.issues.filter(i => i.severity === 'high');
+        if (analysis.targetAnalysis && analysis.targetAnalysis.recommendations) {
+            analysis.targetAnalysis.recommendations.forEach(rec => {
+                recommendations.push({
+                    priority: rec.priority,
+                    priorityLabel: rec.priority === 'critical' ? 'P0' : 'P1',
+                    action: rec.message,
+                    targetDimensions: rec.focusDimensions,
+                    affectedAgents: [rec.target],
+                    reason: `目标玩家群体优化`,
+                    impact: rec.priority === 'critical' ? 'high' : 'medium',
+                    isTargetRecommendation: true
+                });
+            });
+        }
+
+        const criticalIssues = analysis.issues.filter(i => i.severity === 'critical' && !i.isTargetIssue);
+        const highIssues = analysis.issues.filter(i => i.severity === 'high' && !i.isTargetIssue);
         const mediumIssues = analysis.issues.filter(i => i.severity === 'medium');
 
         criticalIssues.forEach(issue => {
@@ -22,7 +42,8 @@ class Advisor {
                 targetDimensions: [issue.dimension],
                 affectedAgents: issue.affectedAgents || [],
                 reason: issue.issue,
-                impact: 'high'
+                impact: 'high',
+                isTargetRecommendation: false
             });
         });
 
@@ -34,7 +55,8 @@ class Advisor {
                 targetDimensions: [issue.dimension],
                 affectedAgents: issue.affectedAgents || [],
                 reason: issue.issue,
-                impact: 'medium'
+                impact: 'medium',
+                isTargetRecommendation: false
             });
         });
 
@@ -46,7 +68,8 @@ class Advisor {
                 targetDimensions: [issue.dimension],
                 affectedAgents: issue.affectedAgents || [],
                 reason: issue.issue,
-                impact: 'low'
+                impact: 'low',
+                isTargetRecommendation: false
             });
         });
 
@@ -156,17 +179,36 @@ class Advisor {
         const matrix = analysis.summary;
 
         if (analysis.patterns && analysis.patterns.length > 0) {
-            const highDeathPatterns = analysis.patterns.filter(p => p.type === 'death' && p.value > 3);
-            highDeathPatterns.forEach(pattern => {
-                recommendations.push({
-                    priority: 'medium',
-                    priorityLabel: 'P2',
-                    action: `针对 ${this.agentTypeNames[pattern.agentType] || pattern.agentType} 类型玩家优化难度`,
-                    targetDimensions: ['retention', 'pacing'],
-                    affectedAgents: [pattern.agentType],
-                    reason: pattern.message,
-                    impact: 'medium'
-                });
+            const targetPatterns = analysis.patterns.filter(p => p.isTarget);
+            targetPatterns.forEach(pattern => {
+                if (pattern.type === 'death' && pattern.value > 3) {
+                    recommendations.push({
+                        priority: 'high',
+                        priorityLabel: 'P1',
+                        action: `目标玩家 ${this.agentTypeNames[pattern.agentType] || pattern.agentType} 死亡次数过多，需要优化难度`,
+                        targetDimensions: ['retention', 'pacing'],
+                        affectedAgents: [pattern.agentType],
+                        reason: pattern.message,
+                        impact: 'medium',
+                        isTargetRecommendation: true
+                    });
+                }
+            });
+
+            const nonTargetPatterns = analysis.patterns.filter(p => !p.isTarget);
+            nonTargetPatterns.forEach(pattern => {
+                if (pattern.type === 'death' && pattern.value > 3) {
+                    recommendations.push({
+                        priority: 'medium',
+                        priorityLabel: 'P2',
+                        action: `针对 ${this.agentTypeNames[pattern.agentType] || pattern.agentType} 类型玩家优化难度`,
+                        targetDimensions: ['retention', 'pacing'],
+                        affectedAgents: [pattern.agentType],
+                        reason: pattern.message,
+                        impact: 'medium',
+                        isTargetRecommendation: false
+                    });
+                }
             });
         }
 
@@ -181,7 +223,8 @@ class Advisor {
                         targetDimensions: [insight.dimension],
                         affectedAgents: [],
                         reason: insight.message,
-                        impact: 'low'
+                        impact: 'low',
+                        isTargetRecommendation: false
                     });
                 }
             });
@@ -192,12 +235,15 @@ class Advisor {
         const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
 
         return recommendations.sort((a, b) => {
+            if (a.isTargetRecommendation && !b.isTargetRecommendation) return -1;
+            if (!a.isTargetRecommendation && b.isTargetRecommendation) return 1;
             return priorityOrder[a.priority] - priorityOrder[b.priority];
         });
     }
 
     formatForDisplay(recommendations) {
         const grouped = {
+            target: [],
             critical: [],
             high: [],
             medium: [],
@@ -205,7 +251,9 @@ class Advisor {
         };
 
         recommendations.forEach(rec => {
-            if (grouped[rec.priority]) {
+            if (rec.isTargetRecommendation) {
+                grouped.target.push(rec);
+            } else if (grouped[rec.priority]) {
                 grouped[rec.priority].push(rec);
             }
         });
@@ -224,7 +272,8 @@ class Advisor {
             const item = {
                 action: rec.action,
                 target: rec.targetDimensions.map(d => this.dimensionNames[d] || d).join('、'),
-                reason: rec.reason
+                reason: rec.reason,
+                isTarget: rec.isTargetRecommendation
             };
 
             if (rec.priority === 'critical') {
@@ -237,6 +286,46 @@ class Advisor {
         });
 
         return plan;
+    }
+
+    generateTargetFocusedReport(analysis) {
+        if (!this.targetAudience || !this.targetAudience.primary || this.targetAudience.primary.length === 0) {
+            return null;
+        }
+
+        const targetAnalysis = analysis.targetAnalysis;
+        if (!targetAnalysis) return null;
+
+        const report = {
+            summary: {
+                targetScore: targetAnalysis.overallScore?.score || 0,
+                achievementRate: targetAnalysis.overallScore?.achievementRate || 0,
+                status: targetAnalysis.overallScore?.summary?.level || 'unknown',
+                message: targetAnalysis.overallScore?.summary?.message || ''
+            },
+            primaryPlayers: targetAnalysis.primary || [],
+            recommendations: targetAnalysis.recommendations || [],
+            focusAreas: []
+        };
+
+        targetAnalysis.primary?.forEach(player => {
+            if (player.expectationGaps && player.expectationGaps.length > 0) {
+                player.expectationGaps.forEach(gap => {
+                    if (!report.focusAreas.some(f => f.dimension === gap.dimension)) {
+                        report.focusAreas.push({
+                            dimension: gap.dimension,
+                            dimensionName: gap.dimensionName,
+                            gap: gap.gap,
+                            severity: gap.severity
+                        });
+                    }
+                });
+            }
+        });
+
+        report.focusAreas.sort((a, b) => b.gap - a.gap);
+
+        return report;
     }
 }
 

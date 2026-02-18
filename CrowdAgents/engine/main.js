@@ -160,24 +160,45 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function generateReport(agents, matrix, analysis, recommendations, metrics, duration) {
+function generateReport(agents, matrix, analysis, recommendations, metrics, duration, targetAudience) {
     const evaluationConfig = loadConfig('../config/evaluation.json');
 
-    return {
+    const report = {
         meta: {
-            version: '1.0',
+            version: '1.1',
             generatedAt: new Date().toISOString(),
             totalDuration: duration,
-            agentCount: agents.length
+            agentCount: agents.length,
+            hasTargetAudience: !!targetAudience
         },
 
-        agents: agents.map(a => a.getReport()),
+        targetAudience: targetAudience ? {
+            primary: targetAudience.primary || [],
+            secondary: targetAudience.secondary || [],
+            weights: targetAudience.weights || {},
+            scoreThresholds: targetAudience.scoreThresholds || {}
+        } : null,
+
+        targetScore: matrix.targetScore,
+
+        agents: agents.map(a => {
+            const report = a.getReport();
+            const isTarget = targetAudience && 
+                (targetAudience.primary?.includes(a.type) || targetAudience.secondary?.includes(a.type));
+            return {
+                ...report,
+                isTarget: isTarget || false
+            };
+        }),
 
         matrix: {
             byAgent: matrix.byAgent,
             byDimension: matrix.byDimension,
-            overallAvg: matrix.overallAvg
+            overallAvg: matrix.overallAvg,
+            targetScore: matrix.targetScore
         },
+
+        targetAnalysis: analysis.targetAnalysis,
 
         issues: analysis.issues.map(issue => ({
             dimension: issue.dimension,
@@ -185,7 +206,8 @@ function generateReport(agents, matrix, analysis, recommendations, metrics, dura
             issue: issue.issue,
             affectedAgents: issue.affectedAgents || [],
             avgScore: issue.avgScore,
-            severity: issue.severity
+            severity: issue.severity,
+            isTargetIssue: issue.isTargetIssue || false
         })),
 
         recommendations: recommendations.map(rec => ({
@@ -193,20 +215,23 @@ function generateReport(agents, matrix, analysis, recommendations, metrics, dura
             priorityLabel: rec.priorityLabel,
             action: rec.action,
             targetDimensions: rec.targetDimensions,
-            affectedAgents: rec.affectedAgents || []
+            affectedAgents: rec.affectedAgents || [],
+            isTargetRecommendation: rec.isTargetRecommendation || false
         })),
 
         metrics: metrics.generateSummary(),
 
         chartData: {
-            radarChart: new Evaluator().getRadarChartData(agents),
-            heatmap: new Evaluator().getHeatmapData(matrix),
-            comparison: new Evaluator().compareAgents(agents)
+            radarChart: new Evaluator(targetAudience).getRadarChartData(agents),
+            heatmap: new Evaluator(targetAudience).getHeatmapData(matrix),
+            comparison: new Evaluator(targetAudience).compareAgents(agents)
         },
 
         dimensionNames: evaluationConfig.dimensionNames,
         agentTypeNames: evaluationConfig.agentTypeNames
     };
+
+    return report;
 }
 
 function saveReport(report, outputPath) {
@@ -226,13 +251,44 @@ function printSummary(report) {
     console.log('       CrowdAgents 测试报告摘要');
     console.log('========================================\n');
 
+    if (report.targetAudience && report.targetScore) {
+        console.log('🎯 目标玩家群体评估');
+        console.log('----------------------------------------');
+        const ts = report.targetScore;
+        console.log(`  综合得分: ${ts.score}/10`);
+        console.log(`  达成率: ${ts.achievementRate}%`);
+        console.log(`  状态: ${ts.summary?.message || '未知'}`);
+        console.log('');
+
+        if (ts.targetDetails && ts.targetDetails.length > 0) {
+            console.log('  目标玩家详情:');
+            ts.targetDetails.forEach(detail => {
+                const statusIcon = {
+                    excellent: '🟢',
+                    good: '🔵',
+                    acceptable: '🟡',
+                    poor: '🟠',
+                    critical: '🔴'
+                }[detail.status] || '⚪';
+                console.log(`    ${statusIcon} ${detail.typeName}: ${detail.avgScore}/10 (权重: ${detail.weight})`);
+            });
+            console.log('');
+        }
+    }
+
     console.log(`📊 总体评分: ${report.matrix.overallAvg}/10`);
     console.log(`👥 Agent数量: ${report.meta.agentCount}`);
     console.log(`⏱️  测试时长: ${(report.meta.totalDuration / 1000 / 60).toFixed(1)} 分钟\n`);
 
     console.log('--- Agent 评分 ---');
-    report.agents.forEach(agent => {
-        console.log(`  ${agent.avatar} ${agent.name}: ${agent.overallScore}/10`);
+    const sortedAgents = [...report.agents].sort((a, b) => {
+        if (a.isTarget && !b.isTarget) return -1;
+        if (!a.isTarget && b.isTarget) return 1;
+        return b.overallScore - a.overallScore;
+    });
+    sortedAgents.forEach(agent => {
+        const targetMark = agent.isTarget ? '⭐' : '  ';
+        console.log(`  ${targetMark} ${agent.avatar} ${agent.name}: ${agent.overallScore}/10`);
     });
     console.log('');
 
@@ -242,6 +298,21 @@ function printSummary(report) {
         console.log(`  ${dimName}: ${data.avg}/10 (方差: ${data.variance})`);
     });
     console.log('');
+
+    const targetIssues = report.issues.filter(i => i.isTargetIssue);
+    if (targetIssues.length > 0) {
+        console.log('--- 目标玩家问题 ---');
+        targetIssues.slice(0, 3).forEach(issue => {
+            const severityIcon = {
+                critical: '🔴',
+                high: '🟠',
+                medium: '🟡',
+                low: '🟢'
+            }[issue.severity] || '⚪';
+            console.log(`  ${severityIcon} ${issue.issue}`);
+        });
+        console.log('');
+    }
 
     if (report.issues.length > 0) {
         console.log('--- 主要问题 ---');
@@ -253,6 +324,21 @@ function printSummary(report) {
                 low: '🟢'
             }[issue.severity] || '⚪';
             console.log(`  ${severityIcon} ${issue.issue}`);
+        });
+        console.log('');
+    }
+
+    const targetRecs = report.recommendations.filter(r => r.isTargetRecommendation);
+    if (targetRecs.length > 0) {
+        console.log('--- 目标玩家优化建议 ---');
+        targetRecs.slice(0, 3).forEach(rec => {
+            const priorityIcon = {
+                critical: '🔴',
+                high: '🟠',
+                medium: '🟡',
+                low: '🟢'
+            }[rec.priority] || '⚪';
+            console.log(`  ${priorityIcon} [${rec.priorityLabel}] ${rec.action}`);
         });
         console.log('');
     }
@@ -301,6 +387,14 @@ async function main() {
     const metricsCollector = new MetricsCollector();
     const behaviorEngine = new BehaviorEngine();
 
+    const targetAudience = config.targetAudience || null;
+    if (targetAudience) {
+        console.log('[CrowdAgents] 目标玩家群体配置:');
+        console.log(`  - 主要目标: ${targetAudience.primary?.join(', ') || '无'}`);
+        console.log(`  - 次要目标: ${targetAudience.secondary?.join(', ') || '无'}`);
+        console.log('');
+    }
+
     console.log('[CrowdAgents] 创建 Agent 实例...');
     const agents = config.agents.map(agentConfig => {
         const agent = createAgent(agentConfig);
@@ -309,7 +403,10 @@ async function main() {
         agent.setGameAPI(gameAPI);
         setupEventHandlers(gameAPI, agent, metricsCollector);
 
-        console.log(`  - ${agent.avatar} ${agent.name} (${agent.type})`);
+        const isTarget = targetAudience && 
+            (targetAudience.primary?.includes(agent.type) || targetAudience.secondary?.includes(agent.type));
+        const targetMark = isTarget ? '⭐' : '  ';
+        console.log(`  ${targetMark} ${agent.avatar} ${agent.name} (${agent.type})`);
         return agent;
     });
 
@@ -328,13 +425,13 @@ async function main() {
 
     console.log('[CrowdAgents] 模拟完成，生成评价...\n');
 
-    const evaluator = new Evaluator();
+    const evaluator = new Evaluator(targetAudience);
     const matrix = evaluator.calculateAll(agents);
 
-    const analyzer = new Analyzer();
+    const analyzer = new Analyzer(targetAudience);
     const analysis = analyzer.analyze(agents, matrix);
 
-    const advisor = new Advisor();
+    const advisor = new Advisor(targetAudience);
     const recommendations = advisor.generate(analysis, agents);
 
     const report = generateReport(
@@ -343,7 +440,8 @@ async function main() {
         analysis,
         recommendations,
         metricsCollector,
-        duration
+        duration,
+        targetAudience
     );
 
     saveReport(report, '../output/report.json');
