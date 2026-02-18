@@ -4,6 +4,8 @@ class CasualPlayer extends AgentBase {
     constructor(config) {
         super(config);
         this.consecutiveFails = 0;
+        this.progressVisibilityNeed = this.specialTraits?.progressVisibilityNeed ?? 0.85;
+        this.toleranceForRandomness = this.specialTraits?.toleranceForRandomness ?? 0.3;
     }
 
     decide(gameState) {
@@ -40,8 +42,11 @@ class CasualPlayer extends AgentBase {
 
         if (!data.victory) {
             this.consecutiveFails++;
-            if (this.consecutiveFails >= (this.behaviorPatterns.quitThreshold.consecutiveFails || 2)) {
+            const failThreshold = this.behaviorPatterns.quitThreshold?.consecutiveFails || 2;
+            const adjustedThreshold = Math.max(1, failThreshold - Math.floor(this.toleranceForRandomness * 2));
+            if (this.consecutiveFails >= adjustedThreshold) {
                 this.addBreakdown('retention', '连续失败导致放弃', 'high');
+                this.adjustScore('retention', -0.3, 'failStreak');
                 this.shouldQuit = true;
             }
         } else {

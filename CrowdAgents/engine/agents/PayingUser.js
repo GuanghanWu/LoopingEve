@@ -6,6 +6,9 @@ class PayingUser extends AgentBase {
         this.purchaseHistory = [];
         this.valuePerceived = 0.5;
         this.spendWillingness = config.specialTraits?.valueSensitivity ? 1 - config.specialTraits.valueSensitivity : 0.65;
+        this.timeValueMultiplier = this.specialTraits?.timeValueMultiplier ?? 1.0;
+        this.efficiencyWeight = this.specialTraits?.efficiencyWeight ?? 0.32;
+        this.grindTolerance = this.preferences?.grindTolerance ?? 0.35;
     }
 
     decide(gameState) {
@@ -13,14 +16,18 @@ class PayingUser extends AgentBase {
 
         if (!gameState.inBattle) {
             if (gameState.canAdvanceFloor) {
-                return 'nextFloor';
+                const shouldAdvance = Math.random() < (0.5 + this.efficiencyWeight);
+                if (shouldAdvance || this.grindTolerance < 0.4) {
+                    return 'nextFloor';
+                }
             }
             return 'explore';
         }
 
         const hpRatio = gameState.player.hp / gameState.player.maxHP;
 
-        if (hpRatio < 0.5 && this.hasPotion(gameState)) {
+        const potionThreshold = 0.5 + (1 - this.grindTolerance) * 0.2;
+        if (hpRatio < potionThreshold && this.hasPotion(gameState)) {
             if (Math.random() < this.spendWillingness) {
                 return 'usePotion';
             }
@@ -29,7 +36,8 @@ class PayingUser extends AgentBase {
         const skills = this.getAvailableSkills(gameState);
         if (skills.length > 0) {
             const expensiveSkill = this.getExpensiveSkill(skills, gameState);
-            if (expensiveSkill && Math.random() < 0.5) {
+            const skillChance = 0.5 * this.efficiencyWeight * 2;
+            if (expensiveSkill && Math.random() < skillChance) {
                 return { action: 'useSkill', skillId: expensiveSkill.id };
             }
         }

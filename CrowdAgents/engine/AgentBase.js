@@ -88,25 +88,37 @@ class AgentBase {
     }
 
     initExpectations() {
-        const baseExpectations = {
+        const defaults = {
             casual: { excitement: 0.4, growth: 0.5, pacing: 0.3, playability: 0.4, retention: 0.6, immersion: 0.3 },
             hardcore: { excitement: 0.9, growth: 0.7, pacing: 0.6, playability: 0.9, retention: 0.4, immersion: 0.2 },
             explorer: { excitement: 0.5, growth: 0.5, pacing: 0.4, playability: 0.7, retention: 0.6, immersion: 0.95 },
             social: { excitement: 0.5, growth: 0.5, pacing: 0.5, playability: 0.5, retention: 0.5, immersion: 0.4 },
             paying: { excitement: 0.6, growth: 0.8, pacing: 0.5, playability: 0.6, retention: 0.6, immersion: 0.3 }
         };
-        return baseExpectations[this.type] || baseExpectations.casual;
+        const base = defaults[this.type] || defaults.casual;
+        return {
+            excitement: this.preferences?.excitementExpectation ?? base.excitement,
+            growth: this.preferences?.growthExpectation ?? base.growth,
+            pacing: this.preferences?.pacingExpectation ?? base.pacing,
+            playability: this.preferences?.playabilityExpectation ?? base.playability,
+            retention: this.preferences?.retentionExpectation ?? base.retention,
+            immersion: this.preferences?.immersionExpectation ?? base.immersion
+        };
     }
 
     initSensitivity() {
-        const baseSensitivity = {
+        const defaults = {
             casual: { positive: 0.5, negative: 1.5 },
             hardcore: { positive: 0.8, negative: 0.5 },
             explorer: { positive: 0.7, negative: 1.2 },
             social: { positive: 0.6, negative: 0.8 },
             paying: { positive: 0.6, negative: 0.9 }
         };
-        return baseSensitivity[this.type] || baseSensitivity.casual;
+        const base = defaults[this.type] || defaults.casual;
+        return {
+            positive: this.personality?.positiveSensitivity ?? base.positive,
+            negative: this.personality?.negativeSensitivity ?? base.negative
+        };
     }
 
     setGameAPI(gameAPI) {
@@ -126,25 +138,23 @@ class AgentBase {
             this.seenMonsters.add(data.monsterId);
             this.lastDiscoveryTime = Date.now();
             
-            const expectation = this.expectations.playability;
-            let baseDelta = 0.15;
-            
-            if (expectation > 0.6) {
-                baseDelta = 0.08;
-            } else if (expectation < 0.5) {
-                baseDelta = 0.2;
-            }
-            
-            this.adjustScore('playability', baseDelta, 'newMonster');
+            this.adjustScore('playability', 0.15, 'newMonster');
             this.addBreakdown('playability', `首次遭遇 ${data.monsterName}`, 'low');
             
             if (this.hasStoryContent || this.hasWorldLore) {
-                this.adjustScore('immersion', 0.12 * this.sensitivity.positive, 'loreDiscovery');
+                this.adjustScore('immersion', 0.12, 'loreDiscovery');
             }
+            
+            this.adjustScore('excitement', 0.2, 'firstBlood');
         }
 
         if (data.floor >= 8) {
-            this.adjustScore('excitement', 0.15 * this.sensitivity.positive, 'highFloor');
+            this.adjustScore('excitement', 0.15, 'highFloor');
+        }
+        
+        if (data.isBoss) {
+            this.adjustScore('excitement', 0.3, 'bossFight');
+            this.addBreakdown('excitement', '遭遇Boss战', 'high');
         }
     }
 
@@ -162,19 +172,16 @@ class AgentBase {
 
             const requiredKills = 3;
             if (this.killsOnCurrentFloor > requiredKills * 10) {
-                this.adjustScore('retention', -0.12 * this.sensitivity.negative, 'floorStuck');
+                this.adjustScore('retention', -0.12, 'floorStuck');
                 this.addBreakdown('retention', '卡关：当前楼层击杀过多', 'medium');
             }
 
-            const baseGrowth = 0.03;
-            const adjustedGrowth = baseGrowth * this.sensitivity.positive;
-            this.adjustScore('growth', adjustedGrowth, 'battleVictory');
+            this.adjustScore('growth', 0.03, 'battleVictory');
 
             if (data.monsterId) {
                 this.monsterKillCount[data.monsterId] = (this.monsterKillCount[data.monsterId] || 0) + 1;
                 if (this.monsterKillCount[data.monsterId] > 10) {
-                    const grindPenalty = 0.1 * this.sensitivity.negative;
-                    this.adjustScore('playability', -grindPenalty, 'repetitiveMonster');
+                    this.adjustScore('playability', -0.1, 'repetitiveMonster');
                     this.addBreakdown('playability', '重复刷同一怪物', 'medium');
                 }
             }
@@ -183,8 +190,7 @@ class AgentBase {
             
             if (hpRatio < 0.2) {
                 const coefficient = this.evaluationConfig.battleCoefficients.lowHPVictory;
-                const excitementGain = 0.25 * coefficient * this.sensitivity.positive * (1 + this.expectations.excitement);
-                this.adjustScore('excitement', excitementGain, 'closeVictory');
+                this.adjustScore('excitement', 0.25 * coefficient, 'closeVictory');
                 this.addBreakdown('excitement', '残血胜利的刺激感', 'medium');
             } else if (hpRatio > 0.9) {
                 this.consecutiveEasyWins++;
@@ -199,22 +205,22 @@ class AgentBase {
             }
 
             if (this.wasLowHP && hpRatio > 0) {
-                this.adjustScore('excitement', 0.30 * this.sensitivity.positive, 'comeback');
+                this.adjustScore('excitement', 0.30, 'comeback');
                 this.addBreakdown('excitement', '逆转局势', 'medium');
             }
 
             if (data.turns && data.turns === 1) {
-                this.adjustScore('excitement', 0.18 * this.sensitivity.positive, 'oneHitKill');
+                this.adjustScore('excitement', 0.18, 'oneHitKill');
             }
 
             if (this.winStreak > 3) {
-                this.adjustScore('retention', 0.10 * this.sensitivity.positive, 'winStreak');
-                this.adjustScore('pacing', 0.06 * this.sensitivity.positive, 'winStreak');
+                this.adjustScore('retention', 0.10, 'winStreak');
+                this.adjustScore('pacing', 0.06, 'winStreak');
             }
 
             if (this.skillsUsedInBattle.length >= 3) {
-                this.adjustScore('excitement', 0.20 * this.sensitivity.positive, 'skillCombo');
-                this.adjustScore('playability', 0.12 * this.sensitivity.positive, 'diversePlaystyle');
+                this.adjustScore('excitement', 0.20, 'skillCombo');
+                this.adjustScore('playability', 0.12, 'diversePlaystyle');
             }
 
             if (battleTime < 10000) {
@@ -233,7 +239,7 @@ class AgentBase {
 
             this.battlesWithoutLoot++;
             if (this.battlesWithoutLoot >= 5) {
-                this.adjustScore('retention', -0.08 * this.sensitivity.negative, 'noLootStreak');
+                this.adjustScore('retention', -0.08, 'noLootStreak');
                 this.addBreakdown('retention', '连续多场战斗无掉落', 'medium');
             }
         } else {
@@ -254,7 +260,12 @@ class AgentBase {
         }
 
         if (hpRatio < 0.15) {
-            this.adjustScore('excitement', 0.15 * this.sensitivity.positive, 'lowHPBattle');
+            this.adjustScore('excitement', 0.15, 'lowHPBattle');
+        }
+
+        if (data.dodged) {
+            this.adjustScore('excitement', 0.15, 'perfectDodge');
+            this.addBreakdown('excitement', '完美闪避', 'low');
         }
 
         if (data.isCritical) {
@@ -264,17 +275,14 @@ class AgentBase {
             const damageRatio = data.damage / data.maxHP;
             
             if (damageRatio >= 0.15 || hpRatio < 0.3) {
-                const severityMultiplier = Math.min(1.5, damageRatio / 0.1);
-                const frustrationImpact = 0.15 * this.sensitivity.negative * severityMultiplier;
-                
                 if (this.personality.frustrationTolerance < 0.5) {
-                    this.adjustScore('retention', -frustrationImpact, 'criticalHitReceived');
+                    this.adjustScore('retention', -0.15, 'criticalHitReceived');
                     this.addBreakdown('retention', '被暴击导致挫败', 'medium');
                 }
             }
             
             if (this.consecutiveCritsReceived > 2 && damageRatio >= 0.1) {
-                this.adjustScore('excitement', -0.12 * this.sensitivity.negative, 'criticalFrustration');
+                this.adjustScore('excitement', -0.12, 'criticalFrustration');
                 this.addBreakdown('excitement', '连续被暴击', 'low');
             }
         } else {
@@ -290,11 +298,11 @@ class AgentBase {
         this.battleTurns++;
 
         if (data.isCritical) {
-            this.adjustScore('excitement', 0.08 * this.sensitivity.positive, 'criticalHit');
+            this.adjustScore('excitement', 0.08, 'criticalHit');
         }
 
         if (data.damage > 0 && data.monsterMaxHP && data.damage > data.monsterMaxHP * 0.3) {
-            this.adjustScore('excitement', 0.12 * this.sensitivity.positive, 'highDamage');
+            this.adjustScore('excitement', 0.12, 'highDamage');
         }
 
         if (this.hitCombo > 3) {
@@ -308,8 +316,7 @@ class AgentBase {
             if (!this.usedSkills.has(data.skillUsed)) {
                 this.usedSkills.add(data.skillUsed);
                 const coefficient = this.evaluationConfig.skillCoefficients.firstUse;
-                const skillBonus = 0.15 * coefficient * (1 + this.expectations.playability * 0.3);
-                this.adjustScore('playability', skillBonus, 'newSkill');
+                this.adjustScore('playability', 0.15 * coefficient, 'newSkill');
             }
         }
 
@@ -322,18 +329,17 @@ class AgentBase {
         this.lastUpgradeTime = Date.now();
         this.battlesAtSameLevel = 0;
 
-        const levelBonus = 0.2 * this.sensitivity.positive * (1 + this.expectations.growth * 0.3);
-        this.adjustScore('growth', levelBonus, 'levelUp');
+        this.adjustScore('growth', 0.2, 'levelUp');
 
-        this.adjustScore('growth', 0.10 * this.sensitivity.positive, 'statGain');
+        this.adjustScore('growth', 0.10, 'statGain');
 
         if (this.hasStoryContent) {
-            this.adjustScore('immersion', 0.15 * this.sensitivity.positive, 'characterGrowth');
+            this.adjustScore('immersion', 0.15, 'characterGrowth');
         }
 
         const now = Date.now();
         if (now - this.lastLevelUpTime < 300000) {
-            this.adjustScore('growth', 0.15 * this.sensitivity.positive, 'quickLevelUp');
+            this.adjustScore('growth', 0.15, 'quickLevelUp');
             this.addBreakdown('growth', '连续升级', 'medium');
         }
         this.lastLevelUpTime = now;
@@ -354,10 +360,9 @@ class AgentBase {
         if (!this.discoveredItems.has(data.itemId)) {
             this.discoveredItems.add(data.itemId);
             this.lastDiscoveryTime = Date.now();
-            const discoveryBonus = 0.1 * (1 + this.expectations.playability * 0.2);
-            this.adjustScore('playability', discoveryBonus, 'newItem');
+            this.adjustScore('playability', 0.1, 'newItem');
             if (this.hasWorldLore) {
-                this.adjustScore('immersion', 0.08 * this.sensitivity.positive, 'loreDiscovery');
+                this.adjustScore('immersion', 0.08, 'loreDiscovery');
             }
         }
 
@@ -365,14 +370,13 @@ class AgentBase {
         const rarity = data.rarity || 'common';
         const coefficient = rarityCoefficients[rarity] || 1.0;
         const factorName = rarity === 'legendary' ? 'legendaryItem' : (rarity === 'rare' ? 'rareItem' : 'commonItem');
-        const baseGrowth = 0.02 * coefficient * this.sensitivity.positive;
-        this.adjustScore('growth', baseGrowth, factorName);
+        this.adjustScore('growth', 0.02 * coefficient, factorName);
 
         if (rarity === 'legendary') {
-            this.adjustScore('retention', 0.20 * this.sensitivity.positive, 'surpriseReward');
+            this.adjustScore('retention', 0.20, 'surpriseReward');
             this.addBreakdown('growth', `获得传说物品 ${data.itemName || data.itemId}`, 'high');
         } else if (rarity === 'rare') {
-            this.adjustScore('retention', 0.10 * this.sensitivity.positive, 'surpriseReward');
+            this.adjustScore('retention', 0.10, 'surpriseReward');
         }
 
         this.processedItemIds.add(data.itemId);
@@ -417,15 +421,14 @@ class AgentBase {
         this.winStreak = 0;
         this.killsOnCurrentFloor = 0;
 
-        const retentionBonus = 0.15 * this.sensitivity.positive * (1 + this.expectations.retention * 0.2);
-        this.adjustScore('retention', retentionBonus, 'newFloor');
+        this.adjustScore('retention', 0.15, 'newFloor');
 
         if (this.hasStoryContent || this.hasWorldLore) {
-            this.adjustScore('immersion', 0.15 * this.sensitivity.positive, 'newArea');
+            this.adjustScore('immersion', 0.15, 'newArea');
         }
 
         if (timeSpent < 180000) {
-            this.adjustScore('pacing', 0.10 * this.sensitivity.positive, 'fastFloorProgress');
+            this.adjustScore('pacing', 0.10, 'fastFloorProgress');
         } else if (timeSpent > 300000) {
             this.adjustScore('pacing', -0.10, 'floorTooSlow');
         }
@@ -442,14 +445,12 @@ class AgentBase {
         this.winStreak = 0;
         this.failStreak++;
 
-        const deathSensitivity = this.sensitivity.negative * (1 + this.expectations.retention * 0.5);
-        const deathPenalty = 0.5 * deathSensitivity;
-        this.adjustScore('retention', -deathPenalty, 'death');
+        this.adjustScore('retention', -0.5, 'death');
 
-        this.adjustScore('growth', -0.20 * this.sensitivity.negative, 'progressLoss');
-        this.adjustScore('pacing', -0.15 * this.sensitivity.negative, 'deathInterrupt');
+        this.adjustScore('growth', -0.20, 'progressLoss');
+        this.adjustScore('pacing', -0.15, 'deathInterrupt');
 
-        this.adjustScore('retention', -0.35 * this.sensitivity.negative, 'progressLoss');
+        this.adjustScore('retention', -0.35, 'progressLoss');
 
         this.lastDeathTime = Date.now();
         this.logEvent('death', data);
@@ -459,9 +460,9 @@ class AgentBase {
         this.stats.forgeCount++;
         this.lastUpgradeTime = Date.now();
 
-        this.adjustScore('playability', 0.2 * this.sensitivity.positive, 'forgeSuccess');
-        this.adjustScore('growth', 0.15 * this.sensitivity.positive, 'forgeSuccess');
-        this.adjustScore('retention', 0.10 * this.sensitivity.positive, 'forgeSuccess');
+        this.adjustScore('playability', 0.2, 'forgeSuccess');
+        this.adjustScore('growth', 0.15, 'forgeSuccess');
+        this.adjustScore('retention', 0.10, 'forgeSuccess');
 
         this.logEvent('forgeSuccess', data);
         this.addBreakdown('playability', `锻造 ${data.itemName}`, 'medium');
@@ -471,8 +472,7 @@ class AgentBase {
         this.hasWorldLore = true;
         this.hasStoryContent = true;
 
-        const loreBonus = 0.15 * this.sensitivity.positive * (1 + this.expectations.immersion * 0.3);
-        this.adjustScore('immersion', loreBonus, 'loreDiscovery');
+        this.adjustScore('immersion', 0.15, 'loreDiscovery');
         this.addBreakdown('immersion', `发现 ${data.areaName}`, 'low');
 
         this.logEvent('loreDiscovery', data);
@@ -481,8 +481,7 @@ class AgentBase {
     onNPCInteraction(data) {
         this.hasNPCInteraction = true;
 
-        const npcBonus = 0.12 * this.sensitivity.positive * (1 + this.expectations.immersion * 0.3);
-        this.adjustScore('immersion', npcBonus, 'npcInteraction');
+        this.adjustScore('immersion', 0.12, 'npcInteraction');
         this.addBreakdown('immersion', `遇见 ${data.npcName}`, 'low');
 
         this.logEvent('npcInteraction', data);
@@ -491,8 +490,7 @@ class AgentBase {
     onStoryEvent(data) {
         this.hasStoryContent = true;
 
-        const eventBonus = 0.10 * this.sensitivity.positive * (1 + this.expectations.immersion * 0.2);
-        this.adjustScore('immersion', eventBonus, 'storyEvent');
+        this.adjustScore('immersion', 0.10, 'storyEvent');
         this.addBreakdown('immersion', `事件: ${data.eventName}`, 'low');
 
         this.logEvent('storyEvent', data);
@@ -502,48 +500,36 @@ class AgentBase {
         const now = Date.now();
         const timeSinceDiscovery = now - this.lastDiscoveryTime;
 
-        if (timeSinceDiscovery > 20000 && this.expectations.playability > 0.6) {
-            const unmetPenalty = 0.08 * this.expectations.playability * this.sensitivity.negative;
-            this.adjustScore('playability', -unmetPenalty, 'noDiscovery');
+        if (timeSinceDiscovery > 20000) {
+            this.adjustScore('playability', -0.08, 'noDiscovery');
         }
 
-        if (this.totalMonsters > 15 && this.seenMonsters.size < 5 && this.expectations.playability > 0.5) {
-            const varietyPenalty = 0.15 * this.expectations.playability * this.sensitivity.negative;
-            this.adjustScore('playability', -varietyPenalty, 'monsterVarietyLow');
+        if (this.totalMonsters > 15 && this.seenMonsters.size < 5) {
+            this.adjustScore('playability', -0.15, 'monsterVarietyLow');
             this.addBreakdown('playability', '怪物种类太少', 'medium');
         }
 
         if (this.type === 'explorer') {
             const contentRatio = this.seenMonsters.size / Math.max(1, this.totalMonsters);
             if (this.totalMonsters > 30 && contentRatio < 0.05) {
-                const grindPenalty = 0.2 * this.sensitivity.negative;
-                this.adjustScore('playability', -grindPenalty, 'contentDepleted');
+                this.adjustScore('playability', -0.2, 'contentDepleted');
                 this.addBreakdown('playability', '内容匮乏，反复刷相同怪物', 'medium');
             }
         }
 
         if (!this.hasStoryContent) {
-            const basePenalty = 0.08;
-            const expectationMultiplier = 0.5 + this.expectations.immersion;
-            const storyPenalty = basePenalty * expectationMultiplier * this.sensitivity.negative;
-            this.adjustScore('immersion', -storyPenalty, 'noStoryContent');
+            this.adjustScore('immersion', -0.08, 'noStoryContent');
             if (this.expectations.immersion > 0.7 && this.dimensionScores.immersion > 2) {
                 this.addBreakdown('immersion', '缺乏剧情和故事背景', 'high');
             }
         }
 
         if (!this.hasWorldLore) {
-            const basePenalty = 0.06;
-            const expectationMultiplier = 0.5 + this.expectations.immersion;
-            const lorePenalty = basePenalty * expectationMultiplier * this.sensitivity.negative;
-            this.adjustScore('immersion', -lorePenalty, 'noWorldLore');
+            this.adjustScore('immersion', -0.06, 'noWorldLore');
         }
 
         if (!this.hasNPCInteraction) {
-            const basePenalty = 0.05;
-            const expectationMultiplier = 0.5 + this.expectations.immersion;
-            const npcPenalty = basePenalty * expectationMultiplier * this.sensitivity.negative;
-            this.adjustScore('immersion', -npcPenalty, 'noNPCInteraction');
+            this.adjustScore('immersion', -0.05, 'noNPCInteraction');
         }
 
         if (this.expectations.excitement > 0.8) {
@@ -555,54 +541,55 @@ class AgentBase {
         }
 
         if (now - this.lastUpgradeTime > 300000) {
-            this.adjustScore('growth', -0.10 * this.sensitivity.negative, 'noUpgrade');
+            this.adjustScore('growth', -0.10, 'noUpgrade');
         }
 
         if (now - this.lastItemTime > 120000) {
-            this.adjustScore('growth', -0.08 * this.sensitivity.negative, 'lowDropRate');
+            this.adjustScore('growth', -0.08, 'lowDropRate');
         }
 
         if (this.battlesAtSameLevel > 10) {
-            this.adjustScore('growth', -0.12 * this.sensitivity.negative, 'levelStagnation');
+            this.adjustScore('growth', -0.12, 'levelStagnation');
             this.addBreakdown('growth', '升级停滞', 'medium');
         }
 
         if (this.consecutiveEasyWins > 5) {
-            this.adjustScore('excitement', -0.08 * this.sensitivity.negative, 'battleTooEasy');
+            this.adjustScore('excitement', -0.08, 'battleTooEasy');
             this.addBreakdown('excitement', '战斗过于简单', 'low');
         }
 
         if (this.noLowHPBattles > 10) {
-            this.adjustScore('excitement', -0.10 * this.sensitivity.negative, 'noThrill');
+            this.adjustScore('excitement', -0.10, 'noThrill');
         }
 
         if (this.failStreak > 2) {
-            this.adjustScore('pacing', -0.12 * this.sensitivity.negative, 'failStreak');
-            this.adjustScore('retention', -0.25 * this.sensitivity.negative, 'negativeFeedback');
+            this.adjustScore('pacing', -0.12, 'failStreak');
+            this.adjustScore('retention', -0.25, 'negativeFeedback');
         }
 
         if (now - this.floorStartTime > 300000) {
-            this.adjustScore('pacing', -0.10 * this.sensitivity.negative, 'progressStall');
+            this.adjustScore('pacing', -0.10, 'progressStall');
         }
 
         if (this.usedSkills.size > 3) {
-            this.adjustScore('playability', 0.12 * this.sensitivity.positive, 'diversePlaystyle');
+            this.adjustScore('playability', 0.12, 'diversePlaystyle');
         }
 
         if (this.seenMonsters.size > 10) {
-            this.adjustScore('playability', 0.10 * this.sensitivity.positive, 'richContent');
+            this.adjustScore('playability', 0.10, 'richContent');
         }
 
         if (this.playTime > 300000 && this.dimensionScores.excitement > 5 && this.hasStoryContent) {
-            this.adjustScore('immersion', 0.10 * this.sensitivity.positive, 'immersivePlay');
+            this.adjustScore('immersion', 0.10, 'immersivePlay');
         }
     }
 
-    adjustScore(dimension, delta, factorName = null) {
+    adjustScore(dimension, delta, factorName = null, context = {}) {
         if (!this.dimensionScores.hasOwnProperty(dimension)) return;
 
         const config = this.evaluationConfig;
         const regularization = config.regularization;
+        const factorRules = config.factorRules;
 
         if (regularization && regularization.enabled && factorName) {
             const isPositive = delta > 0;
@@ -613,8 +600,28 @@ class AgentBase {
                     : factors.negative[factorName];
                 
                 if (factorConfig) {
+                    let baseScore = factorConfig.baseScore;
+                    if (factorRules && factorRules.baseScoreTiers) {
+                        const tier = this.calculateScoreTier(context, factorName);
+                        baseScore = factorRules.baseScoreTiers[tier] || baseScore;
+                    }
+                    
                     const freqMultiplier = config.frequencyMultipliers[factorConfig.frequency].baseMultiplier;
-                    delta = delta * freqMultiplier;
+                    
+                    let dynamicMultiplier = 1.0;
+                    if (factorRules && factorRules.multiplierByFrequency) {
+                        const triggerCount = this.getFactorTriggerCount(dimension, factorName, isPositive);
+                        const multipliers = factorRules.multiplierByFrequency[factorConfig.frequency];
+                        if (multipliers && multipliers.length > 0) {
+                            const index = Math.min(triggerCount, multipliers.length - 1);
+                            dynamicMultiplier = multipliers[index];
+                        }
+                    }
+                    
+                    const sensitivityMod = this.calculateSensitivityModifier(dimension, isPositive);
+                    const expectationMod = this.calculateExpectationModifier(dimension);
+                    
+                    delta = baseScore * freqMultiplier * dynamicMultiplier * sensitivityMod * expectationMod * (isPositive ? 1 : -1);
                     
                     const accumulatedKey = isPositive ? 'positive' : 'negative';
                     const currentAccumulated = this.accumulatedScores[dimension][accumulatedKey];
@@ -629,6 +636,8 @@ class AgentBase {
                     }
                     
                     this.accumulatedScores[dimension][accumulatedKey] += Math.abs(delta);
+                    
+                    this.recordFactorTrigger(dimension, factorName, isPositive);
                 }
             }
         }
@@ -636,6 +645,122 @@ class AgentBase {
         const before = this.dimensionScores[dimension];
         const newScore = Math.max(0, Math.min(10, before + delta));
         this.dimensionScores[dimension] = Math.round(newScore * 100) / 100;
+    }
+
+    calculateSensitivityModifier(dimension, isPositive) {
+        const sensitivity = isPositive ? this.sensitivity.positive : this.sensitivity.negative;
+        const clampedSensitivity = Math.max(0.5, Math.min(1.5, sensitivity));
+        return clampedSensitivity;
+    }
+
+    calculateExpectationModifier(dimension) {
+        const expectation = this.expectations[dimension] || 0.5;
+        const clampedExpectation = Math.max(0.5, Math.min(1.5, expectation));
+        return clampedExpectation;
+    }
+
+    // 计算分数层级（S, A, B, C, D）
+    calculateScoreTier(context, factorName) {
+        // 优先使用传入的context，如果没有则从Agent状态中推断
+        const ctx = context || this.inferContextFromState(factorName);
+        const { damage, hpRatio, turns, isCritical, isBoss, floor, rarity, skillCount } = ctx;
+        
+        // 刺激度相关
+        if (factorName.includes('Victory') || factorName.includes('Kill')) {
+            if (hpRatio < 0.1) return 'S';
+            if (hpRatio < 0.2) return 'A';
+            if (hpRatio < 0.3) return 'B';
+            if (hpRatio < 0.5) return 'C';
+            return 'D';
+        }
+        
+        // 伤害相关
+        if (factorName.includes('Damage') || factorName.includes('Hit')) {
+            if (damage > 50) return 'S';
+            if (damage > 30) return 'A';
+            if (damage > 20) return 'B';
+            if (damage > 10) return 'C';
+            return 'D';
+        }
+        
+        // 战斗时长相关
+        if (factorName.includes('Battle')) {
+            if (turns && turns <= 1) return 'S';
+            if (turns && turns <= 3) return 'A';
+            if (turns && turns <= 5) return 'B';
+            if (turns && turns <= 8) return 'C';
+            return 'D';
+        }
+        
+        // 物品稀有度
+        if (factorName.includes('Item')) {
+            if (rarity === 'legendary') return 'S';
+            if (rarity === 'rare') return 'A';
+            if (rarity === 'uncommon') return 'B';
+            return 'C';
+        }
+        
+        // 技能使用
+        if (factorName.includes('Skill')) {
+            if (skillCount >= 5) return 'S';
+            if (skillCount >= 3) return 'A';
+            if (skillCount >= 2) return 'B';
+            return 'C';
+        }
+        
+        // 楼层相关
+        if (factorName.includes('Floor')) {
+            if (floor >= 15) return 'S';
+            if (floor >= 10) return 'A';
+            if (floor >= 7) return 'B';
+            if (floor >= 5) return 'C';
+            return 'D';
+        }
+        
+        // Boss相关
+        if (factorName.includes('Boss')) {
+            return isBoss ? 'S' : 'C';
+        }
+        
+        // 默认返回B级
+        return 'B';
+    }
+    
+    // 从Agent状态中推断context
+    inferContextFromState(factorName) {
+        const ctx = {};
+        
+        // 推断楼层
+        ctx.floor = this.stats.maxFloor;
+        
+        // 推断技能数量
+        ctx.skillCount = this.skillsUsedInBattle.length;
+        
+        // 推断战斗回合数
+        ctx.turns = this.battleTurns;
+        
+        // 推断是否低血量
+        ctx.hpRatio = this.wasLowHP ? 0.2 : 0.8;
+        
+        return ctx;
+    }
+
+    // 获取因子触发次数
+    getFactorTriggerCount(dimension, factorName, isPositive) {
+        if (!this.factorTriggerCounts) {
+            this.factorTriggerCounts = {};
+        }
+        const key = `${dimension}_${factorName}_${isPositive ? 'pos' : 'neg'}`;
+        return this.factorTriggerCounts[key] || 0;
+    }
+
+    // 记录因子触发
+    recordFactorTrigger(dimension, factorName, isPositive) {
+        if (!this.factorTriggerCounts) {
+            this.factorTriggerCounts = {};
+        }
+        const key = `${dimension}_${factorName}_${isPositive ? 'pos' : 'neg'}`;
+        this.factorTriggerCounts[key] = (this.factorTriggerCounts[key] || 0) + 1;
     }
 
     logEvent(type, data) {
@@ -665,13 +790,12 @@ class AgentBase {
         this.winStreak = 0;
         this.failStreak++;
 
-        const lossPenalty = 0.15 * this.sensitivity.negative;
         if (this.personality.frustrationTolerance < 0.5) {
-            this.adjustScore('retention', -lossPenalty, 'battleFail');
+            this.adjustScore('retention', -0.15, 'battleFail');
             this.addBreakdown('retention', '战斗失败导致挫败', 'medium');
         }
 
-        this.adjustScore('growth', -0.05 * this.sensitivity.negative, 'battleFail');
+        this.adjustScore('growth', -0.05, 'battleFail');
     }
 
     decide(gameState) {

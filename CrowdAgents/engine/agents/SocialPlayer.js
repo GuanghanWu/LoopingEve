@@ -6,6 +6,9 @@ class SocialPlayer extends AgentBase {
         this.friendsOnline = false;
         this.shareableMoments = [];
         this.socialFrustration = 0;
+        this.friendDependency = this.specialTraits?.friendDependency ?? 0.3;
+        this.shareFrequency = this.specialTraits?.shareFrequency ?? 0.5;
+        this.socialNeed = this.specialTraits?.socialNeed ?? 0.5;
     }
 
     decide(gameState) {
@@ -58,7 +61,8 @@ class SocialPlayer extends AgentBase {
         }
 
         if (this.shareableMoments.length > 5) {
-            this.socialFrustration += 0.1;
+            const frustrationMultiplier = 1 + (this.socialNeed - 0.5);
+            this.socialFrustration += 0.1 * frustrationMultiplier;
             this.addBreakdown('immersion', '缺少社交分享功能', 'medium');
             this.adjustScore('immersion', -0.2, 'noShareFeature');
         }

@@ -15,7 +15,9 @@
                 "explorationDesire": 0.4,
                 "competitionDrive": 0.15,
                 "riskAppetite": 0.25,
-                "persistence": 0.3
+                "persistence": 0.3,
+                "positiveSensitivity": 0.5,
+                "negativeSensitivity": 1.5
             },
             "preferences": {
                 "sessionLength": "short",
@@ -23,7 +25,13 @@
                 "combatVsExplore": 0.45,
                 "grindTolerance": 0.25,
                 "rewardSensitivity": 0.85,
-                "immersionNeed": 0.4
+                "immersionNeed": 0.4,
+                "excitementExpectation": 0.4,
+                "growthExpectation": 0.5,
+                "pacingExpectation": 0.3,
+                "playabilityExpectation": 0.4,
+                "retentionExpectation": 0.6,
+                "immersionExpectation": 0.3
             },
             "behaviorPatterns": {
                 "playFrequency": "偶尔",
@@ -37,6 +45,17 @@
                 "reactionSpeed": 0.4,
                 "strategicThinking": 0.25,
                 "adaptability": 0.35
+            },
+            "specialTraits": {
+                "toleranceForRandomness": 0.3,
+                "progressVisibilityNeed": 0.85,
+                "friendDependency": 0.2,
+                "timeValueMultiplier": 1.0,
+                "shareFrequency": 0.25,
+                "efficiencyWeight": 0.2,
+                "completionism": 0.3,
+                "socialNeed": 0.3,
+                "valueSensitivity": 0.65
             }
         },
         {
@@ -50,7 +69,9 @@
                 "explorationDesire": 0.55,
                 "competitionDrive": 0.95,
                 "riskAppetite": 0.85,
-                "persistence": 0.95
+                "persistence": 0.95,
+                "positiveSensitivity": 0.8,
+                "negativeSensitivity": 0.5
             },
             "preferences": {
                 "sessionLength": "long",
@@ -58,7 +79,13 @@
                 "combatVsExplore": 0.35,
                 "grindTolerance": 0.9,
                 "rewardSensitivity": 0.4,
-                "immersionNeed": 0.25
+                "immersionNeed": 0.25,
+                "excitementExpectation": 0.9,
+                "growthExpectation": 0.7,
+                "pacingExpectation": 0.6,
+                "playabilityExpectation": 0.9,
+                "retentionExpectation": 0.4,
+                "immersionExpectation": 0.2
             },
             "behaviorPatterns": {
                 "playFrequency": "每日",
@@ -72,6 +99,17 @@
                 "reactionSpeed": 0.85,
                 "strategicThinking": 0.9,
                 "adaptability": 0.9
+            },
+            "specialTraits": {
+                "toleranceForRandomness": 0.6,
+                "progressVisibilityNeed": 0.4,
+                "friendDependency": 0.2,
+                "timeValueMultiplier": 1.0,
+                "shareFrequency": 0.4,
+                "efficiencyWeight": 0.5,
+                "completionism": 0.7,
+                "socialNeed": 0.35,
+                "valueSensitivity": 0.55
             }
         },
         {
@@ -85,7 +123,9 @@
                 "explorationDesire": 0.9,
                 "competitionDrive": 0.2,
                 "riskAppetite": 0.4,
-                "persistence": 0.65
+                "persistence": 0.65,
+                "positiveSensitivity": 0.7,
+                "negativeSensitivity": 1.2
             },
             "preferences": {
                 "sessionLength": "medium",
@@ -93,7 +133,13 @@
                 "combatVsExplore": 0.85,
                 "grindTolerance": 0.35,
                 "rewardSensitivity": 0.55,
-                "immersionNeed": 0.9
+                "immersionNeed": 0.9,
+                "excitementExpectation": 0.5,
+                "growthExpectation": 0.5,
+                "pacingExpectation": 0.4,
+                "playabilityExpectation": 0.7,
+                "retentionExpectation": 0.6,
+                "immersionExpectation": 0.95
             },
             "behaviorPatterns": {
                 "playFrequency": "每周数次",
@@ -109,7 +155,15 @@
                 "adaptability": 0.5
             },
             "specialTraits": {
-                "perfectionism": 0.8
+                "toleranceForRandomness": 0.5,
+                "progressVisibilityNeed": 0.6,
+                "friendDependency": 0.25,
+                "timeValueMultiplier": 1.0,
+                "shareFrequency": 0.5,
+                "efficiencyWeight": 0.25,
+                "completionism": 0.8,
+                "socialNeed": 0.4,
+                "valueSensitivity": 0.55
             }
         },
         {
@@ -123,7 +177,9 @@
                 "explorationDesire": 0.5,
                 "competitionDrive": 0.45,
                 "riskAppetite": 0.45,
-                "persistence": 0.55
+                "persistence": 0.55,
+                "positiveSensitivity": 0.6,
+                "negativeSensitivity": 0.8
             },
             "preferences": {
                 "sessionLength": "flexible",
@@ -131,7 +187,13 @@
                 "combatVsExplore": 0.55,
                 "grindTolerance": 0.55,
                 "rewardSensitivity": 0.6,
-                "immersionNeed": 0.55
+                "immersionNeed": 0.55,
+                "excitementExpectation": 0.5,
+                "growthExpectation": 0.5,
+                "pacingExpectation": 0.5,
+                "playabilityExpectation": 0.5,
+                "retentionExpectation": 0.5,
+                "immersionExpectation": 0.4
             },
             "behaviorPatterns": {
                 "playFrequency": "与朋友同步",
@@ -147,7 +209,15 @@
                 "adaptability": 0.7
             },
             "specialTraits": {
-                "socialNeed": 0.95
+                "toleranceForRandomness": 0.5,
+                "progressVisibilityNeed": 0.6,
+                "friendDependency": 0.75,
+                "timeValueMultiplier": 1.0,
+                "shareFrequency": 0.8,
+                "efficiencyWeight": 0.4,
+                "completionism": 0.5,
+                "socialNeed": 0.95,
+                "valueSensitivity": 0.55
             }
         },
         {
@@ -161,7 +231,9 @@
                 "explorationDesire": 0.5,
                 "competitionDrive": 0.6,
                 "riskAppetite": 0.55,
-                "persistence": 0.5
+                "persistence": 0.5,
+                "positiveSensitivity": 0.6,
+                "negativeSensitivity": 0.9
             },
             "preferences": {
                 "sessionLength": "medium",
@@ -169,7 +241,13 @@
                 "combatVsExplore": 0.45,
                 "grindTolerance": 0.35,
                 "rewardSensitivity": 0.75,
-                "immersionNeed": 0.4
+                "immersionNeed": 0.4,
+                "excitementExpectation": 0.6,
+                "growthExpectation": 0.8,
+                "pacingExpectation": 0.5,
+                "playabilityExpectation": 0.6,
+                "retentionExpectation": 0.6,
+                "immersionExpectation": 0.3
             },
             "behaviorPatterns": {
                 "playFrequency": "每日",
@@ -185,6 +263,14 @@
                 "adaptability": 0.55
             },
             "specialTraits": {
+                "toleranceForRandomness": 0.5,
+                "progressVisibilityNeed": 0.6,
+                "friendDependency": 0.35,
+                "timeValueMultiplier": 1.8,
+                "shareFrequency": 0.5,
+                "efficiencyWeight": 0.32,
+                "completionism": 0.5,
+                "socialNeed": 0.45,
                 "valueSensitivity": 0.35
             }
         }

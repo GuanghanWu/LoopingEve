@@ -5,6 +5,8 @@ class HardcoreGamer extends AgentBase {
         super(config);
         this.skillCombo = [];
         this.comboIndex = 0;
+        this.completionism = this.specialTraits?.completionism ?? 0.7;
+        this.efficiencyWeight = this.specialTraits?.efficiencyWeight ?? 0.5;
     }
 
     decide(gameState) {

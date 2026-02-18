@@ -8,6 +8,8 @@ class StoryExplorer extends AgentBase {
         this.visitedFloors = new Set();
         this.floorKillCount = {};
         this.lastFloorExplored = 0;
+        this.completionism = this.specialTraits?.completionism ?? 0.5;
+        this.toleranceForRandomness = this.specialTraits?.toleranceForRandomness ?? 0.5;
     }
 
     decide(gameState) {
@@ -47,7 +49,8 @@ class StoryExplorer extends AgentBase {
 
     hasExploredEnough(floor) {
         const killCount = this.floorKillCount[floor] || 0;
-        return killCount >= 8;
+        const requiredKills = Math.floor(5 + this.completionism * 10);
+        return killCount >= requiredKills;
     }
 
     findUnusedSkill(gameState) {
@@ -78,14 +81,6 @@ class StoryExplorer extends AgentBase {
         if (data.victory) {
             const floor = this.gameAPI ? this.gameAPI.getState().floor : 1;
             this.floorKillCount[floor] = (this.floorKillCount[floor] || 0) + 1;
-        }
-    }
-
-    onMonsterDamage(data) {
-        super.onMonsterDamage(data);
-
-        if (data.skillUsed && !this.usedSkills.has(data.skillUsed)) {
-            this.adjustScore('playability', 0.4, 'newSkill');
         }
     }
 
