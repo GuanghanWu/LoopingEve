@@ -4,9 +4,9 @@
         "tickInterval": 100
     },
     "targetAudience": {
-        "description": "目标玩家群体配置：休闲+探索玩家为主要目标，付费玩家为次要关注",
+        "description": "目标玩家群体配置：休闲+探索玩家为主要目标，其他玩家为次要关注",
         "primary": ["casual", "explorer"],
-        "secondary": ["paying"],
+        "secondary": ["hardcore", "social", "paying"],
         "weights": {
             "casual": 0.6,
             "explorer": 0.4
