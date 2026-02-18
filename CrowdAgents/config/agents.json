@@ -4,12 +4,12 @@
         "tickInterval": 100
     },
     "targetAudience": {
-        "description": "目标玩家群体配置：定义游戏的核心目标用户，评估系统将聚焦于这些玩家的体验",
-        "primary": ["casual", "explorer"],
-        "secondary": [],
+        "description": "目标玩家群体配置：硬核+社交玩家为主要目标，付费玩家为次要关注",
+        "primary": ["hardcore", "social"],
+        "secondary": ["paying"],
         "weights": {
-            "casual": 0.6,
-            "explorer": 0.4
+            "hardcore": 0.8,
+            "social": 0.2
         },
         "scoreThresholds": {
             "excellent": 8.0,
