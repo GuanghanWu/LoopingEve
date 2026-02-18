@@ -4,9 +4,9 @@
         "tickInterval": 100
     },
     "targetAudience": {
-        "description": "目标玩家群体配置：定义游戏的核心目标用户，评估系统将聚焦于这些玩家的体验",
+        "description": "目标玩家群体配置：休闲+探索玩家为主要目标，付费玩家为次要关注",
         "primary": ["casual", "explorer"],
-        "secondary": [],
+        "secondary": ["paying"],
         "weights": {
             "casual": 0.6,
             "explorer": 0.4
