@@ -1,0 +1,21 @@
+{
+  "name": "looping-eve",
+  "version": "1.0.0",
+  "description": "LoopingEve - 循环冒险游戏",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "deploy": "node --experimental-strip-types scripts/deploy.ts"
+  },
+  "keywords": ["game", "rpg", "typescript"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
+  }
+}
