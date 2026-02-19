@@ -3,7 +3,8 @@ import type { GameConfig } from './types';
 import { Game } from './Game';
 
 async function loadConfig(): Promise<GameConfig> {
-  const res = await fetch('./Configs/config.json?t=' + Date.now());
+  const basePath = import.meta.env.PROD ? './MainGame/dist/' : './';
+  const res = await fetch(basePath + 'Configs/config.json?t=' + Date.now());
   if (!res.ok) throw new Error('配置加载失败');
   return res.json();
 }
