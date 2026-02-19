@@ -3,7 +3,7 @@ import { resolve } from 'path'
 
 export default defineConfig({
   root: '.',
-  base: 'MainGame/dist/',
+  base: './',
   publicDir: 'public',
   resolve: {
     alias: {

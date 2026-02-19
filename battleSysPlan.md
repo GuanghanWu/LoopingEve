@@ -40,10 +40,15 @@
 
 | 文件 | 职责 |
 |------|------|
-| `MainGame/js/Game.js` | 游戏主循环、状态管理、存档 |
-| `MainGame/js/BattleManager.js` | 战斗逻辑、伤害计算 |
-| `MainGame/js/PlayerManager.js` | 玩家属性、升级、装备 |
-| `MainGame/Configs/config.json` | 游戏配置（数值、怪物、装备等） |
+| `MainGame/src/Game.ts` | 游戏主循环、状态管理、存档 |
+| `MainGame/src/managers/BattleManager.ts` | 战斗逻辑、伤害计算 |
+| `MainGame/src/managers/PlayerManager.ts` | 玩家属性、升级、装备 |
+| `MainGame/src/managers/InventoryManager.ts` | 背包管理、物品使用 |
+| `MainGame/src/managers/StoryManager.ts` | 剧情管理、NPC交互 |
+| `MainGame/src/managers/UIManager.ts` | UI渲染、事件绑定 |
+| `MainGame/src/types/index.ts` | TypeScript 类型定义 |
+| `MainGame/src/utils/dom.ts` | DOM 工具函数 |
+| `MainGame/public/Configs/config.json` | 游戏配置（数值、怪物、装备等） |
 
 ### 需要改造的核心点
 
@@ -51,6 +56,7 @@
 2. **关卡结构**：从简单的击杀计数 → BOSS关卡 + 区域系统
 3. **死亡机制**：从清除存档 → 回退一层继续
 4. **属性扩展**：新增连击/反击/格挡/护盾系统
+5. **类型定义**：在 `types/index.ts` 中扩展新属性接口
 
 ---
 
@@ -59,7 +65,7 @@
 ### 阶段一：战斗流程与关卡系统重构
 
 #### 任务 1.1：放置战斗机制
-**文件**：`BattleManager.js`、`Game.js`、`config.json`
+**文件**：`src/managers/BattleManager.ts`、`src/Game.ts`、`public/Configs/config.json`
 
 **改造内容**：
 - 实现自动战斗循环（autoBattleLoop）
@@ -77,7 +83,7 @@
 ---
 
 #### 任务 1.2：BOSS关卡系统
-**文件**：`BattleManager.js`、`config.json`
+**文件**：`src/managers/BattleManager.ts`、`src/types/index.ts`、`public/Configs/config.json`
 
 **改造内容**：
 - 实现BOSS关卡规则：每5层设置1个BOSS（5, 10, 15, 20...）
@@ -96,7 +102,7 @@
 ---
 
 #### 任务 1.3：区域过渡与难度平衡
-**文件**：`BattleManager.js`、`config.json`
+**文件**：`src/managers/BattleManager.ts`、`public/Configs/config.json`
 
 **改造内容**：
 - 定义区域划分（基于现有worldLore）
@@ -117,7 +123,7 @@ if (isNewAreaFirstFloor(floor)) {
 ### 阶段二：战斗规则优化
 
 #### 任务 2.1：无惩罚死亡机制
-**文件**：`Game.js`、`BattleManager.js`
+**文件**：`src/Game.ts`、`src/managers/BattleManager.ts`
 
 **改造内容**：
 - 修改 `gameOver()` → `onPlayerDeath()`
@@ -126,21 +132,21 @@ if (isNewAreaFirstFloor(floor)) {
 - 保留玩家经验和装备（不清除存档）
 
 **新增状态**：
-```javascript
-this.autoAdvanceEnabled = false; // 自动闯关开关
+```typescript
+autoAdvanceEnabled: boolean = false; // 自动闯关开关
 ```
 
 ---
 
 #### 任务 2.2：战斗恢复机制
-**文件**：`BattleManager.js`
+**文件**：`src/managers/BattleManager.ts`
 
 **改造内容**：
 - 在 `defeat()` 方法中添加满血恢复
 - 确保恢复逻辑不影响护盾系统（护盾不恢复）
 
-```javascript
-defeat() {
+```typescript
+defeat(): void {
     // ... 现有逻辑
     this.game.player.hp = this.game.player.maxHP; // 新增：满血恢复
     // 护盾值不恢复
@@ -150,7 +156,7 @@ defeat() {
 ---
 
 #### 任务 2.3：战斗节奏优化
-**文件**：`UIManager.js`、`style.css`
+**文件**：`src/managers/UIManager.ts`、`src/style.css`
 
 **改造内容**：
 - 优化战斗日志显示（自动滚动、精简信息）
@@ -162,7 +168,7 @@ defeat() {
 ### 阶段三：战斗属性系统扩展
 
 #### 任务 3.1：玩家次要属性扩展
-**文件**：`PlayerManager.js`、`config.json`
+**文件**：`src/managers/PlayerManager.ts`、`src/types/index.ts`、`public/Configs/config.json`
 
 **新增属性**：
 
@@ -176,6 +182,33 @@ defeat() {
 | `blockReduction` | 格挡减伤比例 | 0.3 |
 | `shield` | 当前护盾值 | 0 |
 | `maxShield` | 最大护盾值 | 0 |
+
+**类型定义更新**（`src/types/index.ts`）：
+```typescript
+export interface PlayerInitial {
+  // ... 现有属性
+  comboRate: number;
+  comboDamage: number;
+  counterRate: number;
+  counterDamage: number;
+  blockRate: number;
+  blockReduction: number;
+  shield: number;
+  maxShield: number;
+}
+
+export interface Player {
+  // ... 现有属性
+  comboRate: number;
+  comboDamage: number;
+  counterRate: number;
+  counterDamage: number;
+  blockRate: number;
+  blockReduction: number;
+  shield: number;
+  maxShield: number;
+}
+```
 
 **配置更新**：
 ```json
@@ -192,28 +225,29 @@ defeat() {
 ---
 
 #### 任务 3.2：连击系统实现
-**文件**：`BattleManager.js`
+**文件**：`src/managers/BattleManager.ts`
 
 **机制设计**：
 - 每次攻击有 `comboRate` 概率触发连击
 - 连击造成额外攻击，伤害为原伤害的 `comboDamage` 倍
 - 连击可连续触发（上限3次）
 
-```javascript
-// 伪代码
-function performCombo(baseDamage) {
+```typescript
+performCombo(baseDamage: number): number {
     let comboCount = 0;
-    while (Math.random() < comboRate && comboCount < 3) {
+    let totalDamage = 0;
+    while (Math.random() < this.comboRate && comboCount < 3) {
         comboCount++;
-        dealDamage(baseDamage * comboDamage);
+        totalDamage += baseDamage * this.comboDamage;
     }
+    return totalDamage;
 }
 ```
 
 ---
 
 #### 任务 3.3：反击系统实现
-**文件**：`BattleManager.js`
+**文件**：`src/managers/BattleManager.ts`
 
 **机制设计**：
 - 受到攻击后有 `counterRate` 概率触发反击
@@ -223,7 +257,7 @@ function performCombo(baseDamage) {
 ---
 
 #### 任务 3.4：格挡与护盾系统
-**文件**：`BattleManager.js`
+**文件**：`src/managers/BattleManager.ts`
 
 **格挡机制**：
 - 受到攻击时有 `blockRate` 概率触发格挡
@@ -237,7 +271,7 @@ function performCombo(baseDamage) {
 ---
 
 #### 任务 3.5：怪物属性精简
-**文件**：`config.json`
+**文件**：`public/Configs/config.json`
 
 **改造内容**：
 - 保留怪物 `critRate` 和 `dodgeRate`
@@ -246,9 +280,44 @@ function performCombo(baseDamage) {
 ---
 
 #### 任务 3.6：装备属性扩展
-**文件**：`config.json`
+**文件**：`src/types/index.ts`、`public/Configs/config.json`
 
-**为装备添加次要属性**：
+**类型定义更新**：
+```typescript
+export interface Weapon {
+  id: string;
+  name: string;
+  icon: string;
+  atk: number;
+  materials: Record<string, number>;
+  comboRate?: number;
+  comboDamage?: number;
+  counterRate?: number;
+  counterDamage?: number;
+  blockRate?: number;
+  blockReduction?: number;
+  shield?: number;
+  maxShield?: number;
+}
+
+export interface Armor {
+  id: string;
+  name: string;
+  icon: string;
+  def: number;
+  materials: Record<string, number>;
+  comboRate?: number;
+  comboDamage?: number;
+  counterRate?: number;
+  counterDamage?: number;
+  blockRate?: number;
+  blockReduction?: number;
+  shield?: number;
+  maxShield?: number;
+}
+```
+
+**配置示例**：
 ```json
 {
     "id": "flameBlade",
@@ -265,7 +334,7 @@ function performCombo(baseDamage) {
 ### 阶段四：系统集成与测试
 
 #### 任务 4.1：UI更新
-**文件**：`UIManager.js`、`index.html`、`style.css`
+**文件**：`src/managers/UIManager.ts`、`index.html`、`src/style.css`
 
 **改造内容**：
 - 添加护盾条显示
@@ -276,7 +345,7 @@ function performCombo(baseDamage) {
 ---
 
 #### 任务 4.2：存档迁移
-**文件**：`PlayerManager.js`、`Game.js`
+**文件**：`src/managers/PlayerManager.ts`、`src/Game.ts`
 
 **改造内容**：
 - 确保旧存档兼容新属性
@@ -298,17 +367,30 @@ function performCombo(baseDamage) {
 
 | 文件 | 修改类型 | 改动量 |
 |------|----------|--------|
-| `config.json` | 扩展配置 | 大 |
-| `BattleManager.js` | 核心重构 | 大 |
-| `PlayerManager.js` | 属性扩展 | 中 |
-| `Game.js` | 流程改造 | 中 |
-| `UIManager.js` | UI更新 | 中 |
+| `public/Configs/config.json` | 扩展配置 | 大 |
+| `src/managers/BattleManager.ts` | 核心重构 | 大 |
+| `src/types/index.ts` | 类型扩展 | 中 |
+| `src/managers/PlayerManager.ts` | 属性扩展 | 中 |
+| `src/Game.ts` | 流程改造 | 中 |
+| `src/managers/UIManager.ts` | UI更新 | 中 |
 | `index.html` | UI结构 | 小 |
-| `style.css` | 样式更新 | 小 |
+| `src/style.css` | 样式更新 | 小 |
 
 ---
 
-## 四、实施顺序建议
+## 四、部署流程
+
+每次修改代码或配置后，需执行以下命令：
+
+```bash
+cd MainGame
+npm run build   # TypeScript 编译 + Vite 打包
+npm run deploy  # 复制 index.html 到根目录
+```
+
+---
+
+## 五、实施顺序建议
 
 ```
 Week 1: 阶段一（战斗流程）
@@ -330,7 +412,7 @@ Week 3: 阶段四（集成测试）
 
 ---
 
-## 五、风险与注意事项
+## 六、风险与注意事项
 
 1. **存档兼容性**：需要确保旧玩家存档能平滑迁移
 2. **数值平衡**：新属性可能影响游戏平衡，需要多次迭代测试
@@ -339,7 +421,7 @@ Week 3: 阶段四（集成测试）
 
 ---
 
-## 六、详细需求参考
+## 七、详细需求参考
 
 ### 1. 战斗流程与难度曲线重构
 

@@ -1,4 +1,4 @@
-import { existsSync, copyFileSync } from 'fs';
+import { existsSync, copyFileSync, readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -15,8 +15,12 @@ function deploy(): void {
     process.exit(1);
   }
 
-  copyFileSync(distHtml, rootHtml);
+  let content = readFileSync(distHtml, 'utf-8');
+  content = content.replace(/\.\/assets\//g, './MainGame/dist/assets/');
+
+  writeFileSync(rootHtml, content);
   console.log('✓ Copied dist/index.html → root/index.html');
+  console.log('✓ Converted absolute paths to relative paths');
   console.log('\n🚀 Deploy complete!');
 }
 
