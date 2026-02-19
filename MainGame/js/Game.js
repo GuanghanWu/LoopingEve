@@ -1,7 +1,7 @@
 var CONFIG = null;
 
 async function loadConfig() {
-    const res = await fetch('config.json?t=' + Date.now());
+    const res = await fetch('MainGame/Configs/config.json?t=' + Date.now());
     if (!res.ok) throw new Error('配置加载失败');
     CONFIG = await res.json();
 }

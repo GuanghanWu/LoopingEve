@@ -56,7 +56,7 @@ class ConfigLoader:
         if path:
             config_path = Path(path)
         else:
-            config_path = self._project_root / "config.json"
+            config_path = self._project_root / "MainGame" / "Configs" / "config.json"
         
         data = orjson.loads(config_path.read_bytes())
         

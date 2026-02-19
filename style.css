@@ -475,7 +475,7 @@ body {
     0%, 100% { box-shadow: var(--shadow-md), 0 0 15px var(--accent-glow); }
     50% { box-shadow: var(--shadow-lg), 0 0 25px var(--accent-glow); }
 }
-}
+
 
 .monster-card {
     background: transparent;
