@@ -1,0 +1,1939 @@
+{
+  "meta": {
+    "version": "2.0",
+    "generatedAt": "2026-02-19T11:23:07Z",
+    "totalDuration": 10000,
+    "totalTicks": 100,
+    "agentCount": 5
+  },
+  "target_audience": {
+    "description": "目标玩家群体配置：所有5类玩家均为目标用户，平等权重",
+    "primary": [
+      "casual",
+      "hardcore",
+      "explorer",
+      "social",
+      "paying"
+    ],
+    "secondary": [],
+    "weights": {
+      "casual": 0.2,
+      "hardcore": 0.2,
+      "explorer": 0.2,
+      "social": 0.2,
+      "paying": 0.2
+    },
+    "scoreThresholds": {
+      "excellent": 8.0,
+      "good": 6.0,
+      "acceptable": 4.5,
+      "poor": 3.0
+    }
+  },
+  "matrix": {
+    "overallAvg": 0.64,
+    "byAgent": {
+      "casual": {
+        "excitement": 1.25,
+        "growth": 0.01,
+        "pacing": 0.53,
+        "playability": 0.68,
+        "retention": 0.56,
+        "immersion": 0.12
+      },
+      "hardcore": {
+        "excitement": 1.2,
+        "growth": 0.02,
+        "pacing": 0.66,
+        "playability": 0.54,
+        "retention": 0.9,
+        "immersion": 0.03
+      },
+      "explorer": {
+        "excitement": 1.19,
+        "growth": 0.04,
+        "pacing": 0.72,
+        "playability": 1.42,
+        "retention": 0.64,
+        "immersion": 0.17
+      },
+      "social": {
+        "excitement": 1.52,
+        "growth": 0.15,
+        "pacing": 0.87,
+        "playability": 0.81,
+        "retention": 0.84,
+        "immersion": 0.05
+      },
+      "paying": {
+        "excitement": 1.12,
+        "growth": 0.3,
+        "pacing": 0.85,
+        "playability": 1.05,
+        "retention": 0.88,
+        "immersion": 0.07
+      }
+    },
+    "byDimension": {
+      "excitement": {
+        "avg": 1.26,
+        "min": 1.12,
+        "max": 1.52,
+        "variance": 0.02
+      },
+      "growth": {
+        "avg": 0.1,
+        "min": 0.01,
+        "max": 0.3,
+        "variance": 0.01
+      },
+      "pacing": {
+        "avg": 0.73,
+        "min": 0.53,
+        "max": 0.87,
+        "variance": 0.02
+      },
+      "playability": {
+        "avg": 0.9,
+        "min": 0.54,
+        "max": 1.42,
+        "variance": 0.1
+      },
+      "retention": {
+        "avg": 0.76,
+        "min": 0.56,
+        "max": 0.9,
+        "variance": 0.02
+      },
+      "immersion": {
+        "avg": 0.09,
+        "min": 0.03,
+        "max": 0.17,
+        "variance": 0.0
+      }
+    }
+  },
+  "metrics": {
+    "totalBattles": 142,
+    "totalDeaths": 5,
+    "totalWins": 141
+  },
+  "evaluation": {
+    "by_agent": {
+      "casual": {
+        "excitement": 1.25,
+        "growth": 0.01,
+        "pacing": 0.53,
+        "playability": 0.68,
+        "retention": 0.56,
+        "immersion": 0.12
+      },
+      "hardcore": {
+        "excitement": 1.2,
+        "growth": 0.02,
+        "pacing": 0.66,
+        "playability": 0.54,
+        "retention": 0.9,
+        "immersion": 0.03
+      },
+      "explorer": {
+        "excitement": 1.19,
+        "growth": 0.04,
+        "pacing": 0.72,
+        "playability": 1.42,
+        "retention": 0.64,
+        "immersion": 0.17
+      },
+      "social": {
+        "excitement": 1.52,
+        "growth": 0.15,
+        "pacing": 0.87,
+        "playability": 0.81,
+        "retention": 0.84,
+        "immersion": 0.05
+      },
+      "paying": {
+        "excitement": 1.12,
+        "growth": 0.3,
+        "pacing": 0.85,
+        "playability": 1.05,
+        "retention": 0.88,
+        "immersion": 0.07
+      }
+    },
+    "by_dimension": {
+      "excitement": {
+        "avg": 1.26,
+        "min": 1.12,
+        "max": 1.52,
+        "variance": 0.02
+      },
+      "growth": {
+        "avg": 0.1,
+        "min": 0.01,
+        "max": 0.3,
+        "variance": 0.01
+      },
+      "pacing": {
+        "avg": 0.73,
+        "min": 0.53,
+        "max": 0.87,
+        "variance": 0.02
+      },
+      "playability": {
+        "avg": 0.9,
+        "min": 0.54,
+        "max": 1.42,
+        "variance": 0.1
+      },
+      "retention": {
+        "avg": 0.76,
+        "min": 0.56,
+        "max": 0.9,
+        "variance": 0.02
+      },
+      "immersion": {
+        "avg": 0.09,
+        "min": 0.03,
+        "max": 0.17,
+        "variance": 0.0
+      }
+    },
+    "overall_avg": 0.64,
+    "target_score": {
+      "score": 0.64,
+      "achievement_rate": 6.4,
+      "thresholds": {
+        "excellent": 8.0,
+        "good": 6.0,
+        "acceptable": 4.5,
+        "poor": 3.0
+      },
+      "target_details": [
+        {
+          "type": "casual",
+          "type_name": "轻度休闲",
+          "weight": 0.2,
+          "avg_score": 0.53,
+          "dimension_scores": {
+            "excitement": 1.25,
+            "growth": 0.01,
+            "pacing": 0.53,
+            "playability": 0.68,
+            "retention": 0.56,
+            "immersion": 0.12
+          },
+          "status": "critical",
+          "is_primary": true
+        },
+        {
+          "type": "hardcore",
+          "type_name": "硬核竞技",
+          "weight": 0.2,
+          "avg_score": 0.56,
+          "dimension_scores": {
+            "excitement": 1.2,
+            "growth": 0.02,
+            "pacing": 0.66,
+            "playability": 0.54,
+            "retention": 0.9,
+            "immersion": 0.03
+          },
+          "status": "critical",
+          "is_primary": true
+        },
+        {
+          "type": "explorer",
+          "type_name": "剧情探索",
+          "weight": 0.2,
+          "avg_score": 0.7,
+          "dimension_scores": {
+            "excitement": 1.19,
+            "growth": 0.04,
+            "pacing": 0.72,
+            "playability": 1.42,
+            "retention": 0.64,
+            "immersion": 0.17
+          },
+          "status": "critical",
+          "is_primary": true
+        },
+        {
+          "type": "social",
+          "type_name": "社交互动",
+          "weight": 0.2,
+          "avg_score": 0.71,
+          "dimension_scores": {
+            "excitement": 1.52,
+            "growth": 0.15,
+            "pacing": 0.87,
+            "playability": 0.81,
+            "retention": 0.84,
+            "immersion": 0.05
+          },
+          "status": "critical",
+          "is_primary": true
+        },
+        {
+          "type": "paying",
+          "type_name": "付费习惯",
+          "weight": 0.2,
+          "avg_score": 0.71,
+          "dimension_scores": {
+            "excitement": 1.12,
+            "growth": 0.3,
+            "pacing": 0.85,
+            "playability": 1.05,
+            "retention": 0.88,
+            "immersion": 0.07
+          },
+          "status": "critical",
+          "is_primary": true
+        }
+      ],
+      "summary": {
+        "level": "poor",
+        "message": "目标玩家群体体验较差，急需改进核心体验"
+      }
+    },
+    "issues": [
+      {
+        "agent": "休闲小明",
+        "agent_type": "casual",
+        "dimension": "growth",
+        "dimension_name": "成长感",
+        "score": 0.01,
+        "severity": "critical"
+      },
+      {
+        "agent": "竞技达人",
+        "agent_type": "hardcore",
+        "dimension": "growth",
+        "dimension_name": "成长感",
+        "score": 0.02,
+        "severity": "critical"
+      },
+      {
+        "agent": "竞技达人",
+        "agent_type": "hardcore",
+        "dimension": "immersion",
+        "dimension_name": "代入感",
+        "score": 0.03,
+        "severity": "critical"
+      },
+      {
+        "agent": "探索者小雪",
+        "agent_type": "explorer",
+        "dimension": "growth",
+        "dimension_name": "成长感",
+        "score": 0.04,
+        "severity": "critical"
+      },
+      {
+        "agent": "社交达人",
+        "agent_type": "social",
+        "dimension": "immersion",
+        "dimension_name": "代入感",
+        "score": 0.05,
+        "severity": "critical"
+      },
+      {
+        "agent": "氪金大佬",
+        "agent_type": "paying",
+        "dimension": "immersion",
+        "dimension_name": "代入感",
+        "score": 0.07,
+        "severity": "critical"
+      },
+      {
+        "agent": "休闲小明",
+        "agent_type": "casual",
+        "dimension": "immersion",
+        "dimension_name": "代入感",
+        "score": 0.12,
+        "severity": "critical"
+      },
+      {
+        "agent": "社交达人",
+        "agent_type": "social",
+        "dimension": "growth",
+        "dimension_name": "成长感",
+        "score": 0.15,
+        "severity": "critical"
+      },
+      {
+        "agent": "探索者小雪",
+        "agent_type": "explorer",
+        "dimension": "immersion",
+        "dimension_name": "代入感",
+        "score": 0.17,
+        "severity": "critical"
+      },
+      {
+        "agent": "氪金大佬",
+        "agent_type": "paying",
+        "dimension": "growth",
+        "dimension_name": "成长感",
+        "score": 0.3,
+        "severity": "critical"
+      },
+      {
+        "agent": "休闲小明",
+        "agent_type": "casual",
+        "dimension": "pacing",
+        "dimension_name": "节奏感",
+        "score": 0.53,
+        "severity": "high"
+      },
+      {
+        "agent": "竞技达人",
+        "agent_type": "hardcore",
+        "dimension": "playability",
+        "dimension_name": "可玩性",
+        "score": 0.54,
+        "severity": "high"
+      },
+      {
+        "agent": "休闲小明",
+        "agent_type": "casual",
+        "dimension": "retention",
+        "dimension_name": "留存预估",
+        "score": 0.56,
+        "severity": "high"
+      },
+      {
+        "agent": "探索者小雪",
+        "agent_type": "explorer",
+        "dimension": "retention",
+        "dimension_name": "留存预估",
+        "score": 0.64,
+        "severity": "high"
+      },
+      {
+        "agent": "竞技达人",
+        "agent_type": "hardcore",
+        "dimension": "pacing",
+        "dimension_name": "节奏感",
+        "score": 0.66,
+        "severity": "high"
+      },
+      {
+        "agent": "休闲小明",
+        "agent_type": "casual",
+        "dimension": "playability",
+        "dimension_name": "可玩性",
+        "score": 0.68,
+        "severity": "high"
+      },
+      {
+        "agent": "探索者小雪",
+        "agent_type": "explorer",
+        "dimension": "pacing",
+        "dimension_name": "节奏感",
+        "score": 0.72,
+        "severity": "high"
+      },
+      {
+        "agent": "社交达人",
+        "agent_type": "social",
+        "dimension": "playability",
+        "dimension_name": "可玩性",
+        "score": 0.81,
+        "severity": "high"
+      },
+      {
+        "agent": "社交达人",
+        "agent_type": "social",
+        "dimension": "retention",
+        "dimension_name": "留存预估",
+        "score": 0.84,
+        "severity": "high"
+      },
+      {
+        "agent": "氪金大佬",
+        "agent_type": "paying",
+        "dimension": "pacing",
+        "dimension_name": "节奏感",
+        "score": 0.85,
+        "severity": "high"
+      },
+      {
+        "agent": "社交达人",
+        "agent_type": "social",
+        "dimension": "pacing",
+        "dimension_name": "节奏感",
+        "score": 0.87,
+        "severity": "high"
+      },
+      {
+        "agent": "氪金大佬",
+        "agent_type": "paying",
+        "dimension": "retention",
+        "dimension_name": "留存预估",
+        "score": 0.88,
+        "severity": "high"
+      },
+      {
+        "agent": "竞技达人",
+        "agent_type": "hardcore",
+        "dimension": "retention",
+        "dimension_name": "留存预估",
+        "score": 0.9,
+        "severity": "high"
+      },
+      {
+        "agent": "氪金大佬",
+        "agent_type": "paying",
+        "dimension": "playability",
+        "dimension_name": "可玩性",
+        "score": 1.05,
+        "severity": "medium"
+      },
+      {
+        "agent": "氪金大佬",
+        "agent_type": "paying",
+        "dimension": "excitement",
+        "dimension_name": "刺激度",
+        "score": 1.12,
+        "severity": "medium"
+      },
+      {
+        "agent": "探索者小雪",
+        "agent_type": "explorer",
+        "dimension": "excitement",
+        "dimension_name": "刺激度",
+        "score": 1.19,
+        "severity": "medium"
+      },
+      {
+        "agent": "竞技达人",
+        "agent_type": "hardcore",
+        "dimension": "excitement",
+        "dimension_name": "刺激度",
+        "score": 1.2,
+        "severity": "medium"
+      },
+      {
+        "agent": "休闲小明",
+        "agent_type": "casual",
+        "dimension": "excitement",
+        "dimension_name": "刺激度",
+        "score": 1.25,
+        "severity": "medium"
+      },
+      {
+        "agent": "探索者小雪",
+        "agent_type": "explorer",
+        "dimension": "playability",
+        "dimension_name": "可玩性",
+        "score": 1.42,
+        "severity": "medium"
+      },
+      {
+        "agent": "社交达人",
+        "agent_type": "social",
+        "dimension": "excitement",
+        "dimension_name": "刺激度",
+        "score": 1.52,
+        "severity": "medium"
+      }
+    ]
+  },
+  "analysis": {
+    "target_analysis": {
+      "enabled": true,
+      "target_count": 5,
+      "avg_scores": {
+        "excitement": 1.256,
+        "growth": 0.10400000000000001,
+        "pacing": 0.726,
+        "playability": 0.9,
+        "retention": 0.764,
+        "immersion": 0.088
+      },
+      "weak_dimensions": [
+        {
+          "dimension": "immersion",
+          "score": 0.088,
+          "name": "代入感"
+        },
+        {
+          "dimension": "growth",
+          "score": 0.10400000000000001,
+          "name": "成长感"
+        },
+        {
+          "dimension": "pacing",
+          "score": 0.726,
+          "name": "节奏感"
+        },
+        {
+          "dimension": "retention",
+          "score": 0.764,
+          "name": "留存预估"
+        },
+        {
+          "dimension": "playability",
+          "score": 0.9,
+          "name": "可玩性"
+        },
+        {
+          "dimension": "excitement",
+          "score": 1.256,
+          "name": "刺激度"
+        }
+      ]
+    },
+    "dimension_analysis": {
+      "excitement": {
+        "stats": {
+          "avg": 1.26,
+          "min": 1.12,
+          "max": 1.52,
+          "variance": 0.02
+        },
+        "issues": [
+          {
+            "type": "low_average",
+            "severity": "high",
+            "message": "刺激度平均分过低(1.26)"
+          }
+        ]
+      },
+      "growth": {
+        "stats": {
+          "avg": 0.1,
+          "min": 0.01,
+          "max": 0.3,
+          "variance": 0.01
+        },
+        "issues": [
+          {
+            "type": "low_average",
+            "severity": "high",
+            "message": "成长感平均分过低(0.1)"
+          }
+        ]
+      },
+      "pacing": {
+        "stats": {
+          "avg": 0.73,
+          "min": 0.53,
+          "max": 0.87,
+          "variance": 0.02
+        },
+        "issues": [
+          {
+            "type": "low_average",
+            "severity": "high",
+            "message": "节奏感平均分过低(0.73)"
+          }
+        ]
+      },
+      "playability": {
+        "stats": {
+          "avg": 0.9,
+          "min": 0.54,
+          "max": 1.42,
+          "variance": 0.1
+        },
+        "issues": [
+          {
+            "type": "low_average",
+            "severity": "high",
+            "message": "可玩性平均分过低(0.9)"
+          }
+        ]
+      },
+      "retention": {
+        "stats": {
+          "avg": 0.76,
+          "min": 0.56,
+          "max": 0.9,
+          "variance": 0.02
+        },
+        "issues": [
+          {
+            "type": "low_average",
+            "severity": "high",
+            "message": "留存预估平均分过低(0.76)"
+          }
+        ]
+      },
+      "immersion": {
+        "stats": {
+          "avg": 0.09,
+          "min": 0.03,
+          "max": 0.17,
+          "variance": 0.0
+        },
+        "issues": [
+          {
+            "type": "low_average",
+            "severity": "high",
+            "message": "代入感平均分过低(0.09)"
+          }
+        ]
+      }
+    },
+    "agent_analysis": {
+      "casual": {
+        "name": "休闲小明",
+        "avg_score": 0.53,
+        "lowest_dimension": {
+          "name": "growth",
+          "score": 0.01
+        },
+        "highest_dimension": {
+          "name": "excitement",
+          "score": 1.25
+        },
+        "issues": [
+          {
+            "dimension": "excitement",
+            "dimension_name": "刺激度",
+            "score": 1.25,
+            "severity": "medium"
+          },
+          {
+            "dimension": "growth",
+            "dimension_name": "成长感",
+            "score": 0.01,
+            "severity": "high"
+          },
+          {
+            "dimension": "pacing",
+            "dimension_name": "节奏感",
+            "score": 0.53,
+            "severity": "high"
+          },
+          {
+            "dimension": "playability",
+            "dimension_name": "可玩性",
+            "score": 0.68,
+            "severity": "high"
+          },
+          {
+            "dimension": "retention",
+            "dimension_name": "留存预估",
+            "score": 0.56,
+            "severity": "high"
+          },
+          {
+            "dimension": "immersion",
+            "dimension_name": "代入感",
+            "score": 0.12,
+            "severity": "high"
+          }
+        ]
+      },
+      "hardcore": {
+        "name": "竞技达人",
+        "avg_score": 0.56,
+        "lowest_dimension": {
+          "name": "growth",
+          "score": 0.02
+        },
+        "highest_dimension": {
+          "name": "excitement",
+          "score": 1.2
+        },
+        "issues": [
+          {
+            "dimension": "excitement",
+            "dimension_name": "刺激度",
+            "score": 1.2,
+            "severity": "medium"
+          },
+          {
+            "dimension": "growth",
+            "dimension_name": "成长感",
+            "score": 0.02,
+            "severity": "high"
+          },
+          {
+            "dimension": "pacing",
+            "dimension_name": "节奏感",
+            "score": 0.66,
+            "severity": "high"
+          },
+          {
+            "dimension": "playability",
+            "dimension_name": "可玩性",
+            "score": 0.54,
+            "severity": "high"
+          },
+          {
+            "dimension": "retention",
+            "dimension_name": "留存预估",
+            "score": 0.9,
+            "severity": "high"
+          },
+          {
+            "dimension": "immersion",
+            "dimension_name": "代入感",
+            "score": 0.03,
+            "severity": "high"
+          }
+        ]
+      },
+      "explorer": {
+        "name": "探索者小雪",
+        "avg_score": 0.7,
+        "lowest_dimension": {
+          "name": "growth",
+          "score": 0.04
+        },
+        "highest_dimension": {
+          "name": "playability",
+          "score": 1.42
+        },
+        "issues": [
+          {
+            "dimension": "excitement",
+            "dimension_name": "刺激度",
+            "score": 1.19,
+            "severity": "medium"
+          },
+          {
+            "dimension": "growth",
+            "dimension_name": "成长感",
+            "score": 0.04,
+            "severity": "high"
+          },
+          {
+            "dimension": "pacing",
+            "dimension_name": "节奏感",
+            "score": 0.72,
+            "severity": "high"
+          },
+          {
+            "dimension": "playability",
+            "dimension_name": "可玩性",
+            "score": 1.42,
+            "severity": "medium"
+          },
+          {
+            "dimension": "retention",
+            "dimension_name": "留存预估",
+            "score": 0.64,
+            "severity": "high"
+          },
+          {
+            "dimension": "immersion",
+            "dimension_name": "代入感",
+            "score": 0.17,
+            "severity": "high"
+          }
+        ]
+      },
+      "social": {
+        "name": "社交达人",
+        "avg_score": 0.71,
+        "lowest_dimension": {
+          "name": "immersion",
+          "score": 0.05
+        },
+        "highest_dimension": {
+          "name": "excitement",
+          "score": 1.52
+        },
+        "issues": [
+          {
+            "dimension": "excitement",
+            "dimension_name": "刺激度",
+            "score": 1.52,
+            "severity": "medium"
+          },
+          {
+            "dimension": "growth",
+            "dimension_name": "成长感",
+            "score": 0.15,
+            "severity": "high"
+          },
+          {
+            "dimension": "pacing",
+            "dimension_name": "节奏感",
+            "score": 0.87,
+            "severity": "high"
+          },
+          {
+            "dimension": "playability",
+            "dimension_name": "可玩性",
+            "score": 0.81,
+            "severity": "high"
+          },
+          {
+            "dimension": "retention",
+            "dimension_name": "留存预估",
+            "score": 0.84,
+            "severity": "high"
+          },
+          {
+            "dimension": "immersion",
+            "dimension_name": "代入感",
+            "score": 0.05,
+            "severity": "high"
+          }
+        ]
+      },
+      "paying": {
+        "name": "氪金大佬",
+        "avg_score": 0.71,
+        "lowest_dimension": {
+          "name": "immersion",
+          "score": 0.07
+        },
+        "highest_dimension": {
+          "name": "excitement",
+          "score": 1.12
+        },
+        "issues": [
+          {
+            "dimension": "excitement",
+            "dimension_name": "刺激度",
+            "score": 1.12,
+            "severity": "medium"
+          },
+          {
+            "dimension": "growth",
+            "dimension_name": "成长感",
+            "score": 0.3,
+            "severity": "high"
+          },
+          {
+            "dimension": "pacing",
+            "dimension_name": "节奏感",
+            "score": 0.85,
+            "severity": "high"
+          },
+          {
+            "dimension": "playability",
+            "dimension_name": "可玩性",
+            "score": 1.05,
+            "severity": "medium"
+          },
+          {
+            "dimension": "retention",
+            "dimension_name": "留存预估",
+            "score": 0.88,
+            "severity": "high"
+          },
+          {
+            "dimension": "immersion",
+            "dimension_name": "代入感",
+            "score": 0.07,
+            "severity": "high"
+          }
+        ]
+      }
+    }
+  },
+  "issues": [
+    {
+      "issue": "休闲小明 的 成长感 评分过低",
+      "dimension": "growth",
+      "dimensionName": "成长感",
+      "severity": "critical",
+      "avgScore": 0.01,
+      "affectedAgents": [
+        "casual"
+      ]
+    },
+    {
+      "issue": "竞技达人 的 成长感 评分过低",
+      "dimension": "growth",
+      "dimensionName": "成长感",
+      "severity": "critical",
+      "avgScore": 0.02,
+      "affectedAgents": [
+        "hardcore"
+      ]
+    },
+    {
+      "issue": "竞技达人 的 代入感 评分过低",
+      "dimension": "immersion",
+      "dimensionName": "代入感",
+      "severity": "critical",
+      "avgScore": 0.03,
+      "affectedAgents": [
+        "hardcore"
+      ]
+    },
+    {
+      "issue": "探索者小雪 的 成长感 评分过低",
+      "dimension": "growth",
+      "dimensionName": "成长感",
+      "severity": "critical",
+      "avgScore": 0.04,
+      "affectedAgents": [
+        "explorer"
+      ]
+    },
+    {
+      "issue": "社交达人 的 代入感 评分过低",
+      "dimension": "immersion",
+      "dimensionName": "代入感",
+      "severity": "critical",
+      "avgScore": 0.05,
+      "affectedAgents": [
+        "social"
+      ]
+    },
+    {
+      "issue": "氪金大佬 的 代入感 评分过低",
+      "dimension": "immersion",
+      "dimensionName": "代入感",
+      "severity": "critical",
+      "avgScore": 0.07,
+      "affectedAgents": [
+        "paying"
+      ]
+    },
+    {
+      "issue": "休闲小明 的 代入感 评分过低",
+      "dimension": "immersion",
+      "dimensionName": "代入感",
+      "severity": "critical",
+      "avgScore": 0.12,
+      "affectedAgents": [
+        "casual"
+      ]
+    },
+    {
+      "issue": "社交达人 的 成长感 评分过低",
+      "dimension": "growth",
+      "dimensionName": "成长感",
+      "severity": "critical",
+      "avgScore": 0.15,
+      "affectedAgents": [
+        "social"
+      ]
+    },
+    {
+      "issue": "探索者小雪 的 代入感 评分过低",
+      "dimension": "immersion",
+      "dimensionName": "代入感",
+      "severity": "critical",
+      "avgScore": 0.17,
+      "affectedAgents": [
+        "explorer"
+      ]
+    },
+    {
+      "issue": "氪金大佬 的 成长感 评分过低",
+      "dimension": "growth",
+      "dimensionName": "成长感",
+      "severity": "critical",
+      "avgScore": 0.3,
+      "affectedAgents": [
+        "paying"
+      ]
+    },
+    {
+      "issue": "休闲小明 的 节奏感 评分过低",
+      "dimension": "pacing",
+      "dimensionName": "节奏感",
+      "severity": "critical",
+      "avgScore": 0.53,
+      "affectedAgents": [
+        "casual"
+      ]
+    },
+    {
+      "issue": "竞技达人 的 可玩性 评分过低",
+      "dimension": "playability",
+      "dimensionName": "可玩性",
+      "severity": "critical",
+      "avgScore": 0.54,
+      "affectedAgents": [
+        "hardcore"
+      ]
+    },
+    {
+      "issue": "休闲小明 的 留存预估 评分过低",
+      "dimension": "retention",
+      "dimensionName": "留存预估",
+      "severity": "critical",
+      "avgScore": 0.56,
+      "affectedAgents": [
+        "casual"
+      ]
+    },
+    {
+      "issue": "探索者小雪 的 留存预估 评分过低",
+      "dimension": "retention",
+      "dimensionName": "留存预估",
+      "severity": "critical",
+      "avgScore": 0.64,
+      "affectedAgents": [
+        "explorer"
+      ]
+    },
+    {
+      "issue": "竞技达人 的 节奏感 评分过低",
+      "dimension": "pacing",
+      "dimensionName": "节奏感",
+      "severity": "critical",
+      "avgScore": 0.66,
+      "affectedAgents": [
+        "hardcore"
+      ]
+    },
+    {
+      "issue": "休闲小明 的 可玩性 评分过低",
+      "dimension": "playability",
+      "dimensionName": "可玩性",
+      "severity": "critical",
+      "avgScore": 0.68,
+      "affectedAgents": [
+        "casual"
+      ]
+    },
+    {
+      "issue": "探索者小雪 的 节奏感 评分过低",
+      "dimension": "pacing",
+      "dimensionName": "节奏感",
+      "severity": "critical",
+      "avgScore": 0.72,
+      "affectedAgents": [
+        "explorer"
+      ]
+    },
+    {
+      "issue": "社交达人 的 可玩性 评分过低",
+      "dimension": "playability",
+      "dimensionName": "可玩性",
+      "severity": "critical",
+      "avgScore": 0.81,
+      "affectedAgents": [
+        "social"
+      ]
+    },
+    {
+      "issue": "社交达人 的 留存预估 评分过低",
+      "dimension": "retention",
+      "dimensionName": "留存预估",
+      "severity": "critical",
+      "avgScore": 0.84,
+      "affectedAgents": [
+        "social"
+      ]
+    },
+    {
+      "issue": "氪金大佬 的 节奏感 评分过低",
+      "dimension": "pacing",
+      "dimensionName": "节奏感",
+      "severity": "critical",
+      "avgScore": 0.85,
+      "affectedAgents": [
+        "paying"
+      ]
+    },
+    {
+      "issue": "社交达人 的 节奏感 评分过低",
+      "dimension": "pacing",
+      "dimensionName": "节奏感",
+      "severity": "critical",
+      "avgScore": 0.87,
+      "affectedAgents": [
+        "social"
+      ]
+    },
+    {
+      "issue": "氪金大佬 的 留存预估 评分过低",
+      "dimension": "retention",
+      "dimensionName": "留存预估",
+      "severity": "critical",
+      "avgScore": 0.88,
+      "affectedAgents": [
+        "paying"
+      ]
+    },
+    {
+      "issue": "竞技达人 的 留存预估 评分过低",
+      "dimension": "retention",
+      "dimensionName": "留存预估",
+      "severity": "critical",
+      "avgScore": 0.9,
+      "affectedAgents": [
+        "hardcore"
+      ]
+    },
+    {
+      "issue": "氪金大佬 的 可玩性 评分过低",
+      "dimension": "playability",
+      "dimensionName": "可玩性",
+      "severity": "high",
+      "avgScore": 1.05,
+      "affectedAgents": [
+        "paying"
+      ]
+    },
+    {
+      "issue": "氪金大佬 的 刺激度 评分过低",
+      "dimension": "excitement",
+      "dimensionName": "刺激度",
+      "severity": "high",
+      "avgScore": 1.12,
+      "affectedAgents": [
+        "paying"
+      ]
+    },
+    {
+      "issue": "探索者小雪 的 刺激度 评分过低",
+      "dimension": "excitement",
+      "dimensionName": "刺激度",
+      "severity": "high",
+      "avgScore": 1.19,
+      "affectedAgents": [
+        "explorer"
+      ]
+    },
+    {
+      "issue": "竞技达人 的 刺激度 评分过低",
+      "dimension": "excitement",
+      "dimensionName": "刺激度",
+      "severity": "high",
+      "avgScore": 1.2,
+      "affectedAgents": [
+        "hardcore"
+      ]
+    },
+    {
+      "issue": "休闲小明 的 刺激度 评分过低",
+      "dimension": "excitement",
+      "dimensionName": "刺激度",
+      "severity": "high",
+      "avgScore": 1.25,
+      "affectedAgents": [
+        "casual"
+      ]
+    },
+    {
+      "issue": "探索者小雪 的 可玩性 评分过低",
+      "dimension": "playability",
+      "dimensionName": "可玩性",
+      "severity": "high",
+      "avgScore": 1.42,
+      "affectedAgents": [
+        "explorer"
+      ]
+    },
+    {
+      "issue": "社交达人 的 刺激度 评分过低",
+      "dimension": "excitement",
+      "dimensionName": "刺激度",
+      "severity": "high",
+      "avgScore": 1.52,
+      "affectedAgents": [
+        "social"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "critical",
+      "priorityLabel": "紧急",
+      "action": "针对 休闲小明 的 成长感 问题需要重点关注",
+      "targetDimensions": [
+        "成长感"
+      ]
+    },
+    {
+      "priority": "critical",
+      "priorityLabel": "紧急",
+      "action": "针对 竞技达人 的 成长感 问题需要重点关注",
+      "targetDimensions": [
+        "成长感"
+      ]
+    },
+    {
+      "priority": "critical",
+      "priorityLabel": "紧急",
+      "action": "针对 竞技达人 的 代入感 问题需要重点关注",
+      "targetDimensions": [
+        "代入感"
+      ]
+    },
+    {
+      "priority": "critical",
+      "priorityLabel": "紧急",
+      "action": "针对 探索者小雪 的 成长感 问题需要重点关注",
+      "targetDimensions": [
+        "成长感"
+      ]
+    },
+    {
+      "priority": "critical",
+      "priorityLabel": "紧急",
+      "action": "针对 社交达人 的 代入感 问题需要重点关注",
+      "targetDimensions": [
+        "代入感"
+      ]
+    },
+    {
+      "priority": "high",
+      "priorityLabel": "高优先级",
+      "action": "增加战斗变数，如暴击、闪避、特殊技能；调整怪物难度曲线",
+      "targetDimensions": [
+        "刺激度"
+      ]
+    },
+    {
+      "priority": "high",
+      "priorityLabel": "高优先级",
+      "action": "加快升级节奏，增加装备获取途径；优化奖励反馈机制",
+      "targetDimensions": [
+        "成长感"
+      ]
+    },
+    {
+      "priority": "high",
+      "priorityLabel": "高优先级",
+      "action": "优化战斗节奏，减少无意义等待；调整楼层推进难度",
+      "targetDimensions": [
+        "节奏感"
+      ]
+    },
+    {
+      "priority": "high",
+      "priorityLabel": "高优先级",
+      "action": "增加技能多样性，丰富战斗策略；扩展怪物种类",
+      "targetDimensions": [
+        "可玩性"
+      ]
+    },
+    {
+      "priority": "high",
+      "priorityLabel": "高优先级",
+      "action": "降低死亡惩罚，增加保护机制；优化新手引导",
+      "targetDimensions": [
+        "留存预估"
+      ]
+    }
+  ],
+  "suggestions": [
+    {
+      "priority": "critical",
+      "priority_label": "紧急",
+      "dimension": "growth",
+      "dimension_name": "成长感",
+      "suggestion": "针对 休闲小明 的 成长感 问题需要重点关注",
+      "affected_agents": [
+        "休闲小明"
+      ],
+      "current_score": 0.01,
+      "is_target_recommendation": true
+    },
+    {
+      "priority": "critical",
+      "priority_label": "紧急",
+      "dimension": "growth",
+      "dimension_name": "成长感",
+      "suggestion": "针对 竞技达人 的 成长感 问题需要重点关注",
+      "affected_agents": [
+        "竞技达人"
+      ],
+      "current_score": 0.02,
+      "is_target_recommendation": true
+    },
+    {
+      "priority": "critical",
+      "priority_label": "紧急",
+      "dimension": "immersion",
+      "dimension_name": "代入感",
+      "suggestion": "针对 竞技达人 的 代入感 问题需要重点关注",
+      "affected_agents": [
+        "竞技达人"
+      ],
+      "current_score": 0.03,
+      "is_target_recommendation": true
+    },
+    {
+      "priority": "critical",
+      "priority_label": "紧急",
+      "dimension": "growth",
+      "dimension_name": "成长感",
+      "suggestion": "针对 探索者小雪 的 成长感 问题需要重点关注",
+      "affected_agents": [
+        "探索者小雪"
+      ],
+      "current_score": 0.04,
+      "is_target_recommendation": true
+    },
+    {
+      "priority": "critical",
+      "priority_label": "紧急",
+      "dimension": "immersion",
+      "dimension_name": "代入感",
+      "suggestion": "针对 社交达人 的 代入感 问题需要重点关注",
+      "affected_agents": [
+        "社交达人"
+      ],
+      "current_score": 0.05,
+      "is_target_recommendation": true
+    },
+    {
+      "priority": "high",
+      "priority_label": "高优先级",
+      "dimension": "excitement",
+      "dimension_name": "刺激度",
+      "suggestion": "增加战斗变数，如暴击、闪避、特殊技能；调整怪物难度曲线",
+      "affected_agents": [
+        "休闲小明",
+        "竞技达人",
+        "探索者小雪",
+        "社交达人",
+        "氪金大佬"
+      ],
+      "current_score": 1.26,
+      "is_target_recommendation": true
+    },
+    {
+      "priority": "high",
+      "priority_label": "高优先级",
+      "dimension": "growth",
+      "dimension_name": "成长感",
+      "suggestion": "加快升级节奏，增加装备获取途径；优化奖励反馈机制",
+      "affected_agents": [
+        "休闲小明",
+        "竞技达人",
+        "探索者小雪",
+        "社交达人",
+        "氪金大佬"
+      ],
+      "current_score": 0.1,
+      "is_target_recommendation": true
+    },
+    {
+      "priority": "high",
+      "priority_label": "高优先级",
+      "dimension": "pacing",
+      "dimension_name": "节奏感",
+      "suggestion": "优化战斗节奏，减少无意义等待；调整楼层推进难度",
+      "affected_agents": [
+        "休闲小明",
+        "竞技达人",
+        "探索者小雪",
+        "社交达人",
+        "氪金大佬"
+      ],
+      "current_score": 0.73,
+      "is_target_recommendation": true
+    },
+    {
+      "priority": "high",
+      "priority_label": "高优先级",
+      "dimension": "playability",
+      "dimension_name": "可玩性",
+      "suggestion": "增加技能多样性，丰富战斗策略；扩展怪物种类",
+      "affected_agents": [
+        "休闲小明",
+        "竞技达人",
+        "探索者小雪",
+        "社交达人",
+        "氪金大佬"
+      ],
+      "current_score": 0.9,
+      "is_target_recommendation": true
+    },
+    {
+      "priority": "high",
+      "priority_label": "高优先级",
+      "dimension": "retention",
+      "dimension_name": "留存预估",
+      "suggestion": "降低死亡惩罚，增加保护机制；优化新手引导",
+      "affected_agents": [
+        "休闲小明",
+        "竞技达人",
+        "探索者小雪",
+        "社交达人",
+        "氪金大佬"
+      ],
+      "current_score": 0.76,
+      "is_target_recommendation": true
+    },
+    {
+      "priority": "high",
+      "priority_label": "高优先级",
+      "dimension": "immersion",
+      "dimension_name": "代入感",
+      "suggestion": "丰富怪物种类，增加探索奖励；扩展世界观内容",
+      "affected_agents": [
+        "休闲小明",
+        "竞技达人",
+        "探索者小雪",
+        "社交达人",
+        "氪金大佬"
+      ],
+      "current_score": 0.09,
+      "is_target_recommendation": true
+    }
+  ],
+  "agents": [
+    {
+      "id": "casual_01",
+      "name": "休闲小明",
+      "type": "casual",
+      "avatar": "🎮",
+      "dimension_scores": {
+        "excitement": 1.25,
+        "growth": 0.01,
+        "pacing": 0.53,
+        "playability": 0.68,
+        "retention": 0.56,
+        "immersion": 0.12
+      },
+      "overall_score": 0.47,
+      "stats": {
+        "battles": 28,
+        "wins": 28,
+        "deaths": 1,
+        "max_floor": 4,
+        "level": 4,
+        "kills": 28
+      },
+      "breakdown": []
+    },
+    {
+      "id": "hardcore_01",
+      "name": "竞技达人",
+      "type": "hardcore",
+      "avatar": "⚔️",
+      "dimension_scores": {
+        "excitement": 1.2,
+        "growth": 0.02,
+        "pacing": 0.66,
+        "playability": 0.54,
+        "retention": 0.9,
+        "immersion": 0.03
+      },
+      "overall_score": 0.66,
+      "stats": {
+        "battles": 33,
+        "wins": 33,
+        "deaths": 1,
+        "max_floor": 3,
+        "level": 4,
+        "kills": 33
+      },
+      "breakdown": []
+    },
+    {
+      "id": "explorer_01",
+      "name": "探索者小雪",
+      "type": "explorer",
+      "avatar": "🗺️",
+      "dimension_scores": {
+        "excitement": 1.19,
+        "growth": 0.04,
+        "pacing": 0.72,
+        "playability": 1.42,
+        "retention": 0.64,
+        "immersion": 0.17
+      },
+      "overall_score": 0.65,
+      "stats": {
+        "battles": 26,
+        "wins": 26,
+        "deaths": 1,
+        "max_floor": 5,
+        "level": 4,
+        "kills": 26
+      },
+      "breakdown": []
+    },
+    {
+      "id": "social_01",
+      "name": "社交达人",
+      "type": "social",
+      "avatar": "👥",
+      "dimension_scores": {
+        "excitement": 1.52,
+        "growth": 0.15,
+        "pacing": 0.87,
+        "playability": 0.81,
+        "retention": 0.84,
+        "immersion": 0.05
+      },
+      "overall_score": 0.67,
+      "stats": {
+        "battles": 26,
+        "wins": 26,
+        "deaths": 1,
+        "max_floor": 4,
+        "level": 4,
+        "kills": 26
+      },
+      "breakdown": []
+    },
+    {
+      "id": "paying_01",
+      "name": "氪金大佬",
+      "type": "paying",
+      "avatar": "💎",
+      "dimension_scores": {
+        "excitement": 1.12,
+        "growth": 0.3,
+        "pacing": 0.85,
+        "playability": 1.05,
+        "retention": 0.88,
+        "immersion": 0.07
+      },
+      "overall_score": 0.71,
+      "stats": {
+        "battles": 29,
+        "wins": 28,
+        "deaths": 1,
+        "max_floor": 4,
+        "level": 5,
+        "kills": 28
+      },
+      "breakdown": []
+    }
+  ],
+  "chart_data": {
+    "radar_chart": {
+      "labels": [
+        "刺激度",
+        "成长感",
+        "节奏感",
+        "可玩性",
+        "留存预估",
+        "代入感"
+      ],
+      "datasets": [
+        {
+          "label": "休闲小明",
+          "data": [
+            1.25,
+            0.01,
+            0.53,
+            0.68,
+            0.56,
+            0.12
+          ],
+          "agent_type": "casual"
+        },
+        {
+          "label": "竞技达人",
+          "data": [
+            1.2,
+            0.02,
+            0.66,
+            0.54,
+            0.9,
+            0.03
+          ],
+          "agent_type": "hardcore"
+        },
+        {
+          "label": "探索者小雪",
+          "data": [
+            1.19,
+            0.04,
+            0.72,
+            1.42,
+            0.64,
+            0.17
+          ],
+          "agent_type": "explorer"
+        },
+        {
+          "label": "社交达人",
+          "data": [
+            1.52,
+            0.15,
+            0.87,
+            0.81,
+            0.84,
+            0.05
+          ],
+          "agent_type": "social"
+        },
+        {
+          "label": "氪金大佬",
+          "data": [
+            1.12,
+            0.3,
+            0.85,
+            1.05,
+            0.88,
+            0.07
+          ],
+          "agent_type": "paying"
+        }
+      ]
+    },
+    "heatmap": {
+      "rows": [
+        {
+          "type": "casual",
+          "type_name": "轻度休闲",
+          "values": [
+            1.25,
+            0.01,
+            0.53,
+            0.68,
+            0.56,
+            0.12
+          ]
+        },
+        {
+          "type": "hardcore",
+          "type_name": "硬核竞技",
+          "values": [
+            1.2,
+            0.02,
+            0.66,
+            0.54,
+            0.9,
+            0.03
+          ]
+        },
+        {
+          "type": "explorer",
+          "type_name": "剧情探索",
+          "values": [
+            1.19,
+            0.04,
+            0.72,
+            1.42,
+            0.64,
+            0.17
+          ]
+        },
+        {
+          "type": "social",
+          "type_name": "社交互动",
+          "values": [
+            1.52,
+            0.15,
+            0.87,
+            0.81,
+            0.84,
+            0.05
+          ]
+        },
+        {
+          "type": "paying",
+          "type_name": "付费习惯",
+          "values": [
+            1.12,
+            0.3,
+            0.85,
+            1.05,
+            0.88,
+            0.07
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "excitement",
+          "name": "刺激度"
+        },
+        {
+          "id": "growth",
+          "name": "成长感"
+        },
+        {
+          "id": "pacing",
+          "name": "节奏感"
+        },
+        {
+          "id": "playability",
+          "name": "可玩性"
+        },
+        {
+          "id": "retention",
+          "name": "留存预估"
+        },
+        {
+          "id": "immersion",
+          "name": "代入感"
+        }
+      ]
+    }
+  },
+  "chartData": {
+    "radarChart": {
+      "labels": [
+        "刺激度",
+        "成长感",
+        "节奏感",
+        "可玩性",
+        "留存预估",
+        "代入感"
+      ],
+      "datasets": [
+        {
+          "label": "休闲小明",
+          "data": [
+            1.25,
+            0.01,
+            0.53,
+            0.68,
+            0.56,
+            0.12
+          ],
+          "agent_type": "casual"
+        },
+        {
+          "label": "竞技达人",
+          "data": [
+            1.2,
+            0.02,
+            0.66,
+            0.54,
+            0.9,
+            0.03
+          ],
+          "agent_type": "hardcore"
+        },
+        {
+          "label": "探索者小雪",
+          "data": [
+            1.19,
+            0.04,
+            0.72,
+            1.42,
+            0.64,
+            0.17
+          ],
+          "agent_type": "explorer"
+        },
+        {
+          "label": "社交达人",
+          "data": [
+            1.52,
+            0.15,
+            0.87,
+            0.81,
+            0.84,
+            0.05
+          ],
+          "agent_type": "social"
+        },
+        {
+          "label": "氪金大佬",
+          "data": [
+            1.12,
+            0.3,
+            0.85,
+            1.05,
+            0.88,
+            0.07
+          ],
+          "agent_type": "paying"
+        }
+      ]
+    },
+    "heatmap": {
+      "rows": [
+        {
+          "type": "casual",
+          "type_name": "轻度休闲",
+          "values": [
+            1.25,
+            0.01,
+            0.53,
+            0.68,
+            0.56,
+            0.12
+          ]
+        },
+        {
+          "type": "hardcore",
+          "type_name": "硬核竞技",
+          "values": [
+            1.2,
+            0.02,
+            0.66,
+            0.54,
+            0.9,
+            0.03
+          ]
+        },
+        {
+          "type": "explorer",
+          "type_name": "剧情探索",
+          "values": [
+            1.19,
+            0.04,
+            0.72,
+            1.42,
+            0.64,
+            0.17
+          ]
+        },
+        {
+          "type": "social",
+          "type_name": "社交互动",
+          "values": [
+            1.52,
+            0.15,
+            0.87,
+            0.81,
+            0.84,
+            0.05
+          ]
+        },
+        {
+          "type": "paying",
+          "type_name": "付费习惯",
+          "values": [
+            1.12,
+            0.3,
+            0.85,
+            1.05,
+            0.88,
+            0.07
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "excitement",
+          "name": "刺激度"
+        },
+        {
+          "id": "growth",
+          "name": "成长感"
+        },
+        {
+          "id": "pacing",
+          "name": "节奏感"
+        },
+        {
+          "id": "playability",
+          "name": "可玩性"
+        },
+        {
+          "id": "retention",
+          "name": "留存预估"
+        },
+        {
+          "id": "immersion",
+          "name": "代入感"
+        }
+      ]
+    }
+  },
+  "dimension_names": {
+    "excitement": "刺激度",
+    "growth": "成长感",
+    "pacing": "节奏感",
+    "playability": "可玩性",
+    "retention": "留存预估",
+    "immersion": "代入感"
+  },
+  "agent_type_names": {
+    "casual": "轻度休闲",
+    "hardcore": "硬核竞技",
+    "explorer": "剧情探索",
+    "social": "社交互动",
+    "paying": "付费习惯"
+  }
+}

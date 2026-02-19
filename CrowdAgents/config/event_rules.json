@@ -1,0 +1,713 @@
+{
+    "version": "1.0",
+    "description": "游戏事件定义 - 用于状态变化推断和评分触发",
+    
+    "categories": {
+        "state_change": "状态变化事件 - 客观事实，由状态对比推断",
+        "evaluation_factor": "评分触发因素 - 主观评价，影响维度评分"
+    },
+    
+    "state_change_events": {
+        "_meta": {
+            "description": "这些事件由 SnapshotManager.compute_diff() 自动推断",
+            "trigger_type": "automatic"
+        },
+        
+        "combat": {
+            "battle_start": {
+                "condition": "curr.world.in_battle && !prev.world.in_battle",
+                "description": "战斗开始",
+                "priority": 10,
+                "data_extract": []
+            },
+            "battle_end": {
+                "condition": "!curr.world.in_battle && prev.world.in_battle",
+                "description": "战斗结束",
+                "priority": 10,
+                "data_extract": ["victory", "battle_duration_ms"]
+            },
+            "monster_killed": {
+                "condition": "prev.monster != null && curr.monster == null && battle_end",
+                "description": "击杀怪物",
+                "priority": 9,
+                "data_extract": ["monster_id", "monster_name", "is_boss"]
+            },
+            "player_damaged": {
+                "condition": "hp_delta < 0",
+                "description": "玩家受到伤害",
+                "priority": 20,
+                "data_extract": ["damage_amount", "damage_source"]
+            },
+            "player_healed": {
+                "condition": "hp_delta > 0 && !level_up",
+                "description": "玩家恢复生命",
+                "priority": 20,
+                "data_extract": ["heal_amount", "heal_source"]
+            },
+            "critical_hit_dealt": {
+                "condition": "action_result.critical == true",
+                "description": "玩家造成暴击",
+                "priority": 15,
+                "data_extract": ["damage_amount"]
+            },
+            "critical_hit_received": {
+                "condition": "action_result.enemy_critical == true",
+                "description": "玩家受到暴击",
+                "priority": 15,
+                "data_extract": ["damage_amount"]
+            },
+            "dodge_success": {
+                "condition": "action_result.dodged == true",
+                "description": "成功闪避",
+                "priority": 15,
+                "data_extract": []
+            },
+            "skill_used": {
+                "condition": "action.type == USE_SKILL",
+                "description": "使用技能",
+                "priority": 12,
+                "data_extract": ["skill_id", "skill_name"]
+            }
+        },
+        
+        "player": {
+            "level_up": {
+                "condition": "curr.player.level > prev.player.level",
+                "description": "等级提升",
+                "priority": 5,
+                "data_extract": ["new_level", "old_level"]
+            },
+            "player_death": {
+                "condition": "curr.player.hp <= 0 && prev.player.hp > 0",
+                "description": "玩家死亡",
+                "priority": 1,
+                "data_extract": ["death_floor", "death_monster"]
+            },
+            "hp_critical": {
+                "condition": "curr.player.hp > 0 && curr.player.hp / curr.player.max_hp < 0.2",
+                "description": "生命值危急",
+                "priority": 8,
+                "data_extract": ["hp_ratio"]
+            },
+            "mp_depleted": {
+                "condition": "curr.player.mp == 0 && prev.player.mp > 0",
+                "description": "魔法值耗尽",
+                "priority": 15,
+                "data_extract": []
+            },
+            "stat_changed": {
+                "condition": "curr.player.atk != prev.player.atk || curr.player.defense != prev.player.defense",
+                "description": "属性变化",
+                "priority": 18,
+                "data_extract": ["stat_type", "old_value", "new_value"]
+            }
+        },
+        
+        "world": {
+            "floor_advance": {
+                "condition": "curr.world.floor > prev.world.floor",
+                "description": "楼层推进",
+                "priority": 8,
+                "data_extract": ["new_floor", "old_floor"]
+            },
+            "floor_retreat": {
+                "condition": "curr.world.floor < prev.world.floor",
+                "description": "楼层回退（死亡后）",
+                "priority": 8,
+                "data_extract": ["new_floor", "old_floor"]
+            },
+            "area_discovered": {
+                "condition": "curr.world.area_id != prev.world.area_id",
+                "description": "发现新区域",
+                "priority": 7,
+                "data_extract": ["area_id", "area_name"]
+            }
+        },
+        
+        "inventory": {
+            "item_obtain": {
+                "condition": "item_count_delta > 0",
+                "description": "获得物品",
+                "priority": 12,
+                "data_extract": ["item_id", "item_name", "item_rarity", "count"]
+            },
+            "item_use": {
+                "condition": "item_count_delta < 0 && action.type == USE_ITEM",
+                "description": "使用物品",
+                "priority": 12,
+                "data_extract": ["item_id", "item_name"]
+            },
+            "item_drop": {
+                "condition": "item_count_delta < 0 && action.type != USE_ITEM",
+                "description": "丢弃物品",
+                "priority": 15,
+                "data_extract": ["item_id"]
+            },
+            "equipment_changed": {
+                "condition": "curr.player.weapon != prev.player.weapon || curr.player.armor != prev.player.armor",
+                "description": "装备变更",
+                "priority": 10,
+                "data_extract": ["slot", "old_item", "new_item"]
+            },
+            "gold_changed": {
+                "condition": "gold_delta != 0",
+                "description": "金币变化",
+                "priority": 15,
+                "data_extract": ["amount", "source"]
+            },
+            "forge_success": {
+                "condition": "action.type == FORGE && action_result.success",
+                "description": "锻造成功",
+                "priority": 8,
+                "data_extract": ["item_created"]
+            },
+            "forge_fail": {
+                "condition": "action.type == FORGE && !action_result.success",
+                "description": "锻造失败",
+                "priority": 8,
+                "data_extract": []
+            }
+        },
+        
+        "character": {
+            "achievement_unlock": {
+                "condition": "len(curr.character.achievements) > len(prev.character.achievements)",
+                "description": "解锁成就",
+                "priority": 3,
+                "data_extract": ["achievement_id", "achievement_name"]
+            },
+            "feature_unlock": {
+                "condition": "len(curr.character.unlocked_features) > len(prev.character.unlocked_features)",
+                "description": "解锁功能",
+                "priority": 4,
+                "data_extract": ["feature_id", "feature_name"]
+            },
+            "story_progress": {
+                "condition": "curr.character.story_progress != prev.character.story_progress",
+                "description": "剧情推进",
+                "priority": 6,
+                "data_extract": ["story_id", "chapter", "scene"]
+            },
+            "skill_unlock": {
+                "condition": "len(curr.player.learned_skills) > len(prev.player.learned_skills)",
+                "description": "解锁技能",
+                "priority": 5,
+                "data_extract": ["skill_id", "skill_name"]
+            }
+        },
+        
+        "ui": {
+            "scene_change": {
+                "condition": "curr.ui.current_scene != prev.ui.current_scene",
+                "description": "场景切换",
+                "priority": 15,
+                "data_extract": ["from_scene", "to_scene"]
+            },
+            "dialog_open": {
+                "condition": "curr.ui.active_dialog != null && prev.ui.active_dialog == null",
+                "description": "打开对话框",
+                "priority": 14,
+                "data_extract": ["dialog_id", "dialog_type"]
+            },
+            "dialog_close": {
+                "condition": "curr.ui.active_dialog == null && prev.ui.active_dialog != null",
+                "description": "关闭对话框",
+                "priority": 14,
+                "data_extract": ["dialog_id", "selected_option"]
+            },
+            "tutorial_advance": {
+                "condition": "curr.ui.tutorial_step != null && prev.ui.tutorial_step != null && curr.ui.tutorial_step > prev.ui.tutorial_step",
+                "description": "新手引导推进",
+                "priority": 13,
+                "data_extract": ["step"]
+            },
+            "tutorial_complete": {
+                "condition": "curr.ui.tutorial_step == null && prev.ui.tutorial_step != null",
+                "description": "新手引导完成",
+                "priority": 5,
+                "data_extract": []
+            },
+            "notification_show": {
+                "condition": "len(curr.ui.notifications) > len(prev.ui.notifications)",
+                "description": "显示通知",
+                "priority": 16,
+                "data_extract": ["notification_type", "content"]
+            }
+        },
+        
+        "quest": {
+            "quest_accept": {
+                "condition": "len(curr.quest.active_quests) > len(prev.quest.active_quests)",
+                "description": "接受任务",
+                "priority": 7,
+                "data_extract": ["quest_id", "quest_name", "quest_type"]
+            },
+            "quest_complete": {
+                "condition": "quest_status_changed && curr.quest.status == 'completed'",
+                "description": "完成任务",
+                "priority": 3,
+                "data_extract": ["quest_id", "quest_name", "rewards"]
+            },
+            "quest_fail": {
+                "condition": "quest_status_changed && curr.quest.status == 'failed'",
+                "description": "任务失败",
+                "priority": 6,
+                "data_extract": ["quest_id", "quest_name", "fail_reason"]
+            },
+            "quest_abandon": {
+                "condition": "len(curr.quest.active_quests) < len(prev.quest.active_quests) && !quest_complete && !quest_fail",
+                "description": "放弃任务",
+                "priority": 10,
+                "data_extract": ["quest_id", "quest_name"]
+            },
+            "quest_progress": {
+                "condition": "curr.quest.progress != prev.quest.progress",
+                "description": "任务进度更新",
+                "priority": 12,
+                "data_extract": ["quest_id", "progress", "progress_max"]
+            },
+            "daily_quest_refresh": {
+                "condition": "curr.quest.daily_reset_count > prev.quest.daily_reset_count",
+                "description": "每日任务刷新",
+                "priority": 8,
+                "data_extract": ["daily_quests"]
+            },
+            "quest_chain_unlock": {
+                "condition": "curr.quest.unlocked_chains != prev.quest.unlocked_chains",
+                "description": "解锁任务链",
+                "priority": 5,
+                "data_extract": ["chain_id", "chain_name"]
+            }
+        },
+        
+        "status_effect": {
+            "buff_gain": {
+                "condition": "len(curr.player.buffs) > len(prev.player.buffs)",
+                "description": "获得增益效果",
+                "priority": 11,
+                "data_extract": ["buff_id", "buff_name", "duration"]
+            },
+            "buff_expire": {
+                "condition": "len(curr.player.buffs) < len(prev.player.buffs)",
+                "description": "增益效果消失",
+                "priority": 14,
+                "data_extract": ["buff_id", "buff_name"]
+            },
+            "debuff_gain": {
+                "condition": "len(curr.player.debuffs) > len(prev.player.debuffs)",
+                "description": "获得减益效果",
+                "priority": 10,
+                "data_extract": ["debuff_id", "debuff_name", "severity"]
+            },
+            "debuff_expire": {
+                "condition": "len(curr.player.debuffs) < len(prev.player.debuffs)",
+                "description": "减益效果消失",
+                "priority": 13,
+                "data_extract": ["debuff_id", "debuff_name"]
+            },
+            "buff_refresh": {
+                "condition": "buff_duration_increased",
+                "description": "增益效果刷新",
+                "priority": 15,
+                "data_extract": ["buff_id", "new_duration"]
+            },
+            "debuff_stack": {
+                "condition": "debuff_stack_count > prev_debuff_stack_count",
+                "description": "减益效果叠加",
+                "priority": 12,
+                "data_extract": ["debuff_id", "stack_count"]
+            },
+            "status_poison": {
+                "condition": "curr.player.has_status('poison')",
+                "description": "中毒状态",
+                "priority": 11,
+                "data_extract": ["damage_per_tick", "remaining_duration"]
+            },
+            "status_burn": {
+                "condition": "curr.player.has_status('burn')",
+                "description": "燃烧状态",
+                "priority": 11,
+                "data_extract": ["damage_per_tick", "remaining_duration"]
+            },
+            "status_stun": {
+                "condition": "curr.player.has_status('stun') && !prev.player.has_status('stun')",
+                "description": "眩晕状态",
+                "priority": 8,
+                "data_extract": ["duration"]
+            },
+            "status_freeze": {
+                "condition": "curr.player.has_status('freeze') && !prev.player.has_status('freeze')",
+                "description": "冰冻状态",
+                "priority": 8,
+                "data_extract": ["duration"]
+            },
+            "status_silence": {
+                "condition": "curr.player.has_status('silence') && !prev.player.has_status('silence')",
+                "description": "沉默状态",
+                "priority": 9,
+                "data_extract": ["duration"]
+            },
+            "status_immunity": {
+                "condition": "curr.player.has_status('immunity') && !prev.player.has_status('immunity')",
+                "description": "免疫状态",
+                "priority": 10,
+                "data_extract": ["immune_types", "duration"]
+            }
+        },
+        
+        "economy": {
+            "shop_open": {
+                "condition": "curr.ui.current_scene == 'shop' && prev.ui.current_scene != 'shop'",
+                "description": "打开商店",
+                "priority": 14,
+                "data_extract": ["shop_id", "shop_type"]
+            },
+            "shop_buy": {
+                "condition": "curr.shop.last_action == 'buy'",
+                "description": "商店购买",
+                "priority": 11,
+                "data_extract": ["item_id", "item_name", "price", "currency_type"]
+            },
+            "shop_sell": {
+                "condition": "curr.shop.last_action == 'sell'",
+                "description": "商店出售",
+                "priority": 11,
+                "data_extract": ["item_id", "item_name", "price"]
+            },
+            "currency_gain": {
+                "condition": "currency_delta > 0",
+                "description": "获得货币",
+                "priority": 12,
+                "data_extract": ["currency_type", "amount", "source"]
+            },
+            "currency_spend": {
+                "condition": "currency_delta < 0",
+                "description": "消耗货币",
+                "priority": 12,
+                "data_extract": ["currency_type", "amount", "purpose"]
+            },
+            "stamina_recover": {
+                "condition": "curr.player.stamina > prev.player.stamina",
+                "description": "体力恢复",
+                "priority": 15,
+                "data_extract": ["amount", "source"]
+            },
+            "stamina_depleted": {
+                "condition": "curr.player.stamina == 0 && prev.player.stamina > 0",
+                "description": "体力耗尽",
+                "priority": 9,
+                "data_extract": []
+            },
+            "stamina_cost": {
+                "condition": "curr.player.stamina < prev.player.stamina",
+                "description": "消耗体力",
+                "priority": 14,
+                "data_extract": ["amount", "activity"]
+            },
+            "premium_purchase": {
+                "condition": "curr.economy.premium_currency < prev.economy.premium_currency",
+                "description": "消耗高级货币",
+                "priority": 6,
+                "data_extract": ["amount", "item_id"]
+            },
+            "vip_level_up": {
+                "condition": "curr.economy.vip_level > prev.economy.vip_level",
+                "description": "VIP等级提升",
+                "priority": 2,
+                "data_extract": ["new_level", "old_level"]
+            }
+        },
+        
+        "time_system": {
+            "day_change": {
+                "condition": "curr.world.game_day != prev.world.game_day",
+                "description": "游戏内日期变更",
+                "priority": 10,
+                "data_extract": ["new_day", "old_day"]
+            },
+            "time_period_change": {
+                "condition": "curr.world.time_period != prev.world.time_period",
+                "description": "时段变化",
+                "priority": 12,
+                "data_extract": ["new_period", "old_period"]
+            },
+            "event_start": {
+                "condition": "len(curr.world.active_events) > len(prev.world.active_events)",
+                "description": "活动开始",
+                "priority": 4,
+                "data_extract": ["event_id", "event_name", "duration"]
+            },
+            "event_end": {
+                "condition": "len(curr.world.active_events) < len(prev.world.active_events)",
+                "description": "活动结束",
+                "priority": 5,
+                "data_extract": ["event_id", "event_name"]
+            },
+            "event_reward_claim": {
+                "condition": "curr.event.rewards_claimed != prev.event.rewards_claimed",
+                "description": "领取活动奖励",
+                "priority": 7,
+                "data_extract": ["event_id", "rewards"]
+            },
+            "weekly_reset": {
+                "condition": "curr.world.week_number != prev.world.week_number",
+                "description": "周重置",
+                "priority": 6,
+                "data_extract": ["new_week"]
+            },
+            "monthly_reset": {
+                "condition": "curr.world.month_number != prev.world.month_number",
+                "description": "月重置",
+                "priority": 5,
+                "data_extract": ["new_month"]
+            },
+            "login_streak": {
+                "condition": "curr.character.login_streak > prev.character.login_streak",
+                "description": "连续登录",
+                "priority": 8,
+                "data_extract": ["streak_days"]
+            },
+            "login_streak_break": {
+                "condition": "curr.character.login_streak < prev.character.login_streak",
+                "description": "连续登录中断",
+                "priority": 9,
+                "data_extract": ["previous_streak"]
+            }
+        }
+    },
+    
+    "evaluation_factors": {
+        "_meta": {
+            "description": "这些因素用于计算维度评分，触发条件更复杂",
+            "trigger_type": "computed",
+            "source": "evaluation.json"
+        },
+        
+        "excitement": {
+            "positive": [
+                {"id": "closeVictory", "trigger": "hp_ratio < 0.2 && victory", "description": "险胜"},
+                {"id": "comeback", "trigger": "was_low_hp && victory", "description": "逆转胜"},
+                {"id": "criticalHit", "trigger": "player_crit", "description": "暴击"},
+                {"id": "lowHPBattle", "trigger": "hp_ratio < 0.3 during battle", "description": "低血量战斗"},
+                {"id": "highDamage", "trigger": "damage > 0.3 * maxHP", "description": "高伤害"},
+                {"id": "combo", "trigger": "hit_combo > 3", "description": "连击"},
+                {"id": "skillCombo", "trigger": "3+ different skills in battle", "description": "技能连招"},
+                {"id": "oneHitKill", "trigger": "battle_turns == 1", "description": "一击必杀"},
+                {"id": "bossFight", "trigger": "is_boss", "description": "Boss战"},
+                {"id": "highFloor", "trigger": "floor >= 8", "description": "高层挑战"},
+                {"id": "perfectDodge", "trigger": "dodge_count >= 3 in battle", "description": "完美闪避"},
+                {"id": "firstBlood", "trigger": "first monster type kill", "description": "首杀"}
+            ],
+            "negative": [
+                {"id": "battleTooEasy", "trigger": "5+ consecutive easy wins (hp_ratio > 0.9)", "description": "战斗太简单"},
+                {"id": "noThrill", "trigger": "10+ battles without low HP", "description": "缺乏刺激"},
+                {"id": "repetitiveSkill", "trigger": "same skill 5+ times in row", "description": "技能重复"},
+                {"id": "criticalFrustration", "trigger": "2+ consecutive crits received", "description": "暴击挫败"},
+                {"id": "battleDrag", "trigger": "battle_duration > 30s", "description": "战斗拖沓"},
+                {"id": "noChallenge", "trigger": "all battles too easy for player level", "description": "没有挑战"},
+                {"id": "boringPattern", "trigger": "same action pattern 5+ times", "description": "无聊模式"},
+                {"id": "overwhelmingEnemy", "trigger": "enemy too strong, no chance to win", "description": "敌人过强"},
+                {"id": "anticlimax", "trigger": "boss too easy", "description": "虎头蛇尾"}
+            ]
+        },
+        
+        "growth": {
+            "positive": [
+                {"id": "levelUp", "trigger": "level_up event", "description": "升级"},
+                {"id": "legendaryItem", "trigger": "item_rarity == legendary", "description": "传说装备"},
+                {"id": "rareItem", "trigger": "item_rarity == rare", "description": "稀有装备"},
+                {"id": "battleVictory", "trigger": "victory", "description": "战斗胜利"},
+                {"id": "commonItem", "trigger": "item obtain", "description": "获得物品"},
+                {"id": "forgeSuccess", "trigger": "forge success", "description": "锻造成功"},
+                {"id": "quickLevelUp", "trigger": "2+ level ups in 5 min", "description": "快速升级"},
+                {"id": "statGain", "trigger": "stat increased on level up", "description": "属性提升"},
+                {"id": "powerSpike", "trigger": "significant power increase", "description": "战力飞跃"},
+                {"id": "unlockFeature", "trigger": "feature_unlock event", "description": "解锁功能"},
+                {"id": "achievementUnlocked", "trigger": "achievement_unlock event", "description": "解锁成就"},
+                {"id": "equipmentUpgrade", "trigger": "better equipment equipped", "description": "装备升级"}
+            ],
+            "negative": [
+                {"id": "noUpgrade", "trigger": "5 min without upgrade", "description": "无提升"},
+                {"id": "lowDropRate", "trigger": "2 min without item", "description": "掉率低"},
+                {"id": "levelStagnation", "trigger": "10+ battles at same level", "description": "等级停滞"},
+                {"id": "uselessLoot", "trigger": "duplicate or useless item", "description": "无用掉落"},
+                {"id": "progressLoss", "trigger": "death progress loss", "description": "进度损失"},
+                {"id": "battleFail", "trigger": "battle defeat", "description": "战斗失败"},
+                {"id": "expPenalty", "trigger": "exp reduced", "description": "经验惩罚"},
+                {"id": "goldWasted", "trigger": "gold spent with no benefit", "description": "金币浪费"},
+                {"id": "downgrade", "trigger": "equipment downgrade", "description": "装备降级"},
+                {"id": "noProgressionPath", "trigger": "unclear how to progress", "description": "无成长路径"},
+                {"id": "weakReward", "trigger": "reward << effort", "description": "奖励微薄"}
+            ]
+        },
+        
+        "pacing": {
+            "positive": [
+                {"id": "quickBattle", "trigger": "battle_duration < 10s", "description": "快速战斗"},
+                {"id": "fastFloorProgress", "trigger": "floor_time < 3 min", "description": "快速推层"},
+                {"id": "idealBattleTime", "trigger": "battle_duration 5-15s", "description": "理想战斗时长"},
+                {"id": "winStreak", "trigger": "3+ win streak", "description": "连胜"},
+                {"id": "progressVisible", "trigger": "floor progress", "description": "进度可见"},
+                {"id": "smoothTransition", "trigger": "seamless scene change", "description": "流畅过渡"},
+                {"id": "balancedDifficulty", "trigger": "difficulty curve good", "description": "难度平衡"},
+                {"id": "rewardingSession", "trigger": "felt productive", "description": "有收获的体验"},
+                {"id": "goodRestPoint", "trigger": "natural break point", "description": "良好休息点"},
+                {"id": "engagingLoop", "trigger": "want to continue", "description": "引人入胜"}
+            ],
+            "negative": [
+                {"id": "battleTooLong", "trigger": "battle_duration > 30s", "description": "战斗过长"},
+                {"id": "floorTooSlow", "trigger": "floor_time > 5 min", "description": "推层太慢"},
+                {"id": "failStreak", "trigger": "2+ fail streak", "description": "连败"},
+                {"id": "deathInterrupt", "trigger": "death event", "description": "死亡中断"},
+                {"id": "progressStall", "trigger": "3 min no progress", "description": "进度停滞"},
+                {"id": "waitingTime", "trigger": "unnecessary waiting", "description": "等待时间"},
+                {"id": "repetitiveGrind", "trigger": "same action 10+ times", "description": "重复刷怪"},
+                {"id": "pacingInconsistency", "trigger": "jarring pace change", "description": "节奏不连贯"},
+                {"id": "forcedBreak", "trigger": "unwanted interruption", "description": "强制中断"},
+                {"id": "emptyTravel", "trigger": "walking with no event", "description": "空跑"}
+            ]
+        },
+        
+        "playability": {
+            "positive": [
+                {"id": "newMonster", "trigger": "first monster type encounter", "description": "新怪物"},
+                {"id": "newSkill", "trigger": "first skill use", "description": "新技能"},
+                {"id": "newItem", "trigger": "first item obtain", "description": "新物品"},
+                {"id": "skillUse", "trigger": "skill used", "description": "技能使用"},
+                {"id": "diversePlaystyle", "trigger": "3+ skills used in battle", "description": "多样玩法"},
+                {"id": "richContent", "trigger": "10+ monster types seen", "description": "内容丰富"},
+                {"id": "strategicChoice", "trigger": "meaningful choice", "description": "策略选择"},
+                {"id": "skillSynergy", "trigger": "skills work together", "description": "技能协同"},
+                {"id": "discoveryMoment", "trigger": "found something new", "description": "发现时刻"},
+                {"id": "mechanicMastery", "trigger": "understood mechanic", "description": "机制掌握"},
+                {"id": "buildVariety", "trigger": "different build viable", "description": "流派多样"}
+            ],
+            "negative": [
+                {"id": "repetitiveMonster", "trigger": "10+ same monster kills", "description": "怪物重复"},
+                {"id": "noDiscovery", "trigger": "20s no discovery", "description": "无发现"},
+                {"id": "monsterVarietyLow", "trigger": "15+ kills, <5 types", "description": "怪物种类少"},
+                {"id": "skillMonotony", "trigger": "5+ same skill in row", "description": "技能单调"},
+                {"id": "contentDepleted", "trigger": "explorer, low variety", "description": "内容耗尽"},
+                {"id": "uselessMechanic", "trigger": "mechanic feels pointless", "description": "无用机制"},
+                {"id": "forcedPlaystyle", "trigger": "only one way to play", "description": "强制玩法"},
+                {"id": "unclearObjective", "trigger": "don't know what to do", "description": "目标不清"},
+                {"id": "frustratingControl", "trigger": "control issue", "description": "操作挫败"},
+                {"id": "shallowDepth", "trigger": "no depth to mechanics", "description": "深度不足"}
+            ]
+        },
+        
+        "retention": {
+            "positive": [
+                {"id": "newFloor", "trigger": "floor_advance event", "description": "新楼层"},
+                {"id": "milestone", "trigger": "milestone reached", "description": "里程碑"},
+                {"id": "winStreak", "trigger": "3+ wins", "description": "连胜"},
+                {"id": "surpriseReward", "trigger": "unexpected reward", "description": "意外奖励"},
+                {"id": "challengeMatched", "trigger": "difficulty matches skill", "description": "挑战匹配"},
+                {"id": "dailyGoal", "trigger": "completed goal", "description": "完成目标"},
+                {"id": "socialHook", "trigger": "want to share", "description": "社交钩子"},
+                {"id": "anticipation", "trigger": "looking forward to something", "description": "期待感"},
+                {"id": "personalBest", "trigger": "new record", "description": "个人最佳"},
+                {"id": "comebackSuccess", "trigger": "recovered from setback", "description": "成功翻盘"},
+                {"id": "nearMiss", "trigger": "almost succeeded, want retry", "description": "差一点成功"}
+            ],
+            "negative": [
+                {"id": "death", "trigger": "player_death event", "description": "死亡"},
+                {"id": "floorStuck", "trigger": "kills on floor > 10x required", "description": "卡层"},
+                {"id": "noLootStreak", "trigger": "5+ battles no loot", "description": "无掉落连击"},
+                {"id": "criticalHitReceived", "trigger": "crit damage >= 15%HP or HP < 30%", "description": "被暴击"},
+                {"id": "battleFail", "trigger": "fail, low tolerance", "description": "战斗失败"},
+                {"id": "lowReward", "trigger": "effort > reward", "description": "奖励低"},
+                {"id": "negativeFeedback", "trigger": "negative streak", "description": "负面反馈"},
+                {"id": "progressLoss", "trigger": "death progress loss", "description": "进度损失"},
+                {"id": "quitUrge", "trigger": "want to quit", "description": "想退出"},
+                {"id": "unfairLoss", "trigger": "felt cheated", "description": "不公平失败"},
+                {"id": "hopeless", "trigger": "no hope to progress", "description": "绝望"}
+            ]
+        },
+        
+        "immersion": {
+            "positive": [
+                {"id": "newArea", "trigger": "new floor with lore", "description": "新区域"},
+                {"id": "storyEvent", "trigger": "has_story", "description": "剧情事件"},
+                {"id": "loreDiscovery", "trigger": "has_lore", "description": "世界观发现"},
+                {"id": "characterGrowth", "trigger": "level_up with story", "description": "角色成长"},
+                {"id": "immersivePlay", "trigger": "5min+ play with story", "description": "沉浸体验"},
+                {"id": "npcInteraction", "trigger": "has_npc", "description": "NPC互动"},
+                {"id": "atmosphereMoment", "trigger": "immersive moment", "description": "氛围时刻"},
+                {"id": "emotionalBeat", "trigger": "emotional response", "description": "情感节拍"},
+                {"id": "worldConsistency", "trigger": "world makes sense", "description": "世界一致性"},
+                {"id": "soundDesign", "trigger": "good audio", "description": "音效设计"},
+                {"id": "visualReward", "trigger": "beautiful moment", "description": "视觉奖励"}
+            ],
+            "negative": [
+                {"id": "noStoryContent", "trigger": "!has_story", "description": "无剧情内容"},
+                {"id": "noWorldLore", "trigger": "!has_lore", "description": "无世界观"},
+                {"id": "noNPCInteraction", "trigger": "!has_npc", "description": "无NPC互动"},
+                {"id": "noShareFeature", "trigger": "social agent, no share", "description": "无分享功能"},
+                {"id": "immersionBreak", "trigger": "frequent interrupts", "description": "沉浸破坏"},
+                {"id": "emptyContent", "trigger": "lacks detail", "description": "内容空洞"},
+                {"id": "plotHole", "trigger": "story inconsistency", "description": "剧情漏洞"},
+                {"id": "badDialogue", "trigger": "poor writing", "description": "糟糕对话"}
+            ]
+        }
+    },
+    
+    "computed_values": {
+        "hp_delta": {
+            "expression": "curr.player.hp - prev.player.hp",
+            "description": "HP变化量"
+        },
+        "mp_delta": {
+            "expression": "curr.player.mp - prev.player.mp",
+            "description": "MP变化量"
+        },
+        "gold_delta": {
+            "expression": "curr.player.gold - prev.player.gold",
+            "description": "金币变化量"
+        },
+        "exp_delta": {
+            "expression": "curr.player.exp - prev.player.exp",
+            "description": "经验变化量"
+        },
+        "hp_ratio": {
+            "expression": "curr.player.hp / curr.player.max_hp",
+            "description": "当前HP比例"
+        },
+        "battle_duration_ms": {
+            "expression": "curr.timestamp - battle_start_timestamp",
+            "description": "战斗持续时间"
+        },
+        "floor_time_ms": {
+            "expression": "curr.timestamp - floor_enter_timestamp",
+            "description": "当前楼层停留时间"
+        },
+        "item_count_delta": {
+            "expression": "count(curr.inventory.items) - count(prev.inventory.items)",
+            "description": "物品数量变化"
+        },
+        "stamina_delta": {
+            "expression": "curr.player.stamina - prev.player.stamina",
+            "description": "体力变化量"
+        },
+        "currency_delta": {
+            "expression": "curr.player.gold - prev.player.gold",
+            "description": "货币变化量（通用）"
+        },
+        "quest_count_delta": {
+            "expression": "len(curr.quest.active_quests) - len(prev.quest.active_quests)",
+            "description": "任务数量变化"
+        },
+        "buff_count_delta": {
+            "expression": "len(curr.player.buffs) - len(prev.player.buffs)",
+            "description": "Buff数量变化"
+        },
+        "debuff_count_delta": {
+            "expression": "len(curr.player.debuffs) - len(prev.player.debuffs)",
+            "description": "Debuff数量变化"
+        },
+        "event_count_delta": {
+            "expression": "len(curr.world.active_events) - len(prev.world.active_events)",
+            "description": "活动数量变化"
+        }
+    }
+}

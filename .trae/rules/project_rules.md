@@ -15,46 +15,6 @@
 
 - 所有玩法数值必须走配置文件（CONFIG），禁止代码写死
 
-## 事件钩子（CrowdAgents集成）
+## CrowdAgents
 
-游戏核心逻辑需触发事件钩子供Agent系统采集数据。
-
-### 触发方式
-```javascript
-this.emit?.('eventName', data);
-```
-
-### 必须触发的事件
-- `battleStart` / `battleEnd` - 战斗生命周期
-- `playerDamage` / `monsterDamage` - 伤害事件
-- `levelUp` - 升级
-- `itemObtain` / `itemUse` - 物品获取/使用
-- `skillUse` - 技能使用
-- `floorAdvance` - 楼层推进
-- `playerDeath` - 死亡
-- `forgeSuccess` - 锻造成功
-
-### 开发检查
-新增/修改功能时检查：
-1. 是否需要新增事件钩子？
-2. 现有钩子数据结构是否需要更新？
-3. 触发时机是否正确（状态变更后触发）
-
-详细事件数据结构见 `CrowdAgents/DESIGN.md`
-
-## CrowdAgents 模拟规范
-
-### 模拟时长
-- 标准模拟时长：2分钟（120000ms）
-- 命令格式：`node main.js --duration=120000`
-
-### 报告查看
-- 模拟完成后必须自动打开报告网站
-- 报告路径：`CrowdAgents/dashboard/index.html`
-- 使用本地服务器端口：8083
-
-### 模拟流程
-1. 运行模拟（2分钟）
-2. 生成报告到 `CrowdAgents/output/report.json`
-3. 启动 dashboard 服务器
-4. 自动打开浏览器查看可视化报告
+CrowdAgents 相关规则见 [crowdagents_rules.md](./crowdagents_rules.md)

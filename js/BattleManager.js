@@ -26,13 +26,6 @@ class BattleManager {
         this.game.ui.log(`遭遇了 ${this.game.monster.avatar} ${this.game.monster.name}！`);
         this.game.ui.setButtons({ attack: false, skill: false, item: false, inventory: false, next: true });
         this.game.ui.renderMonster();
-        this.game.emit?.('battleStart', {
-            monsterId: this.game.monster.id,
-            monsterName: this.game.monster.name,
-            monsterHP: this.game.monster.maxHP,
-            monsterLevel: this.game.floor,
-            floor: this.game.floor
-        });
     }
 
     calcDamage(atk, def, rand) {
@@ -55,12 +48,6 @@ class BattleManager {
         }
         this.game.player.skillCooldowns[skillId] = skill.cd;
         this.game.ui.updateSkillName();
-        this.game.emit?.('skillUse', {
-            skillId: skill.id,
-            skillName: skill.name,
-            targetType: skill.type === 'heal' ? 'self' : 'enemy',
-            mpCost: 0
-        });
         if (skill.type === 'attack') {
             const dmg = this.calcDamage(
                 this.game.playerManager.getTotalAtk() * skill.damageMultiplier,
@@ -116,13 +103,6 @@ class BattleManager {
         this.game.ui.log(`${msg}<span class="damage">${dmg}</span> 伤害！${critText}`);
         this.game.ui.showDamagePopup(dmg, false, false, isCritical);
         this.game.ui.flash('.monster-card');
-        this.game.emit?.('monsterDamage', {
-            damage: dmg,
-            monsterCurrentHP: Math.max(0, this.game.monster.hp),
-            monsterMaxHP: this.game.monster.maxHP,
-            skillUsed: skill ? skill.id : 'attack',
-            isCritical: isCritical
-        });
         if (skill && skill.slow) {
             this.game.slowEffect = skill.slow;
             this.game.ui.log(`❄️ 怪物被减速！`);
@@ -163,13 +143,6 @@ class BattleManager {
         const critText = isCritical ? '💥 暴击！' : '';
         this.game.ui.log(`${this.game.monster.avatar} ${this.game.monster.name} 对你造成 <span class="damage">${dmg}</span> 伤害！${critText}`);
         this.game.ui.flash('.status-bar');
-        this.game.emit?.('playerDamage', {
-            damage: dmg,
-            currentHP: Math.max(0, this.game.player.hp),
-            maxHP: this.game.player.maxHP,
-            source: this.game.monster.id,
-            isCritical: isCritical
-        });
         if (this.game.player.hp <= 0) this.game.gameOver();
     }
 
@@ -183,16 +156,6 @@ class BattleManager {
         this.game.playerManager.reduceCooldowns();
         this.game.playerManager.checkSkillUnlock();
         this.game.playerManager.levelUp();
-        this.game.emit?.('battleEnd', {
-            victory: true,
-            monsterId: this.game.monster.id,
-            monsterName: this.game.monster.name,
-            rewards: {
-                exp: this.game.monster.exp,
-                gold: this.game.monster.gold
-            },
-            floor: this.game.floor
-        });
         
         const randomEvent = this.game.storyManager.checkRandomEvent(this.game.floor);
         if (randomEvent) {

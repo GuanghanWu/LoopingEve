@@ -23,13 +23,6 @@ class StoryManager {
         
         if (isFirstVisit) {
             this.seenLore.add(loreKey);
-            this.game.emit('loreDiscovery', {
-                floor: newFloor,
-                areaName: lore.name,
-                description: lore.description,
-                lore: lore.lore,
-                isFirstVisit: true
-            });
             return { type: 'lore', data: lore, floor: newFloor };
         }
         return null;
@@ -45,11 +38,6 @@ class StoryManager {
         for (const npc of availableNPCs) {
             if (Math.random() < npc.probability) {
                 this.seenNPCs.add(`${npc.id}_${floor}`);
-                this.game.emit('npcInteraction', {
-                    npcId: npc.id,
-                    npcName: npc.name,
-                    floor: floor
-                });
                 return { type: 'npc', data: npc };
             }
         }
@@ -66,11 +54,6 @@ class StoryManager {
             const eventKey = `${event.id}_${Date.now()}`;
             if (Math.random() < event.probability) {
                 this.triggeredEvents.add(eventKey);
-                this.game.emit('storyEvent', {
-                    eventId: event.id,
-                    eventName: event.name,
-                    floor: floor
-                });
                 return { type: 'event', data: event };
             }
         }

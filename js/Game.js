@@ -8,7 +8,6 @@ async function loadConfig() {
 
 class Game {
     constructor() {
-        this._eventListeners = {};
         this.floor = 1;
         this.killed = 0;
         this.monster = null;
@@ -23,29 +22,6 @@ class Game {
         this.playerManager = new PlayerManager(this);
         this.inventoryManager = new InventoryManager(this);
         this.storyManager = new StoryManager(this);
-    }
-
-    on(event, listener) {
-        if (!this._eventListeners[event]) {
-            this._eventListeners[event] = [];
-        }
-        this._eventListeners[event].push(listener);
-    }
-
-    off(event, listener) {
-        if (!this._eventListeners[event]) return;
-        this._eventListeners[event] = this._eventListeners[event].filter(l => l !== listener);
-    }
-
-    emit(event, data) {
-        if (!this._eventListeners[event]) return;
-        this._eventListeners[event].forEach(listener => {
-            try {
-                listener(data);
-            } catch (e) {
-                console.warn(`[Event] Error in listener for ${event}:`, e);
-            }
-        });
     }
 
     init() {
@@ -142,11 +118,6 @@ class Game {
             }, loreEvent ? 2000 : 500);
         }
         
-        this.emit('floorAdvance', {
-            newFloor: this.floor,
-            oldFloor: oldFloor,
-            timeSpent: 0
-        });
         this.save();
         this.ui.render();
     }
@@ -174,12 +145,6 @@ class Game {
     }
 
     gameOver() {
-        this.emit('playerDeath', {
-            floor: this.floor,
-            totalPlayTime: 0,
-            kills: this.killed,
-            deathCause: this.monster ? this.monster.id : 'unknown'
-        });
         localStorage.removeItem('loopingEveSave');
         $('finalFloor').textContent = this.floor;
         $('finalLevel').textContent = this.player.level;
