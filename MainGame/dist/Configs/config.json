@@ -1,12 +1,14 @@
 {
     "player": {
-        "initial": { "level": 1, "hp": 120, "maxHP": 120, "atk": 12, "def": 6, "exp": 0, "maxEXP": 50, "gold": 0, "critRate": 0.10, "dodgeRate": 0.05 },
+        "initial": { "level": 1, "hp": 120, "maxHP": 120, "atk": 12, "def": 6, "exp": 0, "maxEXP": 50, "gold": 0, "critRate": 0.10, "dodgeRate": 0.05, "comboRate": 0, "comboDamage": 0.5, "counterRate": 0, "counterDamage": 0.5, "blockRate": 0, "blockReduction": 0.3, "shield": 0, "maxShield": 0 },
         "levelUp": { "hp": 15, "atk": 3, "def": 2, "expMultiplier": 1.4 },
         "skillSlots": [1, 3, 5, 8]
     },
     "battle": {
         "normalAttackRand": 4,
-        "enemyAttackRand": 3
+        "enemyAttackRand": 3,
+        "autoBattleInterval": 1000,
+        "autoExploreDelay": 500
     },
     "floor": {
         "monstersToAdvance": 3,
@@ -58,21 +60,21 @@
         "weapons": [
             { "id": "ironSword", "name": "铁剑", "icon": "⚔️", "atk": 5, "materials": { "ironOre": 5 } },
             { "id": "steelSword", "name": "钢剑", "icon": "🗡️", "atk": 10, "materials": { "ironOre": 10, "goblinTooth": 3 } },
-            { "id": "wolfFangSword", "name": "狼牙剑", "icon": "🐺", "atk": 15, "materials": { "wolfPelt": 5, "boneFragment": 8 } },
-            { "id": "shadowBlade", "name": "暗影之刃", "icon": "👁️", "atk": 22, "materials": { "shadowEssence": 5, "ironOre": 15 } },
-            { "id": "flameBlade", "name": "炎之刃", "icon": "🔥", "atk": 30, "materials": { "fireCrystal": 5, "demonHorn": 2 } },
-            { "id": "frostBlade", "name": "霜之哀伤", "icon": "❄️", "atk": 38, "materials": { "iceCrystal": 8, "dragonScale": 3 } },
-            { "id": "dragonSlayer", "name": "屠龙剑", "icon": "🐉", "atk": 50, "materials": { "dragonScale": 10, "demonHorn": 5, "fireCrystal": 10 } }
+            { "id": "wolfFangSword", "name": "狼牙剑", "icon": "🐺", "atk": 15, "comboRate": 0.05, "comboDamage": 0.2, "materials": { "wolfPelt": 5, "boneFragment": 8 } },
+            { "id": "shadowBlade", "name": "暗影之刃", "icon": "👁️", "atk": 22, "comboRate": 0.1, "counterRate": 0.08, "materials": { "shadowEssence": 5, "ironOre": 15 } },
+            { "id": "flameBlade", "name": "炎之刃", "icon": "🔥", "atk": 30, "comboRate": 0.1, "comboDamage": 0.3, "materials": { "fireCrystal": 5, "demonHorn": 2 } },
+            { "id": "frostBlade", "name": "霜之哀伤", "icon": "❄️", "atk": 38, "counterRate": 0.12, "counterDamage": 0.3, "materials": { "iceCrystal": 8, "dragonScale": 3 } },
+            { "id": "dragonSlayer", "name": "屠龙剑", "icon": "🐉", "atk": 50, "comboRate": 0.15, "comboDamage": 0.4, "counterRate": 0.1, "materials": { "dragonScale": 10, "demonHorn": 5, "fireCrystal": 10 } }
         ],
         "armors": [
             { "id": "leatherArmor", "name": "皮甲", "icon": "🥋", "def": 3, "materials": { "wolfPelt": 3 } },
-            { "id": "ironArmor", "name": "铁甲", "icon": "🛡️", "def": 6, "materials": { "ironOre": 8 } },
-            { "id": "boneArmor", "name": "骨甲", "icon": "🦴", "def": 10, "materials": { "boneFragment": 10, "slimeGel": 5 } },
-            { "id": "stoneArmor", "name": "石像甲", "icon": "🗿", "def": 15, "materials": { "gargoyleStone": 8, "ironOre": 10 } },
-            { "id": "shadowArmor", "name": "暗影甲", "icon": "👁️", "def": 20, "materials": { "shadowEssence": 8, "boneFragment": 15 } },
-            { "id": "flameArmor", "name": "炎魔甲", "icon": "🔥", "def": 28, "materials": { "fireCrystal": 8, "demonHorn": 3 } },
-            { "id": "frostArmor", "name": "冰霜甲", "icon": "❄️", "def": 35, "materials": { "iceCrystal": 10, "dragonScale": 5 } },
-            { "id": "dragonArmor", "name": "龙鳞甲", "icon": "🐉", "def": 45, "materials": { "dragonScale": 15, "demonHorn": 8 } }
+            { "id": "ironArmor", "name": "铁甲", "icon": "🛡️", "def": 6, "blockRate": 0.05, "materials": { "ironOre": 8 } },
+            { "id": "boneArmor", "name": "骨甲", "icon": "🦴", "def": 10, "counterRate": 0.05, "materials": { "boneFragment": 10, "slimeGel": 5 } },
+            { "id": "stoneArmor", "name": "石像甲", "icon": "🗿", "def": 15, "blockRate": 0.1, "blockReduction": 0.15, "shield": 20, "maxShield": 20, "materials": { "gargoyleStone": 8, "ironOre": 10 } },
+            { "id": "shadowArmor", "name": "暗影甲", "icon": "👁️", "def": 20, "counterRate": 0.1, "counterDamage": 0.2, "materials": { "shadowEssence": 8, "boneFragment": 15 } },
+            { "id": "flameArmor", "name": "炎魔甲", "icon": "🔥", "def": 28, "shield": 30, "maxShield": 30, "materials": { "fireCrystal": 8, "demonHorn": 3 } },
+            { "id": "frostArmor", "name": "冰霜甲", "icon": "❄️", "def": 35, "blockRate": 0.15, "blockReduction": 0.2, "shield": 40, "maxShield": 40, "materials": { "iceCrystal": 10, "dragonScale": 5 } },
+            { "id": "dragonArmor", "name": "龙鳞甲", "icon": "🐉", "def": 45, "blockRate": 0.2, "blockReduction": 0.25, "shield": 60, "maxShield": 60, "materials": { "dragonScale": 15, "demonHorn": 8 } }
         ]
     },
     "lootTable": {
@@ -327,5 +329,18 @@
                 { "weight": 25, "type": "exp", "value": 50 }
             ]
         }
+    ],
+    "bossFloors": [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
+    "bosses": [
+        { "id": "floor5Boss", "name": "守门石像", "avatar": "🗿", "hp": 350, "atk": 28, "def": 20, "exp": 200, "gold": 150, "floor": 5, "critRate": 0.08, "dodgeRate": 0.02 },
+        { "id": "floor10Boss", "name": "暗影领主", "avatar": "👤", "hp": 600, "atk": 42, "def": 28, "exp": 400, "gold": 300, "floor": 10, "critRate": 0.12, "dodgeRate": 0.05 },
+        { "id": "floor15Boss", "name": "炎魔将军", "avatar": "🔥", "hp": 900, "atk": 58, "def": 38, "exp": 650, "gold": 500, "floor": 15, "critRate": 0.15, "dodgeRate": 0.04 },
+        { "id": "floor20Boss", "name": "冰霜女王", "avatar": "❄️", "hp": 1300, "atk": 78, "def": 50, "exp": 1000, "gold": 800, "floor": 20, "critRate": 0.10, "dodgeRate": 0.08 },
+        { "id": "floor25Boss", "name": "龙人战神", "avatar": "🦎", "hp": 1800, "atk": 100, "def": 65, "exp": 1500, "gold": 1200, "floor": 25, "critRate": 0.14, "dodgeRate": 0.06 },
+        { "id": "floor30Boss", "name": "深渊骑士", "avatar": "⚔️", "hp": 2500, "atk": 130, "def": 85, "exp": 2200, "gold": 1800, "floor": 30, "critRate": 0.16, "dodgeRate": 0.05 },
+        { "id": "floor35Boss", "name": "恶魔亲王", "avatar": "😈", "hp": 3500, "atk": 165, "def": 110, "exp": 3200, "gold": 2600, "floor": 35, "critRate": 0.18, "dodgeRate": 0.07 },
+        { "id": "floor40Boss", "name": "远古巨龙", "avatar": "🐉", "hp": 4800, "atk": 210, "def": 140, "exp": 4500, "gold": 3800, "floor": 40, "critRate": 0.15, "dodgeRate": 0.06 },
+        { "id": "floor45Boss", "name": "混沌领主", "avatar": "🌀", "hp": 6500, "atk": 260, "def": 180, "exp": 6500, "gold": 5500, "floor": 45, "critRate": 0.20, "dodgeRate": 0.08 },
+        { "id": "floor50Boss", "name": "深渊之王", "avatar": "👿", "hp": 9000, "atk": 320, "def": 220, "exp": 10000, "gold": 8000, "floor": 50, "critRate": 0.22, "dodgeRate": 0.10 }
     ]
 }

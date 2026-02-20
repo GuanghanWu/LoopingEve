@@ -54,18 +54,158 @@ export class UIManager {
     setTimeout(() => el.classList.remove('shake'), 300);
   }
 
-  showDamagePopup(value: number, isHeal: boolean, isDodge: boolean = false, isCritical: boolean = false): void {
+  flashSlot(slotType: 'attack' | 'skill' | 'item'): void {
+    const slotMap = {
+      attack: 'attackSlot',
+      skill: 'skillSlot',
+      item: 'itemSlot'
+    };
+    const slotEl = $(slotMap[slotType]);
+    if (!slotEl) return;
+    slotEl.classList.add('active');
+    setTimeout(() => slotEl.classList.remove('active'), 200);
+  }
+
+  updateSpeedDisplay(): void {
+    const speedText = $('speedText');
+    if (speedText) speedText.textContent = `${this.game.gameSpeed}X`;
+  }
+
+  updateFloorSelectText(): void {
+    const floorSelectText = $('floorSelectText');
+    if (floorSelectText) floorSelectText.textContent = `第${this.game.floor}层`;
+  }
+
+  openFloorSelect(): void {
+    const floorList = $('floorList');
+    const modal = $('floorSelectModal');
+    if (!floorList || !modal) return;
+    
+    let html = '';
+    for (let f = 1; f <= this.game.maxFloorReached; f++) {
+      const isBoss = this.game.battle.isBossFloor(f);
+      const isCurrent = f === this.game.floor;
+      const classes = ['floor-item'];
+      if (isBoss) classes.push('boss');
+      if (isCurrent) classes.push('current');
+      
+      html += `<div class="${classes.join(' ')}" data-floor="${f}">
+        <span class="num">${f}</span>
+        <span class="icon">${isBoss ? '👑' : ''}</span>
+      </div>`;
+    }
+    
+    floorList.innerHTML = html;
+    
+    floorList.querySelectorAll('.floor-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const floor = parseInt(el.getAttribute('data-floor') || '1');
+        this.game.goToFloor(floor);
+        modal.classList.remove('show');
+      });
+    });
+    
+    modal.classList.add('show');
+  }
+
+  showSkillEffect(skill: Skill): void {
+    const overlay = $('skillEffectOverlay');
+    if (!overlay) return;
+    
+    overlay.setAttribute('data-icon', skill.icon);
+    overlay.className = 'skill-effect-overlay';
+    
+    const effectMap: Record<string, string> = {
+      'powerStrike': 'effect-power',
+      'fireball': 'effect-fire',
+      'frostArrow': 'effect-frost',
+      'thunderStrike': 'effect-thunder',
+      'lifeSteal': 'effect-power',
+      'heal': 'effect-heal'
+    };
+    
+    const effectClass = effectMap[skill.id] || 'effect-power';
+    void overlay.offsetWidth;
+    overlay.classList.add('active', effectClass);
+    
+    setTimeout(() => {
+      overlay.classList.remove('active', effectClass);
+    }, 600);
+  }
+
+  updateSlotStates(): void {
+    const skillSlot = $('skillSlot');
+    const itemSlot = $('itemSlot');
+    const itemSlotCount = $('itemSlotCount');
+    const skillCdOverlay = $('skillCdOverlay');
+    const skillCdProgress = $('skillCdProgress');
+    const skillCdText = $('skillCdText');
+
+    const selectedSkill = this.game.player.selectedSkill || 'powerStrike';
+    const skillCD = this.game.player.skillCooldowns[selectedSkill] ?? 0;
+    const skillDef = this.game.config.skills.find((s: Skill) => s.id === selectedSkill);
+    const maxCD = skillDef?.cd || 3;
+    
+    if (skillSlot) {
+      if (skillCD > 0) {
+        if (skillCdOverlay) {
+          skillCdOverlay.classList.add('visible');
+          if (skillCdProgress) {
+            const remaining = skillCD / maxCD;
+            const circumference = 100.53;
+            skillCdProgress.style.strokeDashoffset = String(circumference * remaining);
+          }
+          if (skillCdText) {
+            skillCdText.textContent = String(skillCD);
+          }
+        }
+      } else {
+        if (skillCdOverlay) skillCdOverlay.classList.remove('visible');
+      }
+    }
+
+    const potionCount = this.game.inventory.items.filter(
+      (i: { id: string }) => i.id === 'healthPotion'
+    ).length;
+    if (itemSlotCount) {
+      itemSlotCount.textContent = String(potionCount);
+    }
+    if (itemSlot) {
+      if (potionCount === 0) {
+        itemSlot.classList.add('disabled');
+      } else {
+        itemSlot.classList.remove('disabled');
+      }
+    }
+  }
+
+  showDamagePopup(
+    value: number,
+    isHeal: boolean,
+    isDodge: boolean = false,
+    isCritical: boolean = false,
+    isCombo: boolean = false,
+    isBlock: boolean = false
+  ): void {
     const popup = document.createElement('div');
     let className = 'damage-popup';
     if (isHeal) className += ' heal-popup';
     if (isDodge) className += ' dodge-popup';
     if (isCritical) className += ' critical-popup';
+    if (isCombo) className += ' combo-popup';
+    if (isBlock) className += ' block-popup';
     popup.className = className;
 
     if (isDodge) {
       popup.textContent = 'MISS';
+    } else if (isBlock) {
+      popup.textContent = '🛡️';
     } else {
-      popup.textContent = (isHeal ? '+' : '-') + value + (isCritical ? '!' : '');
+      let prefix = isHeal ? '+' : '-';
+      let suffix = '';
+      if (isCritical) suffix = '!';
+      if (isCombo) suffix += '⚡';
+      popup.textContent = prefix + value + suffix;
     }
 
     const monsterCard = document.querySelector('.monster-card');
@@ -73,6 +213,28 @@ export class UIManager {
       const rect = monsterCard.getBoundingClientRect();
       popup.style.left = rect.left + rect.width / 2 - 20 + Math.random() * 40 + 'px';
       popup.style.top = rect.top + rect.height / 3 + 'px';
+    }
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 800);
+  }
+
+  showPlayerDamagePopup(value: number, isBlock: boolean = false): void {
+    const popup = document.createElement('div');
+    let className = 'damage-popup player-damage';
+    if (isBlock) className += ' block-popup';
+    popup.className = className;
+
+    if (isBlock) {
+      popup.textContent = `-${value}🛡️`;
+    } else {
+      popup.textContent = `-${value}`;
+    }
+
+    const statusBar = document.querySelector('.status-bar');
+    if (statusBar) {
+      const rect = statusBar.getBoundingClientRect();
+      popup.style.left = rect.left + 20 + Math.random() * 30 + 'px';
+      popup.style.top = rect.top + rect.height / 2 + 'px';
     }
     document.body.appendChild(popup);
     setTimeout(() => popup.remove(), 800);
@@ -91,6 +253,8 @@ export class UIManager {
     const currentFloor = $('currentFloor');
     const hpFill = $('hpFill');
     const expBar = $('expBar');
+    const shieldFill = $('shieldFill');
+    const playerShield = $('playerShield');
 
     if (playerLevel) playerLevel.textContent = String(p.level);
     if (playerHP) playerHP.textContent = String(p.hp);
@@ -102,13 +266,56 @@ export class UIManager {
     if (playerGold) playerGold.textContent = String(this.game.player.gold);
     if (currentFloor) currentFloor.textContent = String(this.game.floor);
 
+    const bossIcon = $('bossIcon');
+    const isBoss = this.game.battle.isBossFloor(this.game.floor);
+    if (bossIcon) {
+      bossIcon.style.display = isBoss ? 'inline' : 'none';
+    }
+    
+    this.updateFloorSelectText();
+    this.updateSpeedDisplay();
+
     const hpPercent = Math.max(0, (p.hp / p.maxHP) * 100);
     const expPercent = Math.max(0, (p.exp / p.maxEXP) * 100);
     if (hpFill) (hpFill as HTMLElement).style.width = `${hpPercent}%`;
     if (expBar) (expBar as HTMLElement).style.width = `${expPercent}%`;
 
+    const maxShield = this.game.playerManager.getTotalMaxShield();
+    if (shieldFill && maxShield > 0) {
+      const shieldPercent = Math.max(0, (p.shield / maxShield) * 100);
+      (shieldFill as HTMLElement).style.width = `${shieldPercent}%`;
+      (shieldFill as HTMLElement).parentElement!.style.display = 'block';
+    } else if (shieldFill) {
+      (shieldFill as HTMLElement).parentElement!.style.display = 'none';
+    }
+    if (playerShield) {
+      playerShield.textContent = maxShield > 0 ? `${p.shield}/${maxShield}` : '';
+    }
+
+    this.renderSecondaryStats();
+    this.updateSlotStates();
     this.renderKillProgress();
     this.renderEquipment();
+  }
+
+  renderSecondaryStats(): void {
+    const comboRate = $('comboRate');
+    const counterRate = $('counterRate');
+    const blockRate = $('blockRate');
+    const secondaryStats = $('secondaryStats');
+
+    const totalCombo = this.game.playerManager.getTotalComboRate();
+    const totalCounter = this.game.playerManager.getTotalCounterRate();
+    const totalBlock = this.game.playerManager.getTotalBlockRate();
+
+    if (comboRate) comboRate.textContent = `${Math.round(totalCombo * 100)}%`;
+    if (counterRate) counterRate.textContent = `${Math.round(totalCounter * 100)}%`;
+    if (blockRate) blockRate.textContent = `${Math.round(totalBlock * 100)}%`;
+
+    const hasSecondaryStats = totalCombo > 0 || totalCounter > 0 || totalBlock > 0;
+    if (secondaryStats) {
+      (secondaryStats as HTMLElement).style.display = hasSecondaryStats ? 'flex' : 'none';
+    }
   }
 
   renderKillProgress(): void {
@@ -116,11 +323,18 @@ export class UIManager {
     const displayKilled = Math.min(this.game.killed, target);
     const progressEl = $('killProgress');
     if (!progressEl) return;
-    progressEl.textContent = `${displayKilled}/${target}`;
-    if (this.game.killed >= target) {
-      progressEl.classList.add('complete');
-    } else {
+    
+    const isBoss = this.game.battle.isBossFloor(this.game.floor);
+    if (isBoss) {
+      progressEl.textContent = '';
       progressEl.classList.remove('complete');
+    } else {
+      progressEl.textContent = `${displayKilled}/${target}`;
+      if (this.game.killed >= target) {
+        progressEl.classList.add('complete');
+      } else {
+        progressEl.classList.remove('complete');
+      }
     }
   }
 
@@ -148,13 +362,36 @@ export class UIManager {
     const monsterHP = $('monsterHP');
     const monsterMaxHP = $('monsterMaxHP');
     const monsterHPFill = $('monsterHPFill');
+    const monsterCard = document.querySelector('.monster-card');
+
+    const isBoss = this.game.battle.isBossFloor(this.game.floor);
+    
+    if (monsterCard) {
+      if (isBoss) {
+        monsterCard.classList.add('boss-monster');
+      } else {
+        monsterCard.classList.remove('boss-monster');
+      }
+    }
 
     if (monsterAvatar) monsterAvatar.textContent = this.game.monster.avatar;
-    if (monsterName) monsterName.textContent = this.game.monster.name;
+    if (monsterName) {
+      monsterName.textContent = isBoss ? `👑 ${this.game.monster.name}` : this.game.monster.name;
+      if (isBoss) {
+        monsterName.classList.add('boss-name');
+      } else {
+        monsterName.classList.remove('boss-name');
+      }
+    }
     if (monsterHP) monsterHP.textContent = String(Math.max(0, this.game.monster.hp));
     if (monsterMaxHP) monsterMaxHP.textContent = String(this.game.monster.maxHP);
     if (monsterHPFill) {
       (monsterHPFill as HTMLElement).style.width = `${Math.max(0, (this.game.monster.hp / this.game.monster.maxHP) * 100)}%`;
+      if (isBoss) {
+        monsterHPFill.classList.add('boss-hp');
+      } else {
+        monsterHPFill.classList.remove('boss-hp');
+      }
     }
   }
 
@@ -193,12 +430,17 @@ export class UIManager {
     const skillId = this.game.player.selectedSkill || this.game.player.learnedSkills[0];
     const btn = $<HTMLButtonElement>('btnSkill');
     const currentSkillName = $('currentSkillName');
+    const skillSlotLabel = $('skillSlotLabel');
+    const skillSlotIcon = $('skillSlotIcon');
 
-    if (btn && currentSkillName) {
-      if (skillId) {
-        const skill = this.game.config.skills.find((s: Skill) => s.id === skillId);
-        if (skill) {
-          const cd = this.game.player.skillCooldowns[skillId] || 0;
+    if (skillId) {
+      const skill = this.game.config.skills.find((s: Skill) => s.id === skillId);
+      if (skill) {
+        if (skillSlotLabel) skillSlotLabel.textContent = skill.name;
+        if (skillSlotIcon) skillSlotIcon.textContent = skill.icon;
+        
+        const cd = this.game.player.skillCooldowns[skillId] || 0;
+        if (btn && currentSkillName) {
           if (cd > 0) {
             currentSkillName.textContent = `${skill.name} (CD:${cd})`;
             btn.classList.add('on-cooldown');
@@ -206,9 +448,13 @@ export class UIManager {
             currentSkillName.textContent = skill.name;
             btn.classList.remove('on-cooldown');
           }
-          return;
         }
+        return;
       }
+    }
+    if (skillSlotLabel) skillSlotLabel.textContent = '无技能';
+    if (skillSlotIcon) skillSlotIcon.textContent = '✨';
+    if (btn && currentSkillName) {
       currentSkillName.textContent = '无技能';
       btn.classList.remove('on-cooldown');
     }
@@ -498,6 +744,23 @@ export class UIManager {
     }
   }
 
+  private modalAutoCloseTimer: ReturnType<typeof setTimeout> | null = null;
+
+  private startModalAutoClose(modalId: string, delay: number = 10000): void {
+    this.clearModalAutoClose();
+    this.modalAutoCloseTimer = setTimeout(() => {
+      const modal = $(modalId);
+      if (modal) modal.classList.remove('show');
+    }, delay);
+  }
+
+  private clearModalAutoClose(): void {
+    if (this.modalAutoCloseTimer) {
+      clearTimeout(this.modalAutoCloseTimer);
+      this.modalAutoCloseTimer = null;
+    }
+  }
+
   showLoreModal(lore: WorldLore, floor: number): void {
     const loreIcon = $('loreIcon');
     const loreTitle = $('loreTitle');
@@ -510,9 +773,11 @@ export class UIManager {
     if (loreDescription) loreDescription.textContent = lore.description;
     if (loreContent) loreContent.textContent = lore.lore;
     if (storyModal) storyModal.classList.add('show');
+    this.startModalAutoClose('storyModal');
   }
 
   closeStoryModal(): void {
+    this.clearModalAutoClose();
     const storyModal = $('storyModal');
     if (storyModal) storyModal.classList.remove('show');
   }
@@ -557,9 +822,11 @@ export class UIManager {
     actionsHtml += `<button class="btn btn-secondary" onclick="game.closeNPCModal()">离开</button>`;
     if (npcActions) npcActions.innerHTML = actionsHtml;
     if (npcModal) npcModal.classList.add('show');
+    this.startModalAutoClose('npcModal');
   }
 
   closeNPCModal(): void {
+    this.clearModalAutoClose();
     const npcModal = $('npcModal');
     if (npcModal) npcModal.classList.remove('show');
   }
@@ -600,9 +867,11 @@ export class UIManager {
     }
     if (eventResult) eventResult.innerHTML = resultHtml;
     if (eventModal) eventModal.classList.add('show');
+    this.startModalAutoClose('eventModal');
   }
 
   closeEventModal(): void {
+    this.clearModalAutoClose();
     const eventModal = $('eventModal');
     if (eventModal) eventModal.classList.remove('show');
   }

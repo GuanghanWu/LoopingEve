@@ -10,10 +10,16 @@ export class Game {
   config: GameConfig;
   floor: number = 1;
   killed: number = 0;
+  maxFloorReached: number = 1;
   monster: MonsterInstance | null = null;
   inBattle: boolean = false;
   slowEffect: number = 0;
   canAdvanceFloor: boolean = false;
+  autoBattleEnabled: boolean = true;
+  autoAdvanceEnabled: boolean = false;
+  autoBattleTimer: ReturnType<typeof setInterval> | null = null;
+  potionStrategy: 'manual' | 'auto30' | 'auto50' | 'battleStart' = 'auto30';
+  gameSpeed: number = 1;
   player!: Player;
   inventory!: Inventory;
 
@@ -37,6 +43,7 @@ export class Game {
     this.bindEvents();
     this.ui.updateSkillName();
     this.ui.render();
+    this.startAutoBattle();
     setTimeout(() => this.explore(), 300);
   }
 
@@ -45,6 +52,8 @@ export class Game {
       player: this.player,
       floor: this.floor,
       killed: this.killed,
+      maxFloorReached: this.maxFloorReached,
+      gameSpeed: this.gameSpeed,
       inventory: this.inventory,
       story: this.storyManager.save()
     };
@@ -58,6 +67,8 @@ export class Game {
       this.player = data.player;
       this.floor = data.floor;
       this.killed = data.killed;
+      this.maxFloorReached = data.maxFloorReached || this.floor;
+      this.gameSpeed = data.gameSpeed || 1;
       this.inventory = data.inventory || { slots: this.config.inventory.initialSlots, items: [] };
       this.playerManager.migrateOldData();
       this.storyManager.load(data.story);
@@ -75,12 +86,31 @@ export class Game {
     const btnNextFloor = $('btnNextFloor');
     const btnSettings = $('btnSettings');
     const btnClear2 = $('btnClear2');
+    const potionStrategySelect = $('potionStrategy') as HTMLSelectElement;
+    const floorSelectBtn = $('floorSelectBtn');
+    const speedBtn = $('speedBtn');
 
     if (btnAttack) btnAttack.onclick = () => this.battle.attack();
     if (btnSkill) btnSkill.onclick = () => this.battle.useSelectedSkill();
     if (btnItem) btnItem.onclick = () => this.inventoryManager.smartUseItem();
     if (btnNextFloor) btnNextFloor.onclick = () => this.nextFloor();
     if (btnSettings) btnSettings.onclick = () => this.ui.openSettings();
+    
+    if (floorSelectBtn) {
+      floorSelectBtn.onclick = () => this.ui.openFloorSelect();
+    }
+    
+    if (speedBtn) {
+      speedBtn.onclick = () => this.cycleSpeed();
+    }
+    
+    if (potionStrategySelect) {
+      potionStrategySelect.value = this.potionStrategy;
+      potionStrategySelect.onchange = () => {
+        this.potionStrategy = potionStrategySelect.value as typeof this.potionStrategy;
+      };
+    }
+    
     if (btnClear2)
       btnClear2.onclick = () => {
         const settingsModal = $('settingsModal');
@@ -108,26 +138,29 @@ export class Game {
     this.ui.closeAllModals();
   }
 
-  nextFloor(): void {
+  nextFloor(skipLore: boolean = false): void {
     const oldFloor = this.floor;
     this.floor++;
     this.killed = 0;
+    this.maxFloorReached = Math.max(this.maxFloorReached, this.floor);
     this.ui.log(`📍 进入第 ${this.floor} 层！`);
     const btnNextFloor = $<HTMLButtonElement>('btnNextFloor');
     if (btnNextFloor) btnNextFloor.disabled = true;
 
     this.ui.updateBattleBackground(this.floor);
 
-    const loreEvent = this.storyManager.onFloorAdvance(this.floor, oldFloor);
-    if (loreEvent) {
-      this.ui.showLoreModal(loreEvent.data, this.floor);
-    }
+    if (!skipLore) {
+      const loreEvent = this.storyManager.onFloorAdvance(this.floor, oldFloor);
+      if (loreEvent) {
+        this.ui.showLoreModal(loreEvent.data, this.floor);
+      }
 
-    const npcEvent = this.storyManager.checkNPC(this.floor);
-    if (npcEvent) {
-      setTimeout(() => {
-        this.ui.showNPCModal(npcEvent.data);
-      }, loreEvent ? 2000 : 500);
+      const npcEvent = this.storyManager.checkNPC(this.floor);
+      if (npcEvent) {
+        setTimeout(() => {
+          this.ui.showNPCModal(npcEvent.data);
+        }, loreEvent ? 2000 : 500);
+      }
     }
 
     this.save();
@@ -149,7 +182,7 @@ export class Game {
     const autoNext = autoNextEl?.checked ?? false;
     setTimeout(() => {
       if (this.canAdvanceFloor && autoNext) {
-        this.nextFloor();
+        this.nextFloor(true);
         setTimeout(() => this.battle.explore(), 300);
       } else {
         this.battle.explore();
@@ -158,15 +191,28 @@ export class Game {
   }
 
   gameOver(): void {
-    localStorage.removeItem('loopingEveSave');
-    const finalFloor = $('finalFloor');
-    const finalLevel = $('finalLevel');
-    const finalGold = $('finalGold');
-    const gameOverModal = $('gameOverModal');
-    if (finalFloor) finalFloor.textContent = String(this.floor);
-    if (finalLevel) finalLevel.textContent = String(this.player.level);
-    if (finalGold) finalGold.textContent = String(this.player.gold);
-    if (gameOverModal) gameOverModal.classList.add('show');
+    this.stopAutoBattle();
+    this.stopAutoAdvance();
+    
+    this.floor = Math.max(1, this.floor - 1);
+    this.killed = 0;
+    this.player.hp = this.player.maxHP;
+    this.player.shield = 0;
+    
+    this.ui.log(`💀 你被击败了！回退到第 ${this.floor} 层...`);
+    this.ui.updateBattleBackground(this.floor);
+    
+    this.canAdvanceFloor = false;
+    this.inBattle = false;
+    this.monster = null;
+    
+    this.save();
+    this.ui.render();
+    
+    setTimeout(() => {
+      this.startAutoBattle();
+      this.battle.explore();
+    }, 1000);
   }
 
   restart(): void {
@@ -195,6 +241,97 @@ export class Game {
   attack(): void {
     this.battle.attack();
   }
+
+  startAutoBattle(): void {
+    if (this.autoBattleTimer) return;
+    this.autoBattleEnabled = true;
+    this.runAutoBattleLoop();
+  }
+
+  stopAutoBattle(): void {
+    this.autoBattleEnabled = false;
+    if (this.autoBattleTimer) {
+      clearTimeout(this.autoBattleTimer);
+      this.autoBattleTimer = null;
+    }
+  }
+
+  stopAutoAdvance(): void {
+    this.autoAdvanceEnabled = false;
+    const autoAdvanceEl = document.getElementById('autoAdvance') as HTMLInputElement;
+    if (autoAdvanceEl) autoAdvanceEl.checked = false;
+  }
+
+  private runAutoBattleLoop(): void {
+    if (!this.autoBattleEnabled) return;
+
+    const baseInterval = this.config.battle.autoBattleInterval || 1000;
+    const interval = baseInterval / this.gameSpeed;
+
+    this.autoBattleTimer = setTimeout(() => {
+      if (!this.autoBattleEnabled) return;
+
+      try {
+        if (this.inBattle && this.monster && this.player) {
+          const skillId = this.player.selectedSkill || 'powerStrike';
+          const skillCD = this.player.skillCooldowns[skillId] ?? 0;
+          
+          if (this.shouldAutoUsePotion()) {
+            this.inventoryManager.smartUseItem();
+            this.ui.flashSlot('item');
+          } else if (skillCD === 0) {
+            this.battle.useSelectedSkill();
+          } else {
+            this.battle.attack();
+          }
+        } else if (!this.inBattle) {
+          this.battle.explore();
+        }
+      } catch (e) {
+        console.warn('Auto battle error:', e);
+      }
+
+      this.runAutoBattleLoop();
+    }, interval);
+  }
+
+  cycleSpeed(): void {
+    const speeds = [1, 2, 3];
+    const currentIndex = speeds.indexOf(this.gameSpeed);
+    this.gameSpeed = speeds[(currentIndex + 1) % speeds.length];
+    this.ui.updateSpeedDisplay();
+  }
+
+  goToFloor(targetFloor: number): void {
+    if (targetFloor > this.maxFloorReached) return;
+    if (targetFloor === this.floor) return;
+    
+    this.floor = targetFloor;
+    this.killed = 0;
+    this.monster = null;
+    this.inBattle = false;
+    this.canAdvanceFloor = false;
+    this.save();
+    this.ui.render();
+    this.ui.updateFloorSelectText();
+  }
+
+  shouldAutoUsePotion(): boolean {
+    if (this.potionStrategy === 'manual') return false;
+    
+    const hasPotion = this.inventory.items.some((i: { id: string }) => i.id === 'healthPotion');
+    if (!hasPotion) return false;
+    
+    if (this.potionStrategy === 'auto30') {
+      return this.player.hp < this.player.maxHP * 0.3;
+    } else if (this.potionStrategy === 'auto50') {
+      return this.player.hp < this.player.maxHP * 0.5;
+    } else if (this.potionStrategy === 'battleStart') {
+      return this.player.hp < this.player.maxHP * 0.9;
+    }
+    return false;
+  }
+
   useSkill(id: string): void {
     this.battle.useSkill(id);
   }

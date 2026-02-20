@@ -196,6 +196,11 @@ export class InventoryManager {
       this.game.player.weapon = itemId;
     } else {
       this.game.player.armor = itemId;
+      const armor = item as Armor;
+      if (armor.maxShield && armor.maxShield > 0) {
+        this.game.player.maxShield = this.game.playerManager.getTotalMaxShield();
+        this.game.player.shield = this.game.player.maxShield;
+      }
     }
     this.game.ui.log(`🔨 锻造成功：${item.icon} ${item.name}！`);
     this.game.save();

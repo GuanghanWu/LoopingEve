@@ -16,7 +16,8 @@ export class PlayerManager {
       learnedSkills: ['powerStrike'],
       equippedSkills: ['powerStrike'],
       selectedSkill: 'powerStrike',
-      skillCooldowns: {}
+      skillCooldowns: {},
+      attackCount: 0
     };
   }
 
@@ -36,6 +37,97 @@ export class PlayerManager {
       if (armor) def += armor.def;
     }
     return def;
+  }
+
+  getTotalComboRate(): number {
+    let rate = this.game.player.comboRate;
+    if (this.game.player.weapon) {
+      const weapon = this.game.config.equipment.weapons.find(w => w.id === this.game.player.weapon);
+      if (weapon?.comboRate) rate += weapon.comboRate;
+    }
+    if (this.game.player.armor) {
+      const armor = this.game.config.equipment.armors.find(a => a.id === this.game.player.armor);
+      if (armor?.comboRate) rate += armor.comboRate;
+    }
+    return rate;
+  }
+
+  getTotalComboDamage(): number {
+    let dmg = this.game.player.comboDamage;
+    if (this.game.player.weapon) {
+      const weapon = this.game.config.equipment.weapons.find(w => w.id === this.game.player.weapon);
+      if (weapon?.comboDamage) dmg += weapon.comboDamage;
+    }
+    if (this.game.player.armor) {
+      const armor = this.game.config.equipment.armors.find(a => a.id === this.game.player.armor);
+      if (armor?.comboDamage) dmg += armor.comboDamage;
+    }
+    return dmg;
+  }
+
+  getTotalCounterRate(): number {
+    let rate = this.game.player.counterRate;
+    if (this.game.player.weapon) {
+      const weapon = this.game.config.equipment.weapons.find(w => w.id === this.game.player.weapon);
+      if (weapon?.counterRate) rate += weapon.counterRate;
+    }
+    if (this.game.player.armor) {
+      const armor = this.game.config.equipment.armors.find(a => a.id === this.game.player.armor);
+      if (armor?.counterRate) rate += armor.counterRate;
+    }
+    return rate;
+  }
+
+  getTotalCounterDamage(): number {
+    let dmg = this.game.player.counterDamage;
+    if (this.game.player.weapon) {
+      const weapon = this.game.config.equipment.weapons.find(w => w.id === this.game.player.weapon);
+      if (weapon?.counterDamage) dmg += weapon.counterDamage;
+    }
+    if (this.game.player.armor) {
+      const armor = this.game.config.equipment.armors.find(a => a.id === this.game.player.armor);
+      if (armor?.counterDamage) dmg += armor.counterDamage;
+    }
+    return dmg;
+  }
+
+  getTotalBlockRate(): number {
+    let rate = this.game.player.blockRate;
+    if (this.game.player.weapon) {
+      const weapon = this.game.config.equipment.weapons.find(w => w.id === this.game.player.weapon);
+      if (weapon?.blockRate) rate += weapon.blockRate;
+    }
+    if (this.game.player.armor) {
+      const armor = this.game.config.equipment.armors.find(a => a.id === this.game.player.armor);
+      if (armor?.blockRate) rate += armor.blockRate;
+    }
+    return rate;
+  }
+
+  getTotalBlockReduction(): number {
+    let reduction = this.game.player.blockReduction;
+    if (this.game.player.weapon) {
+      const weapon = this.game.config.equipment.weapons.find(w => w.id === this.game.player.weapon);
+      if (weapon?.blockReduction) reduction += weapon.blockReduction;
+    }
+    if (this.game.player.armor) {
+      const armor = this.game.config.equipment.armors.find(a => a.id === this.game.player.armor);
+      if (armor?.blockReduction) reduction += armor.blockReduction;
+    }
+    return Math.min(reduction, 0.8);
+  }
+
+  getTotalMaxShield(): number {
+    let shield = this.game.player.maxShield;
+    if (this.game.player.weapon) {
+      const weapon = this.game.config.equipment.weapons.find(w => w.id === this.game.player.weapon);
+      if (weapon?.maxShield) shield += weapon.maxShield;
+    }
+    if (this.game.player.armor) {
+      const armor = this.game.config.equipment.armors.find(a => a.id === this.game.player.armor);
+      if (armor?.maxShield) shield += armor.maxShield;
+    }
+    return shield;
   }
 
   getUnlockedSkillSlots(): number {
@@ -118,6 +210,17 @@ export class PlayerManager {
     }
     if (!this.game.player.weapon) this.game.player.weapon = null;
     if (!this.game.player.armor) this.game.player.armor = null;
+    
+    if (this.game.player.comboRate === undefined) {
+      this.game.player.comboRate = 0;
+      this.game.player.comboDamage = 0.5;
+      this.game.player.counterRate = 0;
+      this.game.player.counterDamage = 0.5;
+      this.game.player.blockRate = 0;
+      this.game.player.blockReduction = 0.3;
+      this.game.player.shield = 0;
+      this.game.player.maxShield = 0;
+    }
   }
 
   unequipItem(category: 'weapons' | 'armors'): void {

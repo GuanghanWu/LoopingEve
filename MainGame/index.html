@@ -39,11 +39,32 @@
                     <span class="bar-value hp-value"><span id="playerHP">120</span>/<span id="playerMaxHP">120</span></span>
                 </div>
             </div>
+            <div class="bar-row shield-row" style="display: none;">
+                <span class="bar-icon shield-icon">🔰</span>
+                <div class="bar-track shield-track">
+                    <div class="bar-fill shield-fill" id="shieldFill" style="width: 100%"></div>
+                    <span class="bar-value shield-value"><span id="playerShield">0</span></span>
+                </div>
+            </div>
             <div class="bar-row">
                 <span class="bar-icon exp-icon">⭐</span>
                 <div class="bar-track exp-track">
                     <div class="bar-fill exp-fill" id="expBar" style="width: 0%"></div>
                     <span class="bar-value exp-value">Lv.<span id="playerLevel">1</span> <span id="playerEXP">0</span>/<span id="playerMaxEXP">50</span></span>
+                </div>
+            </div>
+            <div class="secondary-stats" id="secondaryStats">
+                <div class="stat-item combo" title="连击率">
+                    <span class="icon">⚡</span>
+                    <span class="value" id="comboRate">0%</span>
+                </div>
+                <div class="stat-item counter" title="反击率">
+                    <span class="icon">🔄</span>
+                    <span class="value" id="counterRate">0%</span>
+                </div>
+                <div class="stat-item block" title="格挡率">
+                    <span class="icon">🛡️</span>
+                    <span class="value" id="blockRate">0%</span>
                 </div>
             </div>
         </div>
@@ -61,12 +82,18 @@
             </div>
             
             <div class="monster-area">
+                <button class="float-btn floor-float-btn" id="floorSelectBtn" title="选择楼层">⊞</button>
+                <button class="float-btn speed-float-btn" id="speedBtn" title="调整速度"><span id="speedText">1X</span></button>
+                
                 <div class="floor-section">
                     <div class="floor-info">
+                        <span class="boss-icon" id="bossIcon">👑</span>
                         <span class="floor-label">第</span>
                         <span id="currentFloor">1</span>
                         <span class="floor-label">层</span>
                     </div>
+                </div>
+                <div class="kill-progress-wrapper">
                     <div class="kill-progress" id="killProgress">-/-</div>
                 </div>
                 <div class="monster-card">
@@ -76,6 +103,7 @@
                         <div class="monster-hp-fill" id="monsterHPFill" style="width: 100%"></div>
                     </div>
                     <div class="monster-hp-text"><span id="monsterHP">0</span>/<span id="monsterMaxHP">0</span></div>
+                    <div class="skill-effect-overlay" id="skillEffectOverlay"></div>
                 </div>
             </div>
             
@@ -92,13 +120,26 @@
                     <span>自动下层</span>
                 </label>
             </div>
-            <div class="combat-buttons">
-                <button class="btn btn-attack" id="btnAttack" disabled>⚔️ 攻击</button>
-                <button class="btn btn-skill" id="btnSkill" disabled>
-                    <span class="skill-content">✨ <span id="currentSkillName">强力打击</span></span>
-                    <span class="skill-toggle" id="btnSkillToggle" title="切换技能">⇄</span>
-                </button>
-                <button class="btn btn-item" id="btnItem" disabled>🧪 血瓶</button>
+            <div class="auto-slots">
+                <div class="slot-item attack-slot" id="attackSlot" title="攻击">
+                    <span class="slot-icon">⚔️</span>
+                    <span class="slot-label">攻击</span>
+                </div>
+                <div class="slot-item skill-slot" id="skillSlot" title="">
+                    <div class="skill-cd-overlay" id="skillCdOverlay">
+                        <svg viewBox="0 0 36 36" class="skill-cd-svg">
+                            <circle class="skill-cd-bg" cx="18" cy="18" r="16"/>
+                            <circle class="skill-cd-progress" id="skillCdProgress" cx="18" cy="18" r="16"/>
+                        </svg>
+                        <span class="skill-cd-text" id="skillCdText">3</span>
+                    </div>
+                    <span class="slot-icon" id="skillSlotIcon">✨</span>
+                    <span class="slot-label" id="skillSlotLabel">强力打击</span>
+                </div>
+                <div class="slot-item item-slot" id="itemSlot" title="血瓶">
+                    <span class="slot-icon">🧪</span>
+                    <span class="slot-count" id="itemSlotCount">0</span>
+                </div>
             </div>
         </div>
         
@@ -110,10 +151,27 @@
         </div>
     </div>
     
+    <div class="modal" id="floorSelectModal">
+        <div class="modal-content floor-select-modal">
+            <h2>📍 选择楼层</h2>
+            <div class="floor-list" id="floorList"></div>
+            <button class="btn btn-primary close-btn" onclick="document.getElementById('floorSelectModal').classList.remove('show')">关闭</button>
+        </div>
+    </div>
+    
     <div class="modal" id="settingsModal">
         <div class="modal-content settings-modal">
             <h2>⚙️ 设置</h2>
             <div class="settings-list">
+                <div class="setting-item">
+                    <label class="setting-label">🧪 道具使用策略</label>
+                    <select class="setting-select" id="potionStrategy">
+                        <option value="manual">手动使用</option>
+                        <option value="auto30" selected>HP低于30%时自动使用</option>
+                        <option value="auto50">HP低于50%时自动使用</option>
+                        <option value="battleStart">HP低于90%时自动使用</option>
+                    </select>
+                </div>
                 <button class="btn btn-danger settings-btn" id="btnClear2">🗑️ 重置游戏</button>
             </div>
             <button class="btn btn-primary close-btn" onclick="document.getElementById('settingsModal').classList.remove('show')">关闭</button>

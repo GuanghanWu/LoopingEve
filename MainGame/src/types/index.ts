@@ -9,6 +9,14 @@ export interface PlayerInitial {
   gold: number;
   critRate: number;
   dodgeRate: number;
+  comboRate: number;
+  comboDamage: number;
+  counterRate: number;
+  counterDamage: number;
+  blockRate: number;
+  blockReduction: number;
+  shield: number;
+  maxShield: number;
 }
 
 export interface LevelUpConfig {
@@ -27,6 +35,8 @@ export interface PlayerConfig {
 export interface BattleConfig {
   normalAttackRand: number;
   enemyAttackRand: number;
+  autoBattleInterval: number;
+  autoExploreDelay: number;
 }
 
 export interface FloorConfig {
@@ -91,6 +101,14 @@ export interface Weapon {
   icon: string;
   atk: number;
   materials: Record<string, number>;
+  comboRate?: number;
+  comboDamage?: number;
+  counterRate?: number;
+  counterDamage?: number;
+  blockRate?: number;
+  blockReduction?: number;
+  shield?: number;
+  maxShield?: number;
 }
 
 export interface Armor {
@@ -99,6 +117,14 @@ export interface Armor {
   icon: string;
   def: number;
   materials: Record<string, number>;
+  comboRate?: number;
+  comboDamage?: number;
+  counterRate?: number;
+  counterDamage?: number;
+  blockRate?: number;
+  blockReduction?: number;
+  shield?: number;
+  maxShield?: number;
 }
 
 export interface EquipmentConfig {
@@ -139,6 +165,20 @@ export interface MonsterInstance {
   def: number;
   exp: number;
   gold: number;
+  critRate: number;
+  dodgeRate: number;
+}
+
+export interface Boss {
+  id: string;
+  name: string;
+  avatar: string;
+  hp: number;
+  atk: number;
+  def: number;
+  exp: number;
+  gold: number;
+  floor: number;
   critRate: number;
   dodgeRate: number;
 }
@@ -219,6 +259,8 @@ export interface GameConfig {
   worldLore: WorldLore[];
   npcs: NPC[];
   randomEvents: RandomEvent[];
+  bossFloors: number[];
+  bosses: Boss[];
 }
 
 export interface Player {
@@ -232,12 +274,21 @@ export interface Player {
   gold: number;
   critRate: number;
   dodgeRate: number;
+  comboRate: number;
+  comboDamage: number;
+  counterRate: number;
+  counterDamage: number;
+  blockRate: number;
+  blockReduction: number;
+  shield: number;
+  maxShield: number;
   weapon: string | null;
   armor: string | null;
   learnedSkills: string[];
   equippedSkills: string[];
   selectedSkill: string | null;
   skillCooldowns: Record<string, number>;
+  attackCount: number;
 }
 
 export interface InventoryItem {
@@ -254,6 +305,8 @@ export interface SaveData {
   player: Player;
   floor: number;
   killed: number;
+  maxFloorReached: number;
+  gameSpeed: number;
   inventory: Inventory;
   story: StorySaveData;
 }
