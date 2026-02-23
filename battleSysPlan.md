@@ -143,13 +143,12 @@ autoAdvanceEnabled: boolean = false; // 自动闯关开关
 
 **改造内容**：
 - 在 `defeat()` 方法中添加满血恢复
-- 确保恢复逻辑不影响护盾系统（护盾不恢复）
+- 确保恢复逻辑不影响护盾系统
 
 ```typescript
 defeat(): void {
     // ... 现有逻辑
     this.game.player.hp = this.game.player.maxHP; // 新增：满血恢复
-    // 护盾值不恢复
 }
 ```
 
